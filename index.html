@@ -1,0 +1,316 @@
+<!doctype html>
+<html>
+    <head>
+        <title>My experiment</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="scripts/jquery-1.11.1.js"></script>
+        <script src="scripts/jquery-ui.min.js"></script>
+        <script src="jspsych-6.1.0/jspsych.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-likert.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-likert.js"></script>
+        <link href="css/jspsych.css" type="text/css" rel="stylesheet"></link>
+
+    </head>
+    <body>
+    </body>
+    <script>
+    var userChoice;
+var score;
+var payout_coop_coop = [6,6]
+var payout_coop_comp = [0,10]
+var payout_comp_comp = [2,2]
+var myFuncCalls = -1;
+var roundNum = 0;
+var likertscale = ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"];
+//var computerOptions = ["x", "x", "y", "x", "x", "x", "x", "y", "x", "x", "x", "y", "x", "x", "x"];
+
+/*
+var time1 = Math.floor((Math.random() * 10000) + 3000);
+var time2 = Math.floor((Math.random() * 10000) + 3000);
+var time3 = Math.floor((Math.random() * 10000) + 3000);
+*/
+
+
+var user_choice = {
+    type: 'html-keyboard-response',
+    stimulus: function() {
+      var stim;
+      var group_other = jsPsych.data.get().select('group_other').values[0];
+      if (jsPsych.timelineVariable("other_group", true) === 'c') {
+        stim = 'Choose whether to cooperate (press x) or not cooperate (press y) with your partner.'
+      } else {
+        stim = 'Choose whether to cooperate (press x) or not cooperate (press y) with your partner in the '+group_other+' group.'
+      };
+      return stim
+    },
+    choices: ['x', 'y']
+};
+
+var computer_choice = {
+  type: 'html-keyboard-response',
+  trial_duration: 6000,
+  stimulus: function() {
+    // game logic implemented here
+    roundNum++;
+    myFuncCalls++;
+    var computerChoice
+    //var computerChoice = computerOptions[myFuncCalls]; // want to change this logic to be related to an array of roundnums to betray on
+    if (jsPsych.timelineVariable("betray", true) === 't') {
+      computerChoice = [4,7,9].includes(roundNum) ? 'y' : 'x' // in the betray condition, we betray on the 4th,7th,9th rounds? on wednesday we wear pink.
+    } else {
+      computerChoice = [7].includes(roundNum) ? 'y' : 'x' // in the no betray condition, we betray on the 7th round? on wednesday we wear pink.
+    }
+    var userChoice = jsPsych.data.getLastTrialData().select('key_press').values[0];
+    var stim;
+    if (computerChoice === 'x') { // cooperate
+      if (userChoice === 88) { // code for "x"
+        // coop-coop
+        stim = 'The other player chose to cooperate. You chose to cooperate. You received '+payout_coop_coop[0]+' points. They received '+payout_coop_coop[1]+' points.';
+        score += payout_coop_coop[0];
+      }
+      else {
+        // coop-comp
+
+        stim = 'The other player chose to cooperate. You chose to compete. You received '+payout_coop_comp[1]+' points. They received '+payout_coop_comp[0]+' points.';
+        //stim = 'kp'+userChoice.values[0]
+        score += payout_coop_comp[1];
+      }
+    }
+    else { // non-cooperate
+      if (userChoice === 88) {
+        // comp-coop
+        stim = 'The other player chose to compete. You chose to cooperate. You received '+payout_coop_comp[0]+' points. They received '+payout_coop_comp[1]+' points.';
+        score += payout_coop_comp[0];
+      }
+      else {
+        //comp-comp
+        stim = 'The other player chose to compete. You chose to compete. You received '+payout_comp_comp[0]+' points. They received '+payout_comp_comp[1]+' points.';
+        score += payout_comp_comp[0];
+      }
+    }
+    return stim
+  }
+}
+
+
+// create a list of all images so we can tell jsPsych to
+// preload them for speed (see jsPsych.init below)
+var klees = ['img/klee1.jpg', 'img/klee1.jpg', 'img/klee1.jpg', 'img/klee1.jpg', 'img/klee1.jpg'];
+var kandinskys = ['img/kandinsky1.jpg', 'img/kandinsky1.jpg', 'img/kandinsky1.jpg', 'img/kandinsky1.jpg', 'img/kandinsky1.jpg'];
+var all_images = klees.concat(kandinskys);
+
+var images_zip = klees.map(function(k, i) {
+  return {
+    image1: k,
+    image2: kandinskys[i]
+  }
+});
+
+// add all of the relevant variables to the data field so they
+// will appear in the results
+var trial = {
+    type: 'html-keyboard-response',
+    prompt: '<p>Choose image a or b using the keyboard.</p>',
+    choices: ['a', 'b'],
+    stimulus: function () {
+        // note: the outer parentheses are only here so we can break the line
+        var ims = [jsPsych.timelineVariable("image1", true), jsPsych.timelineVariable("image2", true)]
+        ims = jsPsych.randomization.shuffle(ims)
+        return (
+           '<img src="'+ims[0]+'">'
+           +'<img src="'+ims[1]+'">'
+        );
+    },
+    data: {
+      image1: jsPsych.timelineVariable('image1'),
+      image2: jsPsych.timelineVariable('image2')
+    }
+};
+
+var trials_with_variables = {
+    timeline: [trial],
+    timeline_variables: images_zip
+};
+
+var group_assignment = {
+    type: 'html-keyboard-response',
+    stimulus: function() {
+      // numeric key code for letter a: 65, b: 66
+      var stims = jsPsych.data.getLastTimelineData().select('stimulus').values
+      var kps = jsPsych.data.getLastTimelineData().select('key_press').values
+      //var count_of_a = jsPsych.data.getLastTimelineData().filter({key_press: 65}).count()
+      // this logic needs to be more complicated if want to use randomized image order
+      var klee_vote = stims.map(function(x, i) {
+        var klee_first = x.indexOf('klee') < x.indexOf('kandinsky')
+        var press_a = kps[i] === 65
+        return ((klee_first && press_a) || (!klee_first && !press_a))
+      })
+      var count_of_klee_votes = klee_vote.reduce(function(a,b) {return a+b})
+      var team =  count_of_klee_votes > 2 ? 'Klee' : 'Kandinsky'
+      jsPsych.data.addProperties({group_assignment: team})
+      return ('Your group: '+team+'<br><br>Press any key to continue.')
+    }
+};
+
+
+var instructions_im = ['<div id="instructions">You will be shown several pairs of paintings. Please select the painting of each pair that you like the most using the "a" and "b" keys.</div>'];
+
+var instructions_pd = ['<div id="instructions">You will be playing with another participant who is connected to the game in another location.<br><br> The amount of points you earn will be determined by the decision that you make in combination with the decision of the other participant.<br><br> You will be playing a series of rounds.</div>'];
+
+var connecting = [ '<div class="heading">Please wait while we connect you to another player...</div><div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>'
+        ];
+//var connecting = 'Please wait while we connect you to another player';
+
+var debrief = ['<div class=questions><p>End of game<br><br>Please wait for further instructions from the experimenter</p></div>'];
+
+
+// Define experiment blocks
+
+var instruction_im_block = {
+    type: "html-keyboard-response",
+    stimulus: instructions_im,
+    trial_duration: 8000
+};
+
+var instruction_pd_block = {
+    type: 'html-keyboard-response',
+    stimulus: function() {
+      var team = jsPsych.data.get().select('group_assignment').values[0];
+      var group_other;
+      var team_statement;
+      if (jsPsych.timelineVariable("other_group", true) === 'ig') {
+        group_other = team;
+        team_statement = 'in the '+group_other+' group (you are in the '+team+' group) '
+      }
+      else if (jsPsych.timelineVariable("other_group", true) == 'og') {
+        group_other = team === 'Klee' ? 'Kandinsky' : 'Klee';
+        team_statement = 'in the '+group_other+' group (you are in the '+team+' group) '
+      } else { // control group
+        group_other = '';
+        team_statement = ''
+      }
+      jsPsych.data.addProperties({betray: jsPsych.timelineVariable("betray", true)})
+      jsPsych.data.addProperties({other_type: jsPsych.timelineVariable("other_group", true)})
+      jsPsych.data.addProperties({group_other: group_other})
+      return ('<div id="instructions">You will be playing with another participant '+team_statement+'who is connected to the game in another location.<br><br> The amount of points you earn will be determined by the decision that you make in combination with the decision of the other participant.<br><br> You will be playing a series of rounds.</div>');
+    },
+    trial_duration: 8000
+};
+
+var connecting_block = {
+    type: "html-keyboard-response",
+    stimulus: connecting,
+    choices: jsPsych.NO_KEYS,
+    trial_duration: 1000
+};
+
+
+
+var run_chunk = {
+      timeline: [user_choice, computer_choice],
+      loop_function: function(){
+        if (roundNum > 10){
+          return false;
+        }
+        else{
+          return true;
+        }
+      }
+    };
+
+/*
+var end_questions = {
+  type: 'html-button-response',
+  stimulus: 'If you were to play more rounds of the Prisoner\'s dillema, would you be interested in playing with a partner in the group:',
+  choices: function() {
+    var x = jsPsych.randomization.shuffle(['Klee', 'Kandinsky']);
+    return x
+  }
+}
+*/
+
+var end_questions = {
+  timeline: [
+    {
+      type: 'html-button-response',
+      stimulus: 'Would you like to continue playing with this partner?',
+      choices: function() {
+        var x = jsPsych.randomization.shuffle(['No', 'Yes']);
+        return x
+      },
+      required: true
+    },
+    {
+      type: 'survey-likert',
+      questions: [
+        {prompt: 'My partner was cooperative.',
+        name: 'Perceived-coop',
+        labels: likertscale,
+        required: true}
+      ]
+    }
+  ]
+}
+
+var demographics = {
+  timeline: [
+    {type: 'survey-text',
+    questions: [{prompt: 'How old are you?', columns: 3, required: true, name: 'Age'}
+  ]},
+    {type: 'survey-multi-choice',
+     questions: [{prompt: 'I identify as:', name: 'Gender', required: true, options: ['man', 'woman', 'other']}]}
+  ]
+}
+
+var debrief_block = {
+    type: "html-keyboard-response",
+    stimulus: [debrief],
+};
+
+var trial = {
+    type: 'html-keyboard-response',
+    stimulus: function() {
+      console.log(jsPsych.data.get().select('rt').count());
+      console.log(jsPsych.data.get().select('group_assignment').values[0]);
+      console.log(jsPsych.data.get().select('rt').values);
+      console.log(jsPsych.timelineVariable('betray', true));
+      return jsPsych.data.get().select('group_assignment').values[0]
+    }
+};
+
+
+var design_factors = {
+  other_group: ['c', 'ig', 'og'],
+  betray: ['f', 't'],
+};
+var full_design = jsPsych.randomization.factorial(design_factors, 1)
+
+var pd_with_variables = {
+  timeline: [instruction_pd_block, connecting_block, run_chunk],
+  //timeline: [trial],
+  timeline_variables: full_design,
+  sample: {
+    type: 'with-replacement',
+    size: 1
+  }
+}
+
+//Initiate Experiment
+
+    jsPsych.init({
+        timeline: [demographics, instruction_im_block,
+          trials_with_variables, group_assignment,
+          pd_with_variables, end_questions],
+        on_finish: function() {
+            jsPsych.data.displayData('csv');
+        },
+        preload_images: all_images
+    });
+
+</script>
+
+</html>
