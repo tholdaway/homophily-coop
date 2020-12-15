@@ -29,6 +29,13 @@ line-height: 55px;
   text-align: center;
 }
 
+
+#payouttab{
+  font-size: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+
 .resultLeft{
   font-size: 50px;
   line-height: 75px;
@@ -97,9 +104,9 @@ line-height: 55px;
  }
 
  .ui-dialog-titlebar{
-    
+
  }
- 
+
 .jspsych-display-element {
     width: 800px;
     margin: 50px auto 50px auto;
@@ -117,7 +124,7 @@ line-height: 55px;
 
 .ui-widget-overlay {
    background: #ffffff !important;
- 
+
  }
  .ui-widget-header{
     background: #ffffff !important;
@@ -170,12 +177,12 @@ line-height: 55px;
 }
 
 #welcome{
-  margin-top: 25%; 
+  margin-top: 25%;
 }
 
 
 /* ---------------------
-   Base CSS 
+   Base CSS
 --------------------*/
 
 
@@ -212,7 +219,7 @@ p {
 
 
 /* --------------------
-  Loading Spinner 
+  Loading Spinner
 -----------------------*/
 .heading{
         text-align: center;
@@ -233,7 +240,7 @@ p {
       height: 100%;
       width: 6px;
       display: inline-block;
-      
+
       -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
       animation: stretchdelay 1.2s infinite ease-in-out;
     }
@@ -259,12 +266,12 @@ p {
     }
 
     @-webkit-keyframes stretchdelay {
-      0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+      0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
       20% { -webkit-transform: scaleY(1.0) }
     }
 
     @keyframes stretchdelay {
-      0%, 40%, 100% { 
+      0%, 40%, 100% {
         transform: scaleY(0.4);
         -webkit-transform: scaleY(0.4);
       } 20% {
@@ -278,7 +285,7 @@ p {
  * Classes for changing location of things
  *
  */
- 
+
 .left {
     float: left;
 }
@@ -324,7 +331,7 @@ button:hover {
  * PLUGIN: jspsych-single-stim
  *
  */
- 
+
 #jspsych-single-stim-stimulus {
     display: block;
     margin-left: auto;
@@ -338,17 +345,11 @@ button:hover {
  * PLUGIN: jspsych-survey-text
  *
  */
- 
+
  .jspsych-survey-text {
      margin: 0.25em 0em;
  }
- 
+
  .jspsych-survey-text-question {
      margin: 2em 0em;
  }
-
-
-
-
-
-
