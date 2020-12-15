@@ -39,12 +39,17 @@ var user_choice = {
     type: 'html-keyboard-response',
     stimulus: function() {
       var stim;
+      var head = '';
+      var team = jsPsych.data.get().select('group_assignment').values[0];
       var group_other = jsPsych.data.get().select('group_other').values[0];
       if (jsPsych.timelineVariable("other_group", true) === 'c') {
-        stim = 'Choose whether to cooperate (press x) or not cooperate (press y) with your partner.'
+        stim = '<div id="instructions">Choose whether to cooperate (press x) or not cooperate (press y) with your partner.</div>'
       } else {
-        stim = 'Choose whether to cooperate (press x) or not cooperate (press y) with your partner in the '+group_other+' group.'
+        var color = jsPsych.timelineVariable("other_group", true) === 'ig' ? 'blue' : 'red';
+        stim = '<div id="instructions">Choose whether to cooperate (press x) or not cooperate (press y) with your partner in the <span style="color:'+color+';">'+group_other+'</span> group.</div>';
+        head = ' Your partner\'s team: <span style="color:'+color+';">'+group_other+'</span>';
       };
+      stim = '<header><h1>Your team: <span style="color:blue;">'+team+'</span>.'+head+'</h1></header>'+stim;
       return stim
     },
     choices: ['x', 'y']
@@ -57,7 +62,9 @@ var computer_choice = {
     // game logic implemented here
     roundNum++;
     myFuncCalls++;
-    var computerChoice
+    var computerChoice;
+    var team = jsPsych.data.get().select('group_assignment').values[0];
+    var group_other = jsPsych.data.get().select('group_other').values[0];
     //var computerChoice = computerOptions[myFuncCalls]; // want to change this logic to be related to an array of roundnums to betray on
     if (jsPsych.timelineVariable("betray", true) === 't') {
       computerChoice = [4,7,9].includes(roundNum) ? 'y' : 'x' // in the betray condition, we betray on the 4th,7th,9th rounds? on wednesday we wear pink.
@@ -69,13 +76,13 @@ var computer_choice = {
     if (computerChoice === 'x') { // cooperate
       if (userChoice === 88) { // code for "x"
         // coop-coop
-        stim = 'The other player chose to cooperate. You chose to cooperate. You received '+payout_coop_coop[0]+' points. They received '+payout_coop_coop[1]+' points.';
+        stim = '<div id="instructions">The other player chose to cooperate. You chose to cooperate. You received '+payout_coop_coop[0]+' points. They received '+payout_coop_coop[1]+' points.</div>';
         score += payout_coop_coop[0];
       }
       else {
         // coop-comp
 
-        stim = 'The other player chose to cooperate. You chose to compete. You received '+payout_coop_comp[1]+' points. They received '+payout_coop_comp[0]+' points.';
+        stim = '<div id="instructions">The other player chose to cooperate. You chose to compete. You received '+payout_coop_comp[1]+' points. They received '+payout_coop_comp[0]+' points.</div>';
         //stim = 'kp'+userChoice.values[0]
         score += payout_coop_comp[1];
       }
@@ -83,15 +90,18 @@ var computer_choice = {
     else { // non-cooperate
       if (userChoice === 88) {
         // comp-coop
-        stim = 'The other player chose to compete. You chose to cooperate. You received '+payout_coop_comp[0]+' points. They received '+payout_coop_comp[1]+' points.';
+        stim = '<div id="instructions">The other player chose to compete. You chose to cooperate. You received '+payout_coop_comp[0]+' points. They received '+payout_coop_comp[1]+' points.</div>';
         score += payout_coop_comp[0];
       }
       else {
         //comp-comp
-        stim = 'The other player chose to compete. You chose to compete. You received '+payout_comp_comp[0]+' points. They received '+payout_comp_comp[1]+' points.';
+        stim = '<div id="instructions">The other player chose to compete. You chose to compete. You received '+payout_comp_comp[0]+' points. They received '+payout_comp_comp[1]+' points.</div>';
         score += payout_comp_comp[0];
       }
     }
+    var color = jsPsych.timelineVariable("other_group", true) === 'ig' ? 'blue' : 'red'
+    var head = jsPsych.timelineVariable("other_group", true) === 'c' ? '' : ' Your partner\'s team: <span style="color:'+color+';">'+group_other+'</span>';
+    stim = '<header><h1>Your team: <span style="color:blue;">'+team+'</span>.'+head+'</h1></header>'+stim;
     return stim
   }
 }
@@ -99,8 +109,8 @@ var computer_choice = {
 
 // create a list of all images so we can tell jsPsych to
 // preload them for speed (see jsPsych.init below)
-var klees = ['img/klee1.jpg', 'img/klee1.jpg', 'img/klee1.jpg', 'img/klee1.jpg', 'img/klee1.jpg'];
-var kandinskys = ['img/kandinsky1.jpg', 'img/kandinsky1.jpg', 'img/kandinsky1.jpg', 'img/kandinsky1.jpg', 'img/kandinsky1.jpg'];
+var klees = ['img/klee1.jpg', 'img/klee2.jpg', 'img/klee3.jpg', 'img/klee4.jpg', 'img/klee5.jpg'];
+var kandinskys = ['img/kandinsky1.jpg', 'img/kandinsky2.jpg', 'img/kandinsky3.jpg', 'img/kandinsky4.jpg', 'img/kandinsky5.jpg'];
 var all_images = klees.concat(kandinskys);
 
 var images_zip = klees.map(function(k, i) {
@@ -152,10 +162,11 @@ var group_assignment = {
       var count_of_klee_votes = klee_vote.reduce(function(a,b) {return a+b})
       var team =  count_of_klee_votes > 2 ? 'Klee' : 'Kandinsky'
       jsPsych.data.addProperties({group_assignment: team})
-      return ('Your group: '+team+'<br><br>Press any key to continue.')
+      return ('<div id="instructions">Your group: <span style="color:blue;">'+team+'</span><br><br>Press any key to continue.</div>')
     }
 };
 
+var consent = ['<div id="instructions">You are invited to participate in a research study about collaboration/teamwork/trade/game theory (?).<br><br>If you agree to be part of the research study, you will be asked to fill in a survey, play a game, and answer a few questions about your experience playing. Participating in the research would not inflict any discomforts or put you at risk. At the completion of your participation you will receive $X. Participating in this study is completely voluntary.  Even if you decide to participate now, you may change your mind and stop at any time. You may choose not to answer survey question, continue with the game, or the follow-up questions for any reason. As part of the research, we may mislead you or we may not tell you everything about the purpose of the research or research procedures.  At the conclusion of the study, we will provide you with that information.<br><br>All information is deidentified, the researchers will not gain access to your identity or information that would enable them to identify you. Information collected in this project may be shared with other researchers, but we will not share any information that could identify you.<br><br>Press any key to agree, or close the window to exit.</div>']
 
 var instructions_im = ['<div id="instructions">You will be shown several pairs of paintings. Please select the painting of each pair that you like the most using the "a" and "b" keys.</div>'];
 
@@ -169,6 +180,13 @@ var debrief = ['<div class=questions><p>End of game<br><br>Please wait for furth
 
 
 // Define experiment blocks
+
+var consent = {
+    type: "html-keyboard-response",
+    stimulus: consent,
+    trial_duration: 8000
+};
+
 
 var instruction_im_block = {
     type: "html-keyboard-response",
@@ -184,11 +202,11 @@ var instruction_pd_block = {
       var team_statement;
       if (jsPsych.timelineVariable("other_group", true) === 'ig') {
         group_other = team;
-        team_statement = 'in the '+group_other+' group (you are in the '+team+' group) '
+        team_statement = 'in the <span style="color:blue;">'+group_other+'</span> group (you are in the <span style="color:blue;">'+team+'</span> group) '
       }
-      else if (jsPsych.timelineVariable("other_group", true) == 'og') {
+      else if (jsPsych.timelineVariable("other_group", true) === 'og') {
         group_other = team === 'Klee' ? 'Kandinsky' : 'Klee';
-        team_statement = 'in the '+group_other+' group (you are in the '+team+' group) '
+        team_statement = 'in the <span style="color:red;">'+group_other+'</span> group (you are in the <span style="color:blue;">'+team+'</span> group) '
       } else { // control group
         group_other = '';
         team_statement = ''
@@ -237,7 +255,7 @@ var end_questions = {
   timeline: [
     {
       type: 'html-button-response',
-      stimulus: 'Would you like to continue playing with this partner?',
+      stimulus: '<div id="instructions">Would you like to continue playing with this partner?</div>',
       choices: function() {
         var x = jsPsych.randomization.shuffle(['No', 'Yes']);
         return x
@@ -247,7 +265,7 @@ var end_questions = {
     {
       type: 'survey-likert',
       questions: [
-        {prompt: 'My partner was cooperative.',
+        {prompt: '<div id="instructions">My partner was cooperative.</div>',
         name: 'Perceived-coop',
         labels: likertscale,
         required: true}
@@ -290,7 +308,7 @@ var design_factors = {
 var full_design = jsPsych.randomization.factorial(design_factors, 1)
 
 var pd_with_variables = {
-  timeline: [instruction_pd_block, connecting_block, run_chunk],
+  timeline: [connecting_block, instruction_pd_block, run_chunk],
   //timeline: [trial],
   timeline_variables: full_design,
   sample: {
@@ -302,7 +320,7 @@ var pd_with_variables = {
 //Initiate Experiment
 
     jsPsych.init({
-        timeline: [demographics, instruction_im_block,
+        timeline: [consent, demographics, instruction_im_block,
           trials_with_variables, group_assignment,
           pd_with_variables, end_questions],
         on_finish: function() {
