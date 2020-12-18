@@ -18,12 +18,14 @@ Qualtrics.SurveyEngine.addOnload(function () {
     var requiredResources = [
         // jslib_url + "jspsych.js",
         // jslib_url + "plugins/jspsych-html-keyboard-response.js",
-        "http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js",
+        //"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/4.0.30/Dropbox-sdk.min.js",
         jslib_url + "scripts/jquery-1.11.1.js",
         jslib_url + "scripts/jquery-ui.min.js",
         jslib_url + "jspsych-6.1.0/jspsych.js",
         jslib_url + "jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js",
-        jslib_url + "jspsych-6.1.0/plugins/jspsych-html-button-response.js"
+        jslib_url + "jspsych-6.1.0/plugins/jspsych-html-button-response.js",
+        jslib_url + "experiment.js"
     ];
 
     function loadScript(idx) {
@@ -37,37 +39,91 @@ Qualtrics.SurveyEngine.addOnload(function () {
         });
     }
 
+    var sbj_id = "${e://Field/ResponseID}";
+    console.log(sbj_id)
+
+    var dropbox_access_token = "sl.Anl6J5a3McmCBfJ1JkxchrOHFGTAaf3D5xRin0jxIdXgLTnSNiYkxIYazWOTgyTpDY4_gttQAOtP78S5MdraVKJZ-x8n14mP1XF79gz7oKhdseMjSpTimiTYQmORQ2ao0hkFS1A";
+    var task_name = "tiedecaycoop"
+    var save_filename = "/" + task_name + '_' + sbj_id;
+
+    /* Change 5: Define save functions using Dropbox API */
+
+    function save_data_csv() {
+        try {
+            var dbx = new Dropbox.Dropbox({
+                fetch: fetch,
+                accessToken: dropbox_access_token
+            });
+            dbx.filesUpload({
+                    path: save_filename + '.csv',
+                    mode: 'overwrite',
+                    mute: true,
+                    contents: jsPsych.data.get().csv()
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.error(error);
+                });
+        } catch (err) {
+            console.log("Save data function failed.", err);
+        }
+    }
+
     if (window.Qualtrics && (!window.frameElement || window.frameElement.id !== "mobile-preview-view")) {
         loadScript(0);
     }
 
     /* Change 4: Appending the display_stage Div using jQuery */
     // jQuery is loaded in Qualtrics by default
-    jQuery("<div id = 'display_stage_background'></div>").appendTo('body');
-    jQuery("<div id = 'display_stage'></div>").appendTo('body');
+    //jQuery("<div id = 'display_stage_background'></div>").appendTo('body');
+    //jQuery("<div id = 'display_stage'></div>").appendTo('body');
 
+    jQuery("<div id = 'jspsych-target'></div>").appendTo('body');
 
     /* Change 5: Wrapping jsPsych.init() in a function */
     function initExp() {
-
-        var hello_trial = {
-            type: 'html-keyboard-response',
-            stimulus: 'Hello world!'
-        }
-
+        console.log("init")
         jsPsych.init({
-            timeline: [hello_trial],
-            display_element: 'display_stage',
+          timeline: [
+            instruction_im_block,
+            trials_with_variables,
+            group_assignment,
+            pd_with_variables,
 
+
+          ],
+          display_element: "jspsych-target",
+          // add the desired on_finish to save data to qualtrics
+          on_finish: function (data) {
+            /* Change 5: Summarizing and save the results to Qualtrics */
+            // summarize the results
+            /*
+            var trials = jsPsych.data.get().filter({
+                test_part: 'test'
+            });
+            var correct_trials = trials.filter({
+                correct: true
+            });
+            var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+            var rt = Math.round(correct_trials.select('rt').mean());
+
+            // save to qualtrics embedded data
+            Qualtrics.SurveyEngine.setEmbeddedData("accuracy", accuracy);
+            Qualtrics.SurveyEngine.setEmbeddedData("rt", rt);
+            */
             /* Change 6: Adding the clean up and continue functions.*/
-            on_finish: function (data) {
-                // clear the stage
-                jQuery('#display_stage').remove();
-                jQuery('#display_stage_background').remove();
+            // clear the stage
+            //jQuery('#display_stage').remove();
+            //jQuery('#display_stage_background').remove();
+            save_data_csv();
+            jQuery('#jspsych-target').remove();
 
-                // simulate click on Qualtrics "next" button, making use of the Qualtrics JS API
-                qthis.clickNextButton();
-            }
+            // simulate click on Qualtrics "next" button, making use of the Qualtrics JS API
+            qthis.clickNextButton();
+          },
+          preload_images: all_images,
         });
     }
 });
@@ -81,3 +137,210 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
     /*Place your JavaScript here to run when the page is unloaded*/
 
 });
+
+
+
+/*
+// put this in the qualtrics question html
+
+<link href="https://tholdaway.github.io/homophily-coop/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+
+<div>
+<span style="font-size: 24px;">
+    <br><br>
+    If you are seeing this message for <span style="color: rgb(255, 0, 0);"><b>more than 5
+        minutes</b></span>,<br>
+    please screen-capture this screen and send the image to us.
+    <br><br>
+    <span style="font-size: 28px;">We are very sorry for the inconvenience.</span>
+</span>
+</div>
+
+<!-- Change 2: Adding `display_stage` CSS and Div -->
+<style>
+  html {
+    margin: 0;
+    height: 100%;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(rgba(45, 70, 120, 0.31), rgba(45, 70, 120, 1));
+    background-attachment: fixed;
+  }
+  #jspsych-target {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+    min-height: 75%;
+    height: fit-content;
+    overflow: scroll;
+    padding: 50px;
+    background-color: white;
+    max-width:100%;
+    max-height:100%;
+  }
+  #instructions {
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+  }
+  h1 {
+    text-align: center;
+  }
+  img {
+    object-fit: contain;
+    width: 400px;
+    height: 300px;
+    padding: 25px;
+  }
+  div.imgContainer{
+    float:left;
+  }
+  table.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .tg  {border:none;border-collapse:collapse;border-spacing:0;margin-left: auto;margin-right: auto}
+  .tg td{border-style:solid;border-width:0px;overflow:hidden;
+    padding:10px 5px;word-break:normal;}
+  .tg th{border-style:solid;border-width:0px;font-weight:normal;
+    overflow:hidden;padding:10px 5px;word-break:normal;}
+  .tg .tg-0lax{text-align:left;vertical-align:top}
+  .tg .tg-tf2e{text-align:left;vertical-align:top}
+
+</style>
+*/
+
+
+/*
+// put this in the qualtrics question html
+
+<link href="https://tholdaway.github.io/homophily-coop/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+
+<div>
+<span style="font-size: 24px;">
+    <br><br>
+    If you are seeing this message for <span style="color: rgb(255, 0, 0);"><b>more than 5
+        minutes</b></span>,<br>
+    please screen-capture this screen and send the image to us.
+    <br><br>
+    <span style="font-size: 28px;">We are very sorry for the inconvenience.</span>
+</span>
+</div>
+
+<!-- Change 2: Adding `display_stage` CSS and Div -->
+<style>
+  html {
+    margin: 0;
+    height: 100%;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(rgba(45, 70, 120, 0.31), rgba(45, 70, 120, 1));
+    background-attachment: fixed;
+  }
+  #jspsych-target {
+    position: fixed;
+    left: 1vw;
+    top: 1vh;
+    height: 98vh;
+    width: 98vw;
+    background-color: white;
+    box-shadow: 1px 1px 1px #999;
+    border-radius: 15px;
+    z-index: 0;
+    overflow-y: auto;
+    overflow-x: auto;
+    max-width:100%;
+    max-height:100%;
+  }
+  #instructions {
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+  }
+  h1 {
+    text-align: center;
+  }
+  img {
+    object-fit: contain;
+    width: 400px;
+    height: 300px;
+    padding: 25px;
+  }
+  div.imgContainer{
+    float:left;
+  }
+  table.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .tg  {border:none;border-collapse:collapse;border-spacing:0;margin-left: auto;margin-right: auto}
+  .tg td{border-style:solid;border-width:0px;overflow:hidden;
+    padding:10px 5px;word-break:normal;}
+  .tg th{border-style:solid;border-width:0px;font-weight:normal;
+    overflow:hidden;padding:10px 5px;word-break:normal;}
+  .tg .tg-0lax{text-align:left;vertical-align:top}
+  .tg .tg-tf2e{text-align:left;vertical-align:top}
+
+</style>
+*/
+
+/*
+<link href="https://kywch.github.io/jsPsych/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+
+<div>
+<span style="font-size: 24px;">
+    <br><br>
+    If you are seeing this message for <span style="color: rgb(255, 0, 0);"><b>more than 5
+        minutes</b></span>,<br>
+    please screen-capture this screen and send the image to us.
+    <br><br>
+    <span style="font-size: 28px;">We are very sorry for the inconvenience.</span>
+</span>
+</div>
+
+<!-- Change 2: Adding `display_stage` CSS and Div -->
+<style>
+#display_stage_background {
+    width: 100vw;
+    background-color: white;
+    z-index: -1;
+}
+
+#display_stage {
+    position: fixed;
+    left: 1vw;
+    top: 1vh;
+    height: 98vh;
+    width: 98vw;
+    background-color: white;
+    box-shadow: 1px 1px 1px #999;
+    border-radius: 15px;
+    z-index: 0;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+</style>
+*/
+
+
+/*
+
+Informed Consent
+
+You are invited to participate in a research study about collaboration/teamwork/trade/game theory (?).
+
+If you agree to be part of the research study, you will be asked to fill in a survey, play a game, and answer a few questions about your experience playing. Participating in the research would not inflict any discomforts or put you at risk. At the completion of your participation you will receive $X.
+
+Participating in this study is completely voluntary.  Even if you decide to participate now, you may change your mind and stop at any time. You may choose not to answer survey question, continue with the game, or the follow-up questions for any reason. As part of the research, we may mislead you or we may not tell you everything about the purpose of the research or research procedures.  At the conclusion of the study, we will provide you with that information.
+
+All information is deidentified, the researchers will not gain access to your identity or information that would enable them to identify you. Information collected in this project may be shared with other researchers, but we will not share any information that could identify you.
+
+Please indicate below if you agree.
+*/
