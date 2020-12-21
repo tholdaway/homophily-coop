@@ -91,7 +91,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
             trials_with_variables,
             group_assignment,
             pd_with_variables,
-            coop_comparison
+            coop_comparison_block
           ],
           display_element: "jspsych-target",
           // add the desired on_finish to save data to qualtrics
@@ -178,8 +178,8 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
     overflow: scroll;
     padding: 50px;
     background-color: white;
-    max-width:100%;
-    max-height:100%;
+    max-width:90%;
+    max-height:90%;
   }
   #instructions {
     top: 0;
@@ -258,8 +258,8 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
     z-index: 0;
     overflow-y: auto;
     overflow-x: auto;
-    max-width:100%;
-    max-height:100%;
+    max-width:90%;
+    max-height:90%;
   }
   #instructions {
     top: 0;
