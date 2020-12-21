@@ -367,8 +367,7 @@ var coop_comparison_block = {
     } else {
       stim = "Your counterpart chose to cooperate more than 75% of all players."
     }
-    stim = "In total your score was " + score_self ".<br>Your counterpart's score was " + score_other + ".<br>" +
-      stim;
+    stim = "In total your score was " + score_self + ".<br>Your counterpart's score was " + score_other + ".<br>" + stim;
     return stim
   },
   choices: jsPsych.NO_KEYS,
