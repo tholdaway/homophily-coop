@@ -86,7 +86,7 @@ var user_choice = {
 
 var computer_choice = {
   type: "html-keyboard-response",
-  trial_duration: 6000,
+  trial_duration: 10000,
   stimulus: function () {
     // game logic implemented here
     roundNum++;
@@ -283,7 +283,12 @@ var instructions_im = [
 ];
 
 var instructions_pd = [
-  '<div id="instructions">You will be playing with another participant who is connected to the game in another location.<br><br> The amount of points you earn will be determined by the decision that you make in combination with the decision of the other participant.<br><br> You will be playing a series of rounds.</div>' +
+  `<div class = "heading">Instructions</div>
+  <div id="instructions">You will be playing with another participant who is connected to the game in another location.
+  <br>
+  The amount of points you earn will be determined by the decision that you make in combination with the decision of the other participant.
+  <br>
+  You will be playing a series of rounds.</div>` +
   payout_table,
 ];
 
@@ -315,6 +320,7 @@ var instruction_im_block = {
 
 var instruction_pd_block = {
   type: "html-keyboard-response",
+  choices: ["y"],
   stimulus: function () {
     var team = jsPsych.data.get().select("group_assignment").values[0];
     var group_other;
@@ -348,14 +354,37 @@ var instruction_pd_block = {
     });
     jsPsych.data.addProperties({ group_other: group_other });
     return (
+      '<h1>Instructions</h1>' +
       '<div id="instructions">You will be playing with another participant ' +
       team_statement +
-      "who is connected to the game in another location.<br><br> The amount of points you earn will be determined by the decision that you make in combination with the decision of the other participant.<br><br> You will be playing a series of rounds." +
-      "</div>" + payout_table
+      `who is connected to the game in another location.<br>
+      The amount of points you earn will be determined by the decisions
+      that you make in combination with the decision of the other participant.<br>
+      You will be playing a series of rounds.
+      <br>
+      Press "y" to continue.` +
+      "</div>"
     );
   },
-  //trial_duration: 20000,
 };
+
+var instruction_pd_block_payout = {
+  type: "html-keyboard-response",
+  choices: ["y"],
+  stimulus: function() {
+    stim =
+    `<div id="instructions">
+    The number of points you will receive for different actions can be read from this table (which will be available while playing):</div>` +
+    payout_table +
+    `<div id="instructions"><br>
+    For example, if you chose to cooperate and your counterpart chose to cooperate, you would both be awarded 6 points.
+    If you chose to cooperate and your counterpart chose to not cooperate, you would be awarded 0 points and your counterpart would be awarded 10 points.
+    <br>
+    Press "y" to begin playing.</div>
+    `
+    return stim
+  }
+}
 
 var coop_comparison_block = {
   type: "html-keyboard-response",
@@ -432,7 +461,7 @@ var design_factors = {
 var full_design = jsPsych.randomization.factorial(design_factors, 1);
 
 var pd_with_variables = {
-  timeline: [connecting_block, instruction_pd_block, run_chunk],
+  timeline: [connecting_block, instruction_pd_block, instruction_pd_block_payout, run_chunk],
   //timeline: [trial],
   timeline_variables: full_design,
   sample: {

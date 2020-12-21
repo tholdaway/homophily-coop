@@ -185,8 +185,8 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
     overflow-x: auto;
     max-width:90%;
     min-height: 75%;
-    max-height:75%;
-    padding: 100px;
+    max-height:80%;
+    padding: 50px;
 
   }
   #instructions {
