@@ -42,7 +42,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
     var sbj_id = "${e://Field/ResponseID}";
     console.log(sbj_id)
 
-    var dropbox_access_token = "sl.Anl6J5a3McmCBfJ1JkxchrOHFGTAaf3D5xRin0jxIdXgLTnSNiYkxIYazWOTgyTpDY4_gttQAOtP78S5MdraVKJZ-x8n14mP1XF79gz7oKhdseMjSpTimiTYQmORQ2ao0hkFS1A";
+    var dropbox_access_token = "";
     var task_name = "tiedecaycoop"
     var save_filename = "/" + task_name + '_' + sbj_id;
 
