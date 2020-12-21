@@ -1,6 +1,7 @@
 var repo = "https://tholdaway.github.io/homophily-coop/"
 var userChoice;
-var score;
+var score_self = 0;
+var score_other = 0;
 var payout_coop_coop = [6, 6];
 var payout_coop_comp = [0, 10];
 var payout_comp_comp = [2, 2];
@@ -99,8 +100,9 @@ var computer_choice = {
     } else {
       computerChoice = [7].includes(roundNum) ? "y" : "x"; // in the no betray condition, we betray on the 7th round? on wednesday we wear pink.
     }
-    var userChoice = jsPsych.data.getLastTrialData().select("key_press")
-      .values[0];
+    //var userChoice = jsPsych.data.getLastTrialData().select("key_press")
+    //  .values[0];
+    var userChoice = jsPsych.data.getLastTimelineData().select("key_press").values[0];
     var stim;
     if (computerChoice === "x") {
       // cooperate
@@ -113,7 +115,8 @@ var computer_choice = {
           " points. They received " +
           payout_coop_coop[1] +
           " points.</div>";
-        score += payout_coop_coop[0];
+        score_self += payout_coop_coop[0];
+        score_other += payout_coop_coop[1];
       } else {
         // coop-comp
 
@@ -124,7 +127,8 @@ var computer_choice = {
           payout_coop_comp[0] +
           " points.</div>";
         //stim = 'kp'+userChoice.values[0]
-        score += payout_coop_comp[1];
+        score_self += payout_coop_comp[1];
+        score_other += payout_coop_comp[0];
       }
     } else {
       // non-cooperate
@@ -136,7 +140,8 @@ var computer_choice = {
           " points. They received " +
           payout_coop_comp[1] +
           " points.</div>";
-        score += payout_coop_comp[0];
+        score_self += payout_coop_comp[0];
+        score_other += payout_coop_comp[1];
       } else {
         //comp-comp
         stim =
@@ -145,7 +150,8 @@ var computer_choice = {
           " points. They received " +
           payout_comp_comp[1] +
           " points.</div>";
-        score += payout_comp_comp[0];
+        score_self += payout_comp_comp[0];
+        score_other += payout_comp_comp[1];
       }
     }
     var color =
@@ -166,6 +172,27 @@ var computer_choice = {
       head +
       "</h1></header>" +
       stim;
+    stim =
+      stim +
+      `
+      <table class="tg">
+      <thead>
+        <tr>
+          <th class="tg-baqh" colspan="2">Total Score<br></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tg-pcvp">You</td>
+          <td class="tg-pcvp">Counterpart</td>
+        </tr>
+        <tr>
+          <td class="tg-pcvp">` + score_self + `<br></td>
+          <td class="tg-pcvp">` + score_other + `</td>
+        </tr>
+      </tbody>
+      </table>
+      `
     return stim;
   },
 };
@@ -264,6 +291,10 @@ var connecting = [
   '<div class="heading">Please wait while we connect you to another player...</div><div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>',
 ];
 
+var waiting = [
+  '<div class="heading">Please wait while the other player makes a decision...</div><div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>',
+];
+
 var debrief = [
   "<div class=questions><p>End of game<br><br>Please wait for further instructions from the experimenter</p></div>",
 ];
@@ -326,15 +357,46 @@ var instruction_pd_block = {
   trial_duration: 8000,
 };
 
+var coop_comparison_block = {
+  type: "html-keyboard-response",
+  stimulus: function() {
+    var stim;
+    // characterize cooperativeness of partner based on experimental condition
+    if (jsPsych.data.get().select("betray").values[0] === "t") {
+      stim = "Your counterpart chose to not cooperate more than 75% of all players."
+    } else {
+      stim = "Your counterpart chose to cooperate more than 75% of all players."
+    }
+    return stim
+  },
+  choices: jsPsych.NO_KEYS,
+  trial_duration: 15000,
+}
+
 var connecting_block = {
   type: "html-keyboard-response",
   stimulus: connecting,
   choices: jsPsych.NO_KEYS,
-  trial_duration: 1000,
+  trial_duration: 2000,
 };
 
+function randomIntFromInterval(min, max) { // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+var waiting_for_other_choice = {
+  type: "html-keyboard-response",
+  stimulus: waiting,
+  choices: jsPsych.NO_KEYS,
+  trial_duration: function() {
+    // difference between response time of the previous frame and a random length of time between 20 and 35 seconds
+    var rt = jsPsych.data.getLastTrialData().select("rt").values[0];
+    return Math.max(0.5*1000, (randomIntFromInterval(5*1000,20*1000) - rt))
+  },
+}
+
 var run_chunk = {
-  timeline: [user_choice, computer_choice],
+  timeline: [user_choice, waiting_for_other_choice, computer_choice],
   loop_function: function () {
     if (roundNum > 10) {
       return false;
@@ -344,64 +406,6 @@ var run_chunk = {
   },
 };
 
-/*
-var end_questions = {
-  type: 'html-button-response',
-  stimulus: 'If you were to play more rounds of the Prisoner\'s dillema, would you be interested in playing with a partner in the group:',
-  choices: function() {
-    var x = jsPsych.randomization.shuffle(['Klee', 'Kandinsky']);
-    return x
-  }
-}
-*/
-
-var end_questions = {
-  timeline: [
-    {
-      type: "html-button-response",
-      stimulus:
-        '<div id="instructions">Would you like to continue playing with this partner?</div>',
-      choices: function () {
-        var x = jsPsych.randomization.shuffle(["No", "Yes"]);
-        return x;
-      },
-      required: true,
-    },
-    {
-      type: "survey-likert",
-      questions: [
-        {
-          prompt: '<div id="instructions">My partner was cooperative.</div>',
-          name: "Perceived-coop",
-          labels: likertscale,
-          required: true,
-        },
-      ],
-    },
-  ],
-};
-
-var demographics = {
-  timeline: [
-    {
-      type: "survey-text",
-      questions: [
-        { prompt: "How old are you?", columns: 3, required: true, name: "Age" },
-      ],
-    },
-    {
-      type: "survey-multi-choice",
-      questions: [
-        {
-          prompt: "I identify as:",
-          name: "Gender",
-          required: true,
-          options: ["man", "woman", "other"],
-        },
-      ],
-    },
-  ],
-};
 
 var debrief_block = {
   type: "html-keyboard-response",
@@ -423,6 +427,7 @@ var design_factors = {
   other_group: ["c", "ig", "og"],
   betray: ["f", "t"],
 };
+
 var full_design = jsPsych.randomization.factorial(design_factors, 1);
 
 var pd_with_variables = {

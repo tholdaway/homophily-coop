@@ -69,6 +69,9 @@
     .tg .tg-0lax{text-align:left;vertical-align:top}
     .tg .tg-tf2e{text-align:left;vertical-align:top}
 
+    .tg .tg-baqh{text-align:center;vertical-align:bottom}
+    .tg .tg-pcvp{border-color:inherit;text-align:center;vertical-align:top}
+
   </style>
   <div id="jspsych-target">
     <script>
@@ -76,13 +79,11 @@
       //Initiate Experiment
       jsPsych.init({
         timeline: [
-          consent,
-          demographics,
           instruction_im_block,
           trials_with_variables,
           group_assignment,
           pd_with_variables,
-          end_questions,
+          coop_comparison_block
         ],
         display_element: "jspsych-target",
         on_finish: function () {
