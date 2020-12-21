@@ -196,7 +196,7 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
   }
   h1 {
     text-align: center;
-    line-height: 2em;
+    line-height: 1em;
   }
   img {
     object-fit: contain !important;

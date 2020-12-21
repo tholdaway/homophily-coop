@@ -354,7 +354,7 @@ var instruction_pd_block = {
       "</div>" + payout_table
     );
   },
-  trial_duration: 8000,
+  //trial_duration: 20000,
 };
 
 var coop_comparison_block = {
