@@ -169,85 +169,10 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
     background-attachment: fixed;
   }
   #jspsych-target {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 75%;
-    min-height: 75%;
-    height: fit-content;
-    overflow: scroll;
-    padding: 50px;
-    background-color: white;
-    max-width:90%;
-    max-height:90%;
-  }
-  #instructions {
-    top: 0;
-    bottom: 0;
-    overflow: auto;
-  }
-  h1 {
-    text-align: center;
-  }
-  img {
-    object-fit: contain;
-    width: 400px;
-    height: 300px;
-    padding: 25px;
-  }
-  div.imgContainer{
-    float:left;
-  }
-  table.center {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .tg  {border:none;border-collapse:collapse;border-spacing:0;margin-left: auto;margin-right: auto}
-  .tg td{border-style:solid;border-width:0px;overflow:hidden;
-    padding:10px 5px;word-break:normal;}
-  .tg th{border-style:solid;border-width:0px;font-weight:normal;
-    overflow:hidden;padding:10px 5px;word-break:normal;}
-  .tg .tg-0lax{text-align:left;vertical-align:top}
-  .tg .tg-tf2e{text-align:left;vertical-align:top}
-
-  .tg .tg-baqh{text-align:center;vertical-align:bottom}
-  .tg .tg-pcvp{border-color:inherit;text-align:center;vertical-align:top}
-
-</style>
-*/
-
-
-/*
-// put this in the qualtrics question html
-
-<link href="https://tholdaway.github.io/homophily-coop/css/jspsych.css" rel="stylesheet" type="text/css"></link>
-
-<div>
-<span style="font-size: 24px;">
-    <br><br>
-    If you are seeing this message for <span style="color: rgb(255, 0, 0);"><b>more than 5
-        minutes</b></span>,<br>
-    please screen-capture this screen and send the image to us.
-    <br><br>
-    <span style="font-size: 28px;">We are very sorry for the inconvenience.</span>
-</span>
-</div>
-
-<!-- Change 2: Adding `display_stage` CSS and Div -->
-<style>
-  html {
-    margin: 0;
-    height: 100%;
-  }
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: linear-gradient(rgba(45, 70, 120, 0.31), rgba(45, 70, 120, 1));
-    background-attachment: fixed;
-  }
-  #jspsych-target {
     position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     left: 1vw;
     top: 1vh;
     height: 98vh;
@@ -259,7 +184,10 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
     overflow-y: auto;
     overflow-x: auto;
     max-width:90%;
-    max-height:90%;
+    min-height: 75%;
+    max-height:75%;
+    padding: 100px;
+
   }
   #instructions {
     top: 0;
@@ -268,12 +196,13 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
   }
   h1 {
     text-align: center;
+    line-height: 2em;
   }
   img {
-    object-fit: contain;
-    width: 400px;
-    height: 300px;
-    padding: 25px;
+    object-fit: contain !important;
+    width: 400px !important;
+    height: 300px !important;
+    padding: 25px !important;
   }
   div.imgContainer{
     float:left;
