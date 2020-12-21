@@ -207,6 +207,9 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
   div.imgContainer{
     float:left;
   }
+  div.imgContainer2{
+    display: flex;
+  }
   table.center {
     margin-left: auto;
     margin-right: auto;

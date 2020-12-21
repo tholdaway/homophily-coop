@@ -235,7 +235,7 @@ var trial = {
       jsPsych.timelineVariable("image2", true),
     ];
     ims = jsPsych.randomization.shuffle(ims);
-    return '<div class="imgContainer"><img src="' + ims[0] + '"><p>A</p></div>' + '<div class="imgContainer"><img src="' + ims[1] + '"><p>B</p></div>';
+    return '<div class="imgContainer2"><div class="imgContainer"><img src="' + ims[0] + '"><p>A</p></div>' + '<div class="imgContainer"><img src="' + ims[1] + '"><p>B</p></div></div>';
   },
   data: {
     image1: jsPsych.timelineVariable("image1"),
