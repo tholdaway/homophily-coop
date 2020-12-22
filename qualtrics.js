@@ -170,7 +170,6 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
   }
   #jspsych-target {
     position: fixed;
-    display: flex;
     justify-content: center;
     align-items: center;
     left: 1vw;
@@ -203,6 +202,14 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
     width: 400px !important;
     height: 300px !important;
     padding: 25px !important;
+  }
+  .kkim {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #images{
+    text-align:center;
   }
   div.imgContainer{
     float:left;
