@@ -203,14 +203,6 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
     height: 300px !important;
     padding: 25px !important;
   }
-  .kkim {
-    display: inline-block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  #images{
-    text-align:center;
-  }
   div.imgContainer{
     float:left;
   }
