@@ -20,7 +20,7 @@ var payout_table = `<br><br>
                     <table class="tg">
                     <tbody>
                       <tr>
-                        <td>(you, partner)</td>
+                        <td>(you, counterpart)</td>
                         <td>Cooperate</td>
                         <td>Not cooperate</td>
                       </tr>
@@ -54,18 +54,18 @@ var user_choice = {
     var group_other = jsPsych.data.get().select("group_other").values[0];
     if (jsPsych.timelineVariable("other_group", true) === "c") {
       stim =
-        '<div id="instructions">Choose whether to cooperate (press x) or not cooperate (press y) with your partner.</div>';
+        '<div id="instructions">Choose whether to cooperate (press x) or not cooperate (press y) with your counterpart.</div>';
     } else {
       var color =
         jsPsych.timelineVariable("other_group", true) === "ig" ? "blue" : "red";
       stim =
-        '<div id="instructions">Choose whether to cooperate (press x) or not cooperate (press y) with your partner in the <span style="color:' +
+        '<div id="instructions">Choose whether to cooperate (press x) or not cooperate (press y) with your counterpart in the <span style="color:' +
         color +
         ';">' +
         group_other +
         "</span> group.</div>";
       head =
-        " Your partner's team: <span style=\"color:" +
+        " Your counterpart's team: <span style=\"color:" +
         color +
         ';">' +
         group_other +
@@ -121,7 +121,7 @@ var computer_choice = {
         // coop-comp
 
         stim =
-          '<div id="instructions">The other player chose to cooperate. You chose to compete. You received ' +
+          '<div id="instructions">The other player chose to cooperate. You chose to not cooperate. You received ' +
           payout_coop_comp[1] +
           " points. They received " +
           payout_coop_comp[0] +
@@ -135,7 +135,7 @@ var computer_choice = {
       if (userChoice === 88) {
         // comp-coop
         stim =
-          '<div id="instructions">The other player chose to compete. You chose to cooperate. You received ' +
+          '<div id="instructions">The other player chose to not cooperate. You chose to cooperate. You received ' +
           payout_coop_comp[0] +
           " points. They received " +
           payout_coop_comp[1] +
@@ -145,7 +145,7 @@ var computer_choice = {
       } else {
         //comp-comp
         stim =
-          '<div id="instructions">The other player chose to compete. You chose to compete. You received ' +
+          '<div id="instructions">The other player chose to not cooperate. You chose to not cooperate. You received ' +
           payout_comp_comp[0] +
           " points. They received " +
           payout_comp_comp[1] +
@@ -160,7 +160,7 @@ var computer_choice = {
     var head =
       jsPsych.timelineVariable("other_group", true) === "c"
         ? ""
-        : " Your partner's team: <span style=\"color:" +
+        : " Your counterpart's team: <span style=\"color:" +
           color +
           ';">' +
           group_other +
@@ -214,6 +214,11 @@ var kandinskys = [
   "img/kandinsky5.jpg",
 ].map(x => "https://tholdaway.github.io/homophily-coop/" + x);
 var all_images = klees.concat(kandinskys);
+
+var plot_images = [
+  "img/participation_plot_low.png",
+  "img/participation_plot_high.png"
+].map(x => "https://tholdaway.github.io/homophily-coop/" + x);
 
 var images_zip = klees.map(function (k, i) {
   return {
@@ -390,11 +395,13 @@ var coop_comparison_block = {
   type: "html-keyboard-response",
   stimulus: function() {
     var stim;
-    // characterize cooperativeness of partner based on experimental condition
+    // characterize cooperativeness of counterpart based on experimental condition
     if (jsPsych.data.get().select("betray").values[0] === "t") {
-      stim = "Your counterpart chose to not cooperate more than 75% of all players."
+      //stim = "Your counterpart chose to not cooperate more than 75% of all players."
+      stim = `The red line shows how often your counterpart cooperated, relative to all other players.<br><div class="imgContainer"><img src="` + plot_images[0] + `"><p>A</p></div>'`
     } else {
-      stim = "Your counterpart chose to cooperate more than 75% of all players."
+      //stim = "Your counterpart chose to cooperate more than 75% of all players."
+      stim = `The red line shows how often your counterpart cooperated, relative to all other players.<br><div class="imgContainer"><img src="` + plot_images[0] + `"><p>A</p></div>'`
     }
     stim = "<div id='instructions'>In total your score was " + score_self + ".<br>Your counterpart's score was " + score_other + ".<br>" + stim + "</div>";
     return stim
@@ -414,6 +421,16 @@ function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+
+function random_exponential(rate) {
+        var u = Math.random();
+        return -Math.log(1.0 - u) / rate;
+}
+
+function randomIntFromIntervalExponentialish(min, max, rate) {
+  return Math.min(min + random_exponential(rate), max)
+}
+
 var waiting_for_other_choice = {
   type: "html-keyboard-response",
   stimulus: waiting,
@@ -421,7 +438,8 @@ var waiting_for_other_choice = {
   trial_duration: function() {
     // difference between response time of the previous frame and a random length of time between 20 and 35 seconds
     var rt = jsPsych.data.getLastTrialData().select("rt").values[0];
-    return Math.max(0.5*1000, (randomIntFromInterval(5*1000,20*1000) - rt))
+    return Math.max(0.5*1000, (randomIntFromIntervalExponentialish(1,10, 0.3)*1000 - rt))
+    //return Math.max(0.5*1000, (randomIntFromInterval(1*1000,10*1000) - rt))
   },
 }
 
