@@ -390,33 +390,6 @@ var instruction_pd_block_payout = {
     return stim
   }
 }
-
-var coop_comparison_block = {
-  type: "html-keyboard-response",
-  stimulus: function() {
-    var stim;
-    // characterize cooperativeness of counterpart based on experimental condition
-    if (jsPsych.data.get().select("betray").values[0] === "t") {
-      //stim = "Your counterpart chose to not cooperate more than 75% of all players."
-      stim = `The red line shows how often your counterpart cooperated, relative to all other players.<br><div class="imgContainer"><img src="` + plot_images[0] + `"><p>A</p></div>'`
-    } else {
-      //stim = "Your counterpart chose to cooperate more than 75% of all players."
-      stim = `The red line shows how often your counterpart cooperated, relative to all other players.<br><div class="imgContainer"><img src="` + plot_images[0] + `"><p>A</p></div>'`
-    }
-    stim = "<div id='instructions'>In total your score was " + score_self + ".<br>Your counterpart's score was " + score_other + ".<br>" + stim + "</div>";
-    return stim
-  },
-  choices: jsPsych.NO_KEYS,
-  trial_duration: 15000,
-}
-
-var connecting_block = {
-  type: "html-keyboard-response",
-  stimulus: connecting,
-  choices: jsPsych.NO_KEYS,
-  trial_duration: 2000,
-};
-
 function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -442,6 +415,58 @@ var waiting_for_other_choice = {
     //return Math.max(0.5*1000, (randomIntFromInterval(1*1000,10*1000) - rt))
   },
 }
+
+var coop_comparison_block = {
+  type: "html-keyboard-response",
+  stimulus: function() {
+    var stim;
+    // characterize cooperativeness of counterpart based on experimental condition
+    if (jsPsych.data.get().select("betray").values[0] === "t") {
+      //stim = "Your counterpart chose to not cooperate more than 75% of all players."
+      stim = `The red line shows how often your counterpart cooperated, relative to all other players.<br><div class="imgContainer"><img src="` + plot_images[0] + `"></div>'`
+    } else {
+      //stim = "Your counterpart chose to cooperate more than 75% of all players."
+      stim = `The red line shows how often your counterpart cooperated, relative to all other players.<br><div class="imgContainer"><img src="` + plot_images[1] + `"></div>'`
+    }
+    stim = "<div id='instructions'>In total your score was " + score_self + ".<br>Your counterpart's score was " + score_other + ".<br>" + stim + "</div>";
+    return stim
+  },
+  choices: jsPsych.NO_KEYS,
+  trial_duration: 30000,
+}
+
+var fruit_selection = {
+  type: 'html-button-response',
+  stimulus: '',
+  choices: ['Apples', 'Bananas', 'Strawberries', 'Grapes'],
+  prompt: "<p>Out of the fruits listed, which do you enjoy the most?</p>"
+}
+
+var fruit_prompt = {
+  type: "html-keyboard-response",
+  stimulus: function() {
+    //var current_node_id = jsPsych.currentTimelineNodeID();
+    //var data_from_current_node = jsPsych.data.getDataByTimelineNode(current_node_id);
+    var responses = jsPsych.data.get().last(2).values()[0].button_pressed;
+    console.log(responses);
+    var fruit = ['Apples', 'Bananas', 'Strawberries', 'Grapes'][parseInt(responses)].toLowerCase();
+    return `<p>You said that you preferred ${fruit}. Several other people in your group also said they prefer ${fruit}.</p>`;
+  },
+  choices: jsPsych.NO_KEYS,
+  trial_duration: 300000,
+}
+
+var group_reinforcement_block = {
+  timeline: [fruit_selection, waiting_for_other_choice, fruit_prompt]
+}
+
+var connecting_block = {
+  type: "html-keyboard-response",
+  stimulus: connecting,
+  choices: jsPsych.NO_KEYS,
+  trial_duration: 2000,
+};
+
 
 var run_chunk = {
   timeline: [user_choice, waiting_for_other_choice, computer_choice],
