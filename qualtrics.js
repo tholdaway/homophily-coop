@@ -91,6 +91,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
             instruction_im_block,
             trials_with_variables,
             group_assignment,
+            group_reinforcement_block,
             pd_with_variables,
             coop_comparison_block
           ],

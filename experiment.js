@@ -453,7 +453,7 @@ var fruit_prompt = {
     return `<p>You said that you preferred ${fruit}. Several other people in your group also said they prefer ${fruit}.</p>`;
   },
   choices: jsPsych.NO_KEYS,
-  trial_duration: 300000,
+  trial_duration: 15000,
 }
 
 var group_reinforcement_block = {
