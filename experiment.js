@@ -450,10 +450,13 @@ var fruit_prompt = {
     var responses = jsPsych.data.get().last(2).values()[0].button_pressed;
     console.log(responses);
     var fruit = ['Apples', 'Bananas', 'Strawberries', 'Grapes'][parseInt(responses)].toLowerCase();
-    return `<p>You said that you preferred ${fruit}. Several other people in your group also said they prefer ${fruit}.</p>`;
+    return `<p>You said that you preferred ${fruit}.
+    Several other people in your group also said they prefer ${fruit}.</p>
+    <br>
+    <p>Press "y" to continue.</p>`;
   },
-  choices: jsPsych.NO_KEYS,
-  trial_duration: 15000,
+  choices: ['y'], //jsPsych.NO_KEYS,
+  trial_duration: 10000,
 }
 
 var group_reinforcement_block = {
