@@ -96,9 +96,9 @@ var computer_choice = {
     var group_other = jsPsych.data.get().select("group_other").values[0];
     //var computerChoice = computerOptions[myFuncCalls]; // want to change this logic to be related to an array of roundnums to betray on
     if (jsPsych.timelineVariable("betray", true) === "t") {
-      computerChoice = [4, 7, 9].includes(roundNum) ? "y" : "x"; // in the betray condition, we betray on the 4th,7th,9th rounds? on wednesday we wear pink.
+      computerChoice = [1,3,4,7,9,10].includes(roundNum) ? "y" : "x"; // in the betray condition, we betray on the 4th,7th,9th rounds? on wednesday we wear pink.
     } else {
-      computerChoice = [7].includes(roundNum) ? "y" : "x"; // in the no betray condition, we betray on the 7th round? on wednesday we wear pink.
+      computerChoice = [3,7,9,10].includes(roundNum) ? "y" : "x"; // in the no betray condition, we betray on the 7th round? on wednesday we wear pink.
     }
     //var userChoice = jsPsych.data.getLastTrialData().select("key_press")
     //  .values[0];
@@ -231,7 +231,7 @@ var images_zip = klees.map(function (k, i) {
 // will appear in the results
 var trial = {
   type: "html-keyboard-response",
-  prompt: "<p>Choose image a or b using the keyboard.</p>",
+  prompt: "<p>Choose image A or B using the keyboard.</p>",
   choices: ["a", "b"],
   stimulus: function () {
     // note: the outer parentheses are only here so we can break the line
@@ -270,21 +270,37 @@ var group_assignment = {
       return a + b;
     });
     var team = count_of_klee_votes > 2 ? "Klee" : "Kandinsky";
+    var other_team = team === "Klee" ? "Kandinsky" : "Klee";
     jsPsych.data.addProperties({ group_assignment: team });
     return (
-      '<div id="instructions">Your group: <span style="color:blue;">' +
-      team +
-      "</span><br><br>Press any key to continue.</div>"
+      `<div id="instructions">Your group:
+      <span style="color:blue;">${team}</span>
+      <br><br>
+      There are 42 people in the <span style="color:blue;">${team}</span> group,
+      and 41 people in the <span style="color:red;">${other_team}</span> group.
+      <br><br>From this point on, you will be interacting with other real people.
+      Please be respectful and answer in a timely fashion.
+      <br><br>Press any key to continue.</div>`
     );
   },
 };
+
+var real_player_prompt = [
+  `<div id="instructions">From this point on, you will be interacting with other real people.
+  Please </div>`
+];
 
 var consent = [
   '<div id="instructions">You are invited to participate in a research study about collaboration/teamwork/trade/game theory (?).<br><br>If you agree to be part of the research study, you will be asked to fill in a survey, play a game, and answer a few questions about your experience playing. Participating in the research would not inflict any discomforts or put you at risk. At the completion of your participation you will receive $X. Participating in this study is completely voluntary.  Even if you decide to participate now, you may change your mind and stop at any time. You may choose not to answer survey question, continue with the game, or the follow-up questions for any reason. As part of the research, we may mislead you or we may not tell you everything about the purpose of the research or research procedures.  At the conclusion of the study, we will provide you with that information.<br><br>All information is deidentified, the researchers will not gain access to your identity or information that would enable them to identify you. Information collected in this project may be shared with other researchers, but we will not share any information that could identify you.<br><br>Press any key to agree, or close the window to exit.</div>',
 ];
 
 var instructions_im = [
-  '<div id="instructions">You will be shown several pairs of paintings. Please select the painting of each pair that you like the most using the "a" and "b" keys.</div>',
+  `<div id="instructions">
+  You will be shown several pairs of paintings.
+  Please select the painting of each pair that you like the most using the "a" and "b" keys.
+  <br>
+  Press any key to continue.
+  </div>`,
 ];
 
 var instructions_pd = [
@@ -320,7 +336,7 @@ var consent = {
 var instruction_im_block = {
   type: "html-keyboard-response",
   stimulus: instructions_im,
-  trial_duration: 8000,
+  trial_duration: 20000,
 };
 
 var instruction_pd_block = {
@@ -423,24 +439,25 @@ var coop_comparison_block = {
     // characterize cooperativeness of counterpart based on experimental condition
     if (jsPsych.data.get().select("betray").values[0] === "t") {
       //stim = "Your counterpart chose to not cooperate more than 75% of all players."
-      stim = `The red line shows how often your counterpart cooperated, relative to all other players.<br><div class="imgContainer"><img src="` + plot_images[0] + `"></div>'`
+      stim = `The red line shows how often your counterpart cooperated, relative to all other players.<br><div class="imgContainer"><img src="` + plot_images[0] + `"></div>`
     } else {
       //stim = "Your counterpart chose to cooperate more than 75% of all players."
-      stim = `The red line shows how often your counterpart cooperated, relative to all other players.<br><div class="imgContainer"><img src="` + plot_images[1] + `"></div>'`
+      stim = `The red line shows how often your counterpart cooperated, relative to all other players.<br><div class="imgContainer"><img src="` + plot_images[1] + `"></div>`
     }
     stim = "<div id='instructions'>In total your score was " + score_self + ".<br>Your counterpart's score was " + score_other + ".<br>" + stim + "</div>";
     return stim
   },
   choices: jsPsych.NO_KEYS,
   trial_duration: 30000,
-}
+};
 
 var fruit_selection = {
   type: 'html-button-response',
   stimulus: '',
   choices: ['Apples', 'Bananas', 'Strawberries', 'Grapes'],
   prompt: "<p>Out of the fruits listed, which do you enjoy the most?</p>"
-}
+};
+
 
 var fruit_prompt = {
   type: "html-keyboard-response",
@@ -457,11 +474,47 @@ var fruit_prompt = {
   },
   choices: ['y'], //jsPsych.NO_KEYS,
   trial_duration: 10000,
-}
+};
+
+var favorite_thing_selection = {
+  type: 'survey-multi-choice',
+  questions: [
+    {prompt: "Out of the fruits listed, which do you enjoy the most?",
+      name: 'Fruits',
+      options: ['Apples', 'Bananas', 'Strawberries', 'Grapes'],
+      required:true},
+    {prompt: "Out of the colors listed, which you prefer the most?",
+      name: 'Colors',
+      options: ['Blue', 'Green', 'Red', 'Yellow'],
+      required: false},
+    {prompt: "Out of the flavors listed, which you prefer the most?",
+      name: 'Flavors',
+      options: ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'],
+      required: false},
+  ],
+};
+
+var favorite_thing_prompt = {
+  type: "html-keyboard-response",
+  stimulus: function() {
+    //var current_node_id = jsPsych.currentTimelineNodeID();
+    //var data_from_current_node = jsPsych.data.getDataByTimelineNode(current_node_id);
+    var responses = jsPsych.data.get().last(2).values()[0]['responses'];
+    console.log(responses);
+    var x = `<p>Many other people in your group chose similar responses. Your response is shown in green.</p>
+    <br>
+    <div class="imgContainer">
+    <img src="https://tholdaway.github.io/homophily-coop/${responses['Fruits']}"></div>`;
+    return x;
+  },
+  choices: ['y'], //jsPsych.NO_KEYS,
+  trial_duration: 20000,
+};
 
 var group_reinforcement_block = {
-  timeline: [fruit_selection, waiting_for_other_choice, fruit_prompt]
-}
+  timeline: [fruit_selection, waiting_for_other_choice, fruit_prompt,
+    favorite_thing_selection, waiting_for_other_choice, favorite_thing_prompt]
+};
 
 var connecting_block = {
   type: "html-keyboard-response",

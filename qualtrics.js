@@ -41,7 +41,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
     }
 
     var sbj_id = "${e://Field/ResponseID}";
-    console.log(sbj_id)
+    console.log(sbj_id);
 
     var dropbox_access_token = "";
     var task_name = "tiedecaycoop"
@@ -85,6 +85,19 @@ Qualtrics.SurveyEngine.addOnload(function () {
 
     /* Change 5: Wrapping jsPsych.init() in a function */
     function initExp() {
+        var design_factors = [{other_group:"${e://Field/other_group}", betray:"${e://Field/betray}"}];
+        var pd_with_variables_qt = {
+          timeline: [connecting_block, instruction_pd_block, instruction_pd_block_payout, run_chunk],
+          //timeline: [trial],
+          timeline_variables: design_factors,
+          sample: {
+            type: "with-replacement",
+            size: 1,
+          },
+        };
+        console.log("${e://Field/other_group}")
+        console.log("${e://Field/betray}")
+        console.log(full_design)
         console.log("init")
         jsPsych.init({
           timeline: [
@@ -92,7 +105,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
             trials_with_variables,
             group_assignment,
             group_reinforcement_block,
-            pd_with_variables,
+            pd_with_variables_qt,
             coop_comparison_block
           ],
           display_element: "jspsych-target",
@@ -215,10 +228,10 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
     margin-left: auto;
     margin-right: auto;
   }
-  .tg  {border:none;border-collapse:collapse;border-spacing:0;margin-left: auto;margin-right: auto}
-  .tg td{border-style:solid;border-width:0px;overflow:hidden;
+  .tg  {border-collapse:collapse;border-spacing:1;margin-left: auto;margin-right: auto}
+  .tg td{border-style:solid;border-width:1px;overflow:hidden;
     padding:10px 5px;word-break:normal;}
-  .tg th{border-style:solid;border-width:0px;font-weight:normal;
+  .tg th{border-style:solid;border-width:1px;font-weight:normal;
     overflow:hidden;padding:10px 5px;word-break:normal;}
   .tg .tg-0lax{text-align:left;vertical-align:top}
   .tg .tg-tf2e{text-align:left;vertical-align:top}
