@@ -460,6 +460,20 @@ var fruit_selection = {
   prompt: "<p>Out of the fruits listed, which do you enjoy the most?</p>"
 };
 
+var color_selection = {
+  type: 'html-button-response',
+  stimulus: '',
+  choices: ['Blue', 'Green', 'Red', 'Yellow'],
+  prompt: "<p>Out of the colors listed, which do you prefer?</p>"
+};
+
+var flavor_selection = {
+  type: 'html-button-response',
+  stimulus: '',
+  choices: ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'],
+  prompt: "<p>Out of the flavors listed, which do you prefer?</p>"
+};
+
 
 var fruit_prompt = {
   type: "html-keyboard-response",
@@ -497,7 +511,7 @@ var favorite_thing_selection = {
   button_label: 'Next',
 };
 
-var favorite_thing_prompt = {
+var favorite_thing_prompt_ = {
   type: "html-keyboard-response",
   stimulus: function() {
     //var current_node_id = jsPsych.currentTimelineNodeID();
@@ -531,12 +545,38 @@ var favorite_thing_prompt = {
   trial_duration: 30000,
 };
 
+var favorite_thing_prompt = {
+  type: "html-keyboard-response",
+  stimulus: function() {
+    //var current_node_id = jsPsych.currentTimelineNodeID();
+    //var data_from_current_node = jsPsych.data.getDataByTimelineNode(current_node_id);
+    var responses = jsPsych.data.get().last(4).values() //[0].button_pressed;
+    var fruit = ['Apples', 'Bananas', 'Strawberries', 'Grapes'][parseInt(responses[0].button_pressed)];
+    var color = ['Blue', 'Green', 'Red', 'Yellow'][parseInt(responses[1].button_pressed)];
+    var flavor = ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'][parseInt(responses[2].button_pressed)];
+    console.log(responses);
+    var x = `<p>Many other people in your group chose similar responses. The bar plots below show what others in your group chose.
+    Your choice is indicated in green.</p>
+    <br>
+    <div>
+      <img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png" class="image_things">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${color}.png" class="image_things">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png" class="image_things">
+    </div>
+    <p>Press "y" to continue.</p>`;
+    return x;
+  },
+  choices: ['y'], //jsPsych.NO_KEYS,
+  trial_duration: 10000,
+};
+
+
 var group_reinforcement_block_ = {
   timeline: [favorite_thing_selection, waiting_for_other_choice, favorite_thing_prompt]
 };
 
 var group_reinforcement_block = {
-  timeline: [fruit_selection, waiting_for_other_choice, fruit_prompt]
+  timeline: [fruit_selection, color_selection, flavor_selection, waiting_for_other_choice, favorite_thing_prompt]
 };
 
 var connecting_block = {

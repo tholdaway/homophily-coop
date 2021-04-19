@@ -20,7 +20,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
         // jslib_url + "plugins/jspsych-html-keyboard-response.js",
         //"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js",
         "https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/4.0.30/Dropbox-sdk.min.js",
-        "https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js",
+        //"https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js",
         jslib_url + "scripts/jquery-1.11.1.js",
         jslib_url + "scripts/jquery-ui.min.js",
         jslib_url + "jspsych-6.1.0/jspsych.js",
