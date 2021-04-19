@@ -321,6 +321,10 @@ var waiting = [
   '<div class="heading">Please wait while the other player makes a decision...</div><div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>',
 ];
 
+var waiting2 = [
+  '<div class="heading">Please wait while the other players make a decision...</div><div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>',
+];
+
 var debrief = [
   "<div class=questions><p>End of game<br><br>Please wait for further instructions from the experimenter</p></div>",
 ];
@@ -433,6 +437,19 @@ var waiting_for_other_choice = {
     //return Math.max(0.5*1000, (randomIntFromInterval(1*1000,10*1000) - rt))
   },
 }
+
+var waiting_for_other_choice_2 = {
+  type: "html-keyboard-response",
+  stimulus: waiting2,
+  choices: jsPsych.NO_KEYS,
+  trial_duration: function() {
+    // difference between response time of the previous frame and a random length of time between 20 and 35 seconds
+    var rt = jsPsych.data.getLastTrialData().select("rt").values[0];
+    return Math.max(0.5*1000, (randomIntFromIntervalExponentialish(1,10, 0.3)*1000 - rt))
+    //return Math.max(0.5*1000, (randomIntFromInterval(1*1000,10*1000) - rt))
+  },
+}
+
 
 var coop_comparison_block = {
   type: "html-keyboard-response",
@@ -567,7 +584,7 @@ var favorite_thing_prompt = {
     return x;
   },
   choices: ['y'], //jsPsych.NO_KEYS,
-  trial_duration: 10000,
+  trial_duration: 30000,
 };
 
 
@@ -576,7 +593,7 @@ var group_reinforcement_block_ = {
 };
 
 var group_reinforcement_block = {
-  timeline: [fruit_selection, color_selection, flavor_selection, waiting_for_other_choice, favorite_thing_prompt]
+  timeline: [fruit_selection, color_selection, flavor_selection, waiting_for_other_choice2, favorite_thing_prompt]
 };
 
 var connecting_block = {
