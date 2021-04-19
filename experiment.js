@@ -436,7 +436,7 @@ var waiting_for_other_choice = {
     return Math.max(0.5*1000, (randomIntFromIntervalExponentialish(1,10, 0.3)*1000 - rt))
     //return Math.max(0.5*1000, (randomIntFromInterval(1*1000,10*1000) - rt))
   },
-}
+};
 
 var waiting_for_other_choice_2 = {
   type: "html-keyboard-response",
@@ -448,7 +448,7 @@ var waiting_for_other_choice_2 = {
     return Math.max(0.5*1000, (randomIntFromIntervalExponentialish(1,10, 0.3)*1000 - rt))
     //return Math.max(0.5*1000, (randomIntFromInterval(1*1000,10*1000) - rt))
   },
-}
+};
 
 
 var coop_comparison_block = {
@@ -593,7 +593,7 @@ var group_reinforcement_block_ = {
 };
 
 var group_reinforcement_block = {
-  timeline: [fruit_selection, color_selection, flavor_selection, waiting_for_other_choice2, favorite_thing_prompt]
+  timeline: [fruit_selection, color_selection, flavor_selection, waiting_for_other_choice_2, favorite_thing_prompt]
 };
 
 var connecting_block = {
