@@ -20,19 +20,19 @@ var payout_table = `<br><br>
                     <table class="tg">
                     <tbody>
                       <tr>
-                        <td>(you, counterpart)</td>
+                        <td>(<span style="color:green;">you</span>, counterpart)</td>
                         <td>Cooperate</td>
                         <td>Not cooperate</td>
                       </tr>
                       <tr>
-                        <td>Cooperate<br></td>
-                        <td>6,6</td>
-                        <td>0,10</td>
+                        <td><span style="color:green;">Cooperate</span><br></td>
+                        <td><span style="color:green;">6</span>,6</td>
+                        <td><span style="color:green;">0</span>,10</td>
                       </tr>
                       <tr>
-                        <td>Not cooperate</td>
-                        <td>10,0</td>
-                        <td>2,2</td>
+                        <td><span style="color:green;">Not cooperate</span></td>
+                        <td><span style="color:green;">10</span>,0</td>
+                        <td><span style="color:green;">2</span>,2</td>
                       </tr>
                     </tbody>
                     </table>
@@ -183,11 +183,11 @@ var computer_choice = {
       </thead>
       <tbody>
         <tr>
-          <td class="tg-pcvp">You</td>
+          <td class="tg-pcvp"><span style="color:green;">You</span></td>
           <td class="tg-pcvp">Counterpart</td>
         </tr>
         <tr>
-          <td class="tg-pcvp">` + score_self + `<br></td>
+          <td class="tg-pcvp"><span style="color:green;">` + score_self + `</span><br></td>
           <td class="tg-pcvp">` + score_other + `</td>
         </tr>
       </tbody>
@@ -395,11 +395,13 @@ var instruction_pd_block_payout = {
   stimulus: function() {
     stim =
     `<div id="instructions">
-    The number of points you will receive for different actions can be read from this table (which will be available while playing):</div>` +
+    The number of points you will receive for different actions can be read from this table
+    (which will be available while playing):</div>` +
     payout_table +
     `<div id="instructions"><br>
-    For example, if you chose to cooperate and your counterpart chose to cooperate, you would both be awarded 6 points.
-    If you chose to cooperate and your counterpart chose to not cooperate, you would be awarded 0 points and your counterpart would be awarded 10 points.
+    Your actions and earnings are indicated in <span style="color:green;">green</span> text.
+    For example, if you choose to cooperate and your counterpart chooses to cooperate, you both will be awarded 6 points.
+    If you choose to cooperate and your counterpart chooses to not cooperate, you will be awarded 0 points and your counterpart will be awarded 10 points.
     <br>
     Press "y" to begin playing.</div>
     `
@@ -483,14 +485,14 @@ var favorite_thing_selection = {
       name: 'Fruits',
       options: ['Apples', 'Bananas', 'Strawberries', 'Grapes'],
       required:true},
-    {prompt: "Out of the colors listed, which you prefer the most?",
+    {prompt: "Out of the colors listed, which do you prefer?",
       name: 'Colors',
       options: ['Blue', 'Green', 'Red', 'Yellow'],
-      required: false},
-    {prompt: "Out of the flavors listed, which you prefer the most?",
+      required: true},
+    {prompt: "Out of the flavors listed, which do you prefer?",
       name: 'Flavors',
       options: ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'],
-      required: false},
+      required: true},
   ],
 };
 
@@ -499,20 +501,37 @@ var favorite_thing_prompt = {
   stimulus: function() {
     //var current_node_id = jsPsych.currentTimelineNodeID();
     //var data_from_current_node = jsPsych.data.getDataByTimelineNode(current_node_id);
-    var responses = jsPsych.data.get().last(2).values()[0]['responses'];
+    var responses = JSON.parse(jsPsych.data.get().last(2).values()[0]['responses']);
     console.log(responses);
-    var x = `<p>Many other people in your group chose similar responses. Your response is shown in green.</p>
+    console.log(responses['Fruits']);
+    `    <div class="row">
+          <div class="column">
+            <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Fruits']}.png" class="image_things">
+          </div>
+          <div class="column">
+            <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Colors']}.png" class="image_things">
+          </div>
+          <div class="column">
+            <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Flavors']}.png" class="image_things">
+          </div>
+        </div>`
+    var x = `<p>Many other people in your group chose similar responses. The bar plots below show what others in your group chose.
+    Your choice is indicated in green.</p>
     <br>
-    <div class="imgContainer">
-    <img src="https://tholdaway.github.io/homophily-coop/${responses['Fruits']}"></div>`;
+    <div>
+      <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Fruits']}.png" class="image_things">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Colors']}.png" class="image_things">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Flavors']}.png" class="image_things">
+    </div>
+    <p>Press "y" to continue.</p>`;
     return x;
   },
   choices: ['y'], //jsPsych.NO_KEYS,
-  trial_duration: 20000,
+  trial_duration: 30000,
 };
 
 var group_reinforcement_block = {
-  timeline: [fruit_selection, waiting_for_other_choice, fruit_prompt,
+  timeline: [
     favorite_thing_selection, waiting_for_other_choice, favorite_thing_prompt]
 };
 
