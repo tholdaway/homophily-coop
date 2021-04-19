@@ -528,6 +528,7 @@ var favorite_thing_prompt = {
   },
   choices: ['y'], //jsPsych.NO_KEYS,
   trial_duration: 30000,
+  button_label: 'Next',
 };
 
 var group_reinforcement_block = {
