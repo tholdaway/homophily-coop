@@ -23,10 +23,10 @@ Qualtrics.SurveyEngine.addOnload(function () {
         "https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js",
         jslib_url + "scripts/jquery-1.11.1.js",
         jslib_url + "scripts/jquery-ui.min.js",
-        jslib_url + "jspsych-6.1.0/jspsych.js",
-        jslib_url + "jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js",
-        jslib_url + "jspsych-6.1.0/plugins/jspsych-html-button-response.js",
-        jslib_url + "jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js",
+        jslib_url + "jspsych-6.3.1/jspsych.js",
+        jslib_url + "jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js",
+        jslib_url + "jspsych-6.3.1/plugins/jspsych-html-button-response.js",
+        jslib_url + "jspsych-6.3.1/plugins/jspsych-survey-multi-choice.js",
         jslib_url + "experiment.js"
     ];
 

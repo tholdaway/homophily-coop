@@ -531,8 +531,12 @@ var favorite_thing_prompt = {
   trial_duration: 30000,
 };
 
-var group_reinforcement_block = {
+var group_reinforcement_block_ = {
   timeline: [favorite_thing_selection, waiting_for_other_choice, favorite_thing_prompt]
+};
+
+var group_reinforcement_block = {
+  timeline: [favorite_thing_selection, waiting_for_other_choice]
 };
 
 var connecting_block = {
