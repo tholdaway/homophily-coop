@@ -494,6 +494,7 @@ var favorite_thing_selection = {
       options: ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'],
       required: true},
   ],
+  button_label: 'Next',
 };
 
 var favorite_thing_prompt = {
@@ -528,7 +529,6 @@ var favorite_thing_prompt = {
   },
   choices: ['y'], //jsPsych.NO_KEYS,
   trial_duration: 30000,
-  button_label: 'Next',
 };
 
 var group_reinforcement_block = {
