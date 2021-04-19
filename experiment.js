@@ -536,7 +536,7 @@ var group_reinforcement_block_ = {
 };
 
 var group_reinforcement_block = {
-  timeline: [favorite_thing_selection, waiting_for_other_choice]
+  timeline: [fruit_selection, waiting_for_other_choice, fruit_prompt]
 };
 
 var connecting_block = {
