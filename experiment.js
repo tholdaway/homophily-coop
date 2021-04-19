@@ -531,8 +531,7 @@ var favorite_thing_prompt = {
 };
 
 var group_reinforcement_block = {
-  timeline: [
-    favorite_thing_selection, waiting_for_other_choice, favorite_thing_prompt]
+  timeline: [favorite_thing_selection, waiting_for_other_choice, favorite_thing_prompt]
 };
 
 var connecting_block = {
