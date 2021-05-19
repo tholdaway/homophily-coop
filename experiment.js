@@ -54,12 +54,12 @@ var user_choice = {
     var group_other = jsPsych.data.get().select("group_other").values[0];
     if (jsPsych.timelineVariable("other_group", true) === "c") {
       stim =
-        '<div id="instructions">Choose whether to cooperate (press x) or not cooperate (press y) with your counterpart.</div>';
+        '<div id="instructions">Choose whether to cooperate (press "x") or not cooperate (press "y") with your counterpart.</div>';
     } else {
       var color =
         jsPsych.timelineVariable("other_group", true) === "ig" ? "blue" : "red";
       stim =
-        '<div id="instructions">Choose whether to cooperate (press x) or not cooperate (press y) with your counterpart in the <span style="color:' +
+        '<div id="instructions">Choose whether to cooperate (press "x") or not cooperate (press "y") with your counterpart in the <span style="color:' +
         color +
         ';">' +
         group_other +
@@ -345,7 +345,7 @@ var instruction_im_block = {
 
 var instruction_pd_block = {
   type: "html-keyboard-response",
-  choices: ["y"],
+  choices: ["c"],
   stimulus: function () {
     var team = jsPsych.data.get().select("group_assignment").values[0];
     var group_other;
@@ -387,7 +387,7 @@ var instruction_pd_block = {
       that you make in combination with the decision of the other participant.<br>
       You will be playing a series of rounds.
       <br>
-      Press "y" to continue.` +
+      Press "c" to continue.` +
       "</div>"
     );
   },
@@ -395,7 +395,7 @@ var instruction_pd_block = {
 
 var instruction_pd_block_payout = {
   type: "html-keyboard-response",
-  choices: ["y"],
+  choices: ["c"],
   stimulus: function() {
     stim =
     `<div id="instructions">
@@ -407,7 +407,7 @@ var instruction_pd_block_payout = {
     For example, if you choose to cooperate and your counterpart chooses to cooperate, you both will be awarded 6 points.
     If you choose to cooperate and your counterpart chooses to not cooperate, you will be awarded 0 points and your counterpart will be awarded 10 points.
     <br>
-    Press "y" to begin playing.</div>
+    Press "c" to begin playing.</div>
     `
     return stim
   }
@@ -458,10 +458,10 @@ var coop_comparison_block = {
     // characterize cooperativeness of counterpart based on experimental condition
     if (jsPsych.data.get().select("betray").values[0] === "t") {
       //stim = "Your counterpart chose to not cooperate more than 75% of all players."
-      stim = `The red line shows how often your counterpart cooperated, relative to all other players.<br><div class="imgContainer"><img src="` + plot_images[0] + `"></div>`
+      stim = `The red line shows how often your counterpart cooperated, relative to all other players. Your counterpart was less cooperative than the average player.<br><div class="imgContainer"><img src="` + plot_images[0] + `" style="width:1000px;height:1000px;"></div>`
     } else {
       //stim = "Your counterpart chose to cooperate more than 75% of all players."
-      stim = `The red line shows how often your counterpart cooperated, relative to all other players.<br><div class="imgContainer"><img src="` + plot_images[1] + `"></div>`
+      stim = `The red line shows how often your counterpart cooperated, relative to all other players. Your counterpart was more cooperative than the average player.<br><div class="imgContainer"><img src="` + plot_images[1] + `" style="width:1000px;height:1000px;"></div>`
     }
     stim = "<div id='instructions'>In total your score was " + score_self + ".<br>Your counterpart's score was " + score_other + ".<br>" + stim + "</div>";
     return stim
@@ -503,9 +503,9 @@ var fruit_prompt = {
     return `<p>You said that you preferred ${fruit}.
     Several other people in your group also said they prefer ${fruit}.</p>
     <br>
-    <p>Press "y" to continue.</p>`;
+    <p>Press "c" to continue.</p>`;
   },
-  choices: ['y'], //jsPsych.NO_KEYS,
+  choices: ['c'], //jsPsych.NO_KEYS,
   trial_duration: 10000,
 };
 
@@ -555,10 +555,10 @@ var favorite_thing_prompt_ = {
       <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Colors']}.png" class="image_things">
       <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Flavors']}.png" class="image_things">
     </div>
-    <p>Press "y" to continue.</p>`;
+    <p>Press "c" to continue.</p>`;
     return x;
   },
-  choices: ['y'], //jsPsych.NO_KEYS,
+  choices: ['c'], //jsPsych.NO_KEYS,
   trial_duration: 30000,
 };
 
@@ -576,15 +576,14 @@ var favorite_thing_prompt = {
     Your choice is indicated in green.</p>
     <br>
     <div>
-      <img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png" class="image_things">
-      <img src="https://tholdaway.github.io/homophily-coop/img/${color}.png" class="image_things">
-      <img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png" class="image_things">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png" style="width:800px;height:800px;">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${color}.png" style="width:800px;height:800px;">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png" style="width:800px;height:800px;">
     </div>
-    <p>Press "y" to continue.</p>`;
+    <p>Press "c" to continue.</p>`;
     return x;
   },
-  choices: ['y'], //jsPsych.NO_KEYS,
-  trial_duration: 30000,
+  choices: ['c'], //jsPsych.NO_KEYS,
 };
 
 
