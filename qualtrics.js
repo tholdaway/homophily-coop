@@ -219,12 +219,7 @@ Qualtrics.SurveyEngine.addOnUnload(function () {
     height: 300px !important;
     padding: 25px !important;
   }
-  img2 {
-    object-fit: contain !important;
-    width: 800px !important;
-    height: 800px !important;
-    padding: 25px !important;
-  }
+
   div.imgContainer{
     float:left;
   }
