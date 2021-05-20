@@ -96,7 +96,7 @@ var computer_choice = {
     var group_other = jsPsych.data.get().select("group_other").values[0];
     //var computerChoice = computerOptions[myFuncCalls]; // want to change this logic to be related to an array of roundnums to betray on
     if (jsPsych.timelineVariable("betray", true) === "t") {
-      computerChoice = [1,3,4,7,9,10].includes(roundNum) ? "y" : "x"; // in the betray condition, we betray on the 4th,7th,9th rounds? on wednesday we wear pink.
+      computerChoice = [1,3,4,5,7,9,10].includes(roundNum) ? "y" : "x"; // in the betray condition, we betray on the 4th,7th,9th rounds? on wednesday we wear pink.
     } else {
       computerChoice = [3,7,9,10].includes(roundNum) ? "y" : "x"; // in the no betray condition, we betray on the 7th round? on wednesday we wear pink.
     }
@@ -399,13 +399,13 @@ var instruction_pd_block_payout = {
   stimulus: function() {
     stim =
     `<div id="instructions">
-    The number of points you will receive for different actions can be read from this table
+    The number of points you and your counterpart will receive for different actions can be read from this table
     (which will be available while playing):</div>` +
     payout_table +
     `<div id="instructions"><br>
     Your actions and earnings are indicated in <span style="color:green;">green</span> text.
     For example, if you choose to cooperate and your counterpart chooses to cooperate, you both will be awarded 6 points.
-    If you choose to cooperate and your counterpart chooses to not cooperate, you will be awarded 0 points and your counterpart will be awarded 10 points.
+    <br>If you choose to cooperate and your counterpart chooses to not cooperate, you will be awarded 0 points and your counterpart will be awarded 10 points.
     <br>
     Press "c" to begin playing.</div>
     `
@@ -458,10 +458,14 @@ var coop_comparison_block = {
     // characterize cooperativeness of counterpart based on experimental condition
     if (jsPsych.data.get().select("betray").values[0] === "t") {
       //stim = "Your counterpart chose to not cooperate more than 75% of all players."
-      stim = `The red line shows how often your counterpart cooperated, relative to all other players. Your counterpart was less cooperative than the average player.<br><div class="imgContainer"><img src="` + plot_images[0] + `" style="width:1000px;height:1000px;"></div>`
+      stim = `The red line shows how often your counterpart cooperated, relative to all other players. Your counterpart was less cooperative than the average player.<br><div class="imgContainer"><img src="` +
+      plot_images[0] +
+      `" style="width:800px !important;height:800px !important;"></div>`
     } else {
       //stim = "Your counterpart chose to cooperate more than 75% of all players."
-      stim = `The red line shows how often your counterpart cooperated, relative to all other players. Your counterpart was more cooperative than the average player.<br><div class="imgContainer"><img src="` + plot_images[1] + `" style="width:1000px;height:1000px;"></div>`
+      stim = `The red line shows how often your counterpart cooperated, relative to all other players. Your counterpart was more cooperative than the average player.<br><div class="imgContainer"><img src="` +
+      plot_images[1] +
+      `" style="width:800px !important;height:800px !important;"></div>`
     }
     stim = "<div id='instructions'>In total your score was " + score_self + ".<br>Your counterpart's score was " + score_other + ".<br>" + stim + "</div>";
     return stim
@@ -576,9 +580,9 @@ var favorite_thing_prompt = {
     Your choice is indicated in green.</p>
     <br>
     <div>
-      <img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png" style="width:800px !important;height:800px !important;">
-      <img src="https://tholdaway.github.io/homophily-coop/img/${color}.png" style="width:800px !important;height:800px !important;">
-      <img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png" style="width:800px !important;height:800px !important;">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png" style="width:30% !important; height:30% !important; padding:5px !important;">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${color}.png" style="width:30% !important; height:30% !important; padding:5px !important;">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png" style="width:30% !important; height:30% !important; padding:5px !important;">
     </div>
     <p>Press "c" to continue.</p>`;
     return x;
