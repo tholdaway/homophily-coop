@@ -580,9 +580,9 @@ var favorite_thing_prompt = {
     Your choice is indicated in green.</p>
     <br>
     <div>
-      <img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png" style="width:30% !important; height:30% !important; padding:5px !important;">
-      <img src="https://tholdaway.github.io/homophily-coop/img/${color}.png" style="width:30% !important; height:30% !important; padding:5px !important;">
-      <img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png" style="width:30% !important; height:30% !important; padding:5px !important;">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png" style="width:20% !important; height:20% !important; padding:5px !important;">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${color}.png" style="width:20% !important; height:20% !important; padding:5px !important;">
+      <img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png" style="width:20% !important; height:20% !important; padding:5px !important;">
     </div>
     <p>Press "c" to continue.</p>`;
     return x;
