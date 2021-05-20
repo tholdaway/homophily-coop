@@ -576,17 +576,17 @@ var favorite_thing_prompt = {
     var color = ['Blue', 'Green', 'Red', 'Yellow'][parseInt(responses[1].button_pressed)];
     var flavor = ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'][parseInt(responses[2].button_pressed)];
     console.log(responses);
-    var x = `<br>
+    var x = `<p>Many other people in your group chose similar responses. The bar plots below show what others in your group chose.
+    Your choice is indicated in green.</p>
+    <br>
     <div style="text-align:center;">
       <img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png"
-      style="width:300px !important; height:500px !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">
+      style="width:20% !important; height:20% !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">
       <img src="https://tholdaway.github.io/homophily-coop/img/${color}.png"
-      style="width:300px !important; height:500px !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">
+      style="width:20% !important; height:20% !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">
       <img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png"
-      style="width:300px !important; height:500px !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">
+      style="width:20% !important; height:20% !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">
     </div>
-    <p>Many other people in your group chose similar responses. The bar plots below show what others in your group chose.
-    Your choice is indicated in green.</p>
     <p>Press "c" to continue.</p>`;
     return x;
   },
