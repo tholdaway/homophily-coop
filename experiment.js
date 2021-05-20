@@ -579,19 +579,29 @@ var favorite_thing_prompt = {
     var x = `<p>Many other people in your group chose similar responses. The bar plots below show what others in your group chose.
     Your choice is indicated in green.</p>
     <br>
-    <div style="text-align:center;">
+    <div>
       <img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png"
-      style="width:20% !important; height:20% !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">
+      style="width:25% !important; height:20% !important; padding:5px !important;">
       <img src="https://tholdaway.github.io/homophily-coop/img/${color}.png"
-      style="width:20% !important; height:20% !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">
+      style="width:25% !important; height:20% !important; padding:5px !important;">
       <img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png"
-      style="width:20% !important; height:20% !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">
+      style="width:25% !important; height:20% !important; padding:5px !important;">
     </div>
     <p>Press "c" to continue.</p>`;
     return x;
   },
   choices: ['c'], //jsPsych.NO_KEYS,
 };
+
+'    <div style="text-align:center;">'
+      '<img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png"'
+      'style="width:25% !important; height:20% !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">'
+      '<img src="https://tholdaway.github.io/homophily-coop/img/${color}.png"'
+      'style="width:25% !important; height:20% !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">'
+      '<img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png"'
+      'style="width:25% !important; height:20% !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">'
+    '</div>'
+
 
 
 var group_reinforcement_block_ = {
