@@ -533,7 +533,7 @@ var favorite_thing_prompt = {
     var color = ['Blue', 'Green', 'Red', 'Yellow'][parseInt(responses[3].button_pressed)];
     var flavor = ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'][parseInt(responses[5].button_pressed)];
     console.log(responses);
-    var x = `<p>Many other people in your group chose similar responses. The bar plots below show what others in your group chose.
+    var x = `<p>The bar plots below show what others in your group chose.
     Your choice is indicated in green.</p>
     <div>
       <img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png"
@@ -552,7 +552,7 @@ var favorite_thing_prompt = {
 
 var favorite_thing_question = {
   type: 'survey-likert',
-  preamble: '<p>Would you say that you have similar tastes to others in your group, based on their responses to the previous questions?</p>',
+  preamble: '<p>Would you agree that you have similar tastes to others in your group, based on their responses to the previous questions?</p>',
   questions: [
     {prompt: "", labels: ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"]}
   ]

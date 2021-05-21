@@ -27,6 +27,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
         jslib_url + "jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js",
         jslib_url + "jspsych-6.1.0/plugins/jspsych-html-button-response.js",
         jslib_url + "jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js",
+        jslib_url + "jspsych-6.1.0/plugins/jspsych-survey-likert.js",
         jslib_url + "experiment.js"
     ];
 
