@@ -96,9 +96,9 @@ var computer_choice = {
     var group_other = jsPsych.data.get().select("group_other").values[0];
     //var computerChoice = computerOptions[myFuncCalls]; // want to change this logic to be related to an array of roundnums to betray on
     if (jsPsych.timelineVariable("betray", true) === "t") {
-      computerChoice = [1,3,4,5,7,9,10].includes(roundNum) ? "y" : "x"; // in the betray condition, we betray on the 4th,7th,9th rounds? on wednesday we wear pink.
+      computerChoice = [0,2,3,4,6,8,9].includes(roundNum) ? "y" : "x"; // in the betray condition, we betray on the 4th,7th,9th rounds? on wednesday we wear pink.
     } else {
-      computerChoice = [3,7,9,10].includes(roundNum) ? "y" : "x"; // in the no betray condition, we betray on the 7th round? on wednesday we wear pink.
+      computerChoice = [2,6,8,9].includes(roundNum) ? "y" : "x"; // in the no betray condition, we betray on the 7th round? on wednesday we wear pink.
     }
     //var userChoice = jsPsych.data.getLastTrialData().select("key_press")
     //  .values[0];
@@ -465,14 +465,41 @@ var coop_comparison_block = {
       //stim = "Your counterpart chose to cooperate more than 75% of all players."
       stim = `The red line shows how often your counterpart cooperated, relative to all other players. Your counterpart was more cooperative than the average player.<br><div class="imgContainer"><img src="` +
       plot_images[1] +
-      `" style="width:800px !important;height:800px !important;"></div>`
+      `" style="width:4in !important;height:4in !important;padding: 5px !important;"></div>`
     }
-    stim = "<div id='instructions'>In total your score was " + score_self + ".<br>Your counterpart's score was " + score_other + ".<br>" + stim + "</div>";
+    stim = "<div id='instructions'>In total your score was " +
+      score_self +
+      ".<br>Your counterpart's score was " +
+      score_other +
+      ".<br>" + stim +
+      '<p>Press "c" to continue.</p>' + "</div>";
     return stim
   },
-  choices: jsPsych.NO_KEYS,
+  choices: ['c'],
   trial_duration: 30000,
 };
+
+
+var fruit_prompt = {
+  type: 'html-keyboard-response',
+  stimulus: '<p>On the next page, please indicate which fruit you enjoy the most of the listed options.</p>',
+  choices: jsPsych.NO_KEYS,
+  trial_duration: 10000
+}
+
+var color_prompt = {
+  type: 'html-keyboard-response',
+  stimulus: '<p>On the next page, please indicate which color you prefer of the listed options.</p>',
+  choices: jsPsych.NO_KEYS,
+  trial_duration: 10000
+}
+
+var flavor_prompt = {
+  type: 'html-keyboard-response',
+  stimulus: '<p>On the next page, please indicate which flavor you prefer of the listed options.</p>',
+  choices: jsPsych.NO_KEYS,
+  trial_duration: 10000
+}
 
 var fruit_selection = {
   type: 'html-button-response',
@@ -496,120 +523,44 @@ var flavor_selection = {
 };
 
 
-var fruit_prompt = {
-  type: "html-keyboard-response",
-  stimulus: function() {
-    //var current_node_id = jsPsych.currentTimelineNodeID();
-    //var data_from_current_node = jsPsych.data.getDataByTimelineNode(current_node_id);
-    var responses = jsPsych.data.get().last(2).values()[0].button_pressed;
-    console.log(responses);
-    var fruit = ['Apples', 'Bananas', 'Strawberries', 'Grapes'][parseInt(responses)].toLowerCase();
-    return `<p>You said that you preferred ${fruit}.
-    Several other people in your group also said they prefer ${fruit}.</p>
-    <br>
-    <p>Press "c" to continue.</p>`;
-  },
-  choices: ['c'], //jsPsych.NO_KEYS,
-  trial_duration: 10000,
-};
-
-var favorite_thing_selection = {
-  type: 'survey-multi-choice',
-  questions: [
-    {prompt: "Out of the fruits listed, which do you enjoy the most?",
-      name: 'Fruits',
-      options: ['Apples', 'Bananas', 'Strawberries', 'Grapes'],
-      required:true},
-    {prompt: "Out of the colors listed, which do you prefer?",
-      name: 'Colors',
-      options: ['Blue', 'Green', 'Red', 'Yellow'],
-      required: true},
-    {prompt: "Out of the flavors listed, which do you prefer?",
-      name: 'Flavors',
-      options: ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'],
-      required: true},
-  ],
-  button_label: 'Next',
-};
-
-var favorite_thing_prompt_ = {
-  type: "html-keyboard-response",
-  stimulus: function() {
-    //var current_node_id = jsPsych.currentTimelineNodeID();
-    //var data_from_current_node = jsPsych.data.getDataByTimelineNode(current_node_id);
-    var responses = JSON.parse(jsPsych.data.get().last(2).values()[0]['responses']);
-    console.log(responses);
-    console.log(responses['Fruits']);
-    `    <div class="row">
-          <div class="column">
-            <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Fruits']}.png" class="image_things">
-          </div>
-          <div class="column">
-            <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Colors']}.png" class="image_things">
-          </div>
-          <div class="column">
-            <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Flavors']}.png" class="image_things">
-          </div>
-        </div>`
-    var x = `<p>Many other people in your group chose similar responses. The bar plots below show what others in your group chose.
-    Your choice is indicated in green.</p>
-    <br>
-    <div>
-      <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Fruits']}.png" class="image_things">
-      <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Colors']}.png" class="image_things">
-      <img src="https://tholdaway.github.io/homophily-coop/img/${responses['Flavors']}.png" class="image_things">
-    </div>
-    <p>Press "c" to continue.</p>`;
-    return x;
-  },
-  choices: ['c'], //jsPsych.NO_KEYS,
-  trial_duration: 30000,
-};
-
 var favorite_thing_prompt = {
   type: "html-keyboard-response",
   stimulus: function() {
     //var current_node_id = jsPsych.currentTimelineNodeID();
     //var data_from_current_node = jsPsych.data.getDataByTimelineNode(current_node_id);
-    var responses = jsPsych.data.get().last(4).values() //[0].button_pressed;
-    var fruit = ['Apples', 'Bananas', 'Strawberries', 'Grapes'][parseInt(responses[0].button_pressed)];
-    var color = ['Blue', 'Green', 'Red', 'Yellow'][parseInt(responses[1].button_pressed)];
-    var flavor = ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'][parseInt(responses[2].button_pressed)];
+    var responses = jsPsych.data.get().last(7).values() //[0].button_pressed;
+    var fruit = ['Apples', 'Bananas', 'Strawberries', 'Grapes'][parseInt(responses[1].button_pressed)];
+    var color = ['Blue', 'Green', 'Red', 'Yellow'][parseInt(responses[3].button_pressed)];
+    var flavor = ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'][parseInt(responses[5].button_pressed)];
     console.log(responses);
     var x = `<p>Many other people in your group chose similar responses. The bar plots below show what others in your group chose.
     Your choice is indicated in green.</p>
-    <br>
     <div>
       <img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png"
-      style="width:2in !important; height:2in !important; padding:5px !important;">
+      style="width:2.5in !important; height:2.5in !important; padding:5px !important;">
       <img src="https://tholdaway.github.io/homophily-coop/img/${color}.png"
-      style="width:2in !important; height:2in !important; padding:5px !important;">
+      style="width:2.5in !important; height:2.5in !important; padding:5px !important;">
       <img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png"
-      style="width:2in !important; height:2in !important; padding:5px !important;">
+      style="width:2.5in !important; height:2.5in !important; padding:5px !important;">
+      <p>Press "c" to continue.</p>
     </div>
-    <p>Press "c" to continue.</p>`;
+    `;
     return x;
   },
   choices: ['c'], //jsPsych.NO_KEYS,
 };
 
-'    <div style="text-align:center;">'
-      '<img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png"'
-      'style="width:25% !important; height:20% !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">'
-      '<img src="https://tholdaway.github.io/homophily-coop/img/${color}.png"'
-      'style="width:25% !important; height:20% !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">'
-      '<img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png"'
-      'style="width:25% !important; height:20% !important; padding:5px !important; margin-left: auto; margin-right: auto; object-fit:fill">'
-    '</div>'
+var favorite_thing_question = {
+  type: 'survey-likert',
+  preamble: '<p>Would you say that you have similar tastes to others in your group, based on their responses to the previous questions?</p>',
+  questions: [
+    {prompt: "", labels: ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"]}
+  ]
+}
 
-
-
-var group_reinforcement_block_ = {
-  timeline: [favorite_thing_selection, waiting_for_other_choice, favorite_thing_prompt]
-};
 
 var group_reinforcement_block = {
-  timeline: [fruit_selection, color_selection, flavor_selection, waiting_for_other_choice_2, favorite_thing_prompt]
+  timeline: [fruit_prompt, fruit_selection, color_prompt, color_selection, flavor_prompt, flavor_selection, waiting_for_other_choice_2, favorite_thing_prompt, favorite_thing_question]
 };
 
 var connecting_block = {
@@ -623,7 +574,7 @@ var connecting_block = {
 var run_chunk = {
   timeline: [user_choice, waiting_for_other_choice, computer_choice],
   loop_function: function () {
-    if (roundNum > 10) {
+    if (roundNum >= 10) {
       return false;
     } else {
       return true;
