@@ -8,6 +8,7 @@
   <script src="scripts/jquery-ui.min.js"></script>
   <script src="jspsych-6.1.0/jspsych.js"></script>
   <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+  <script src="jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js"></script>
   <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
   <script src="jspsych-6.1.0/plugins/jspsych-survey-likert.js"></script>
   <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
@@ -102,6 +103,7 @@
       //Initiate Experiment
       jsPsych.init({
         timeline: [
+          instructions_all_block,
           instruction_im_block,
           trials_with_variables,
           group_assignment,
