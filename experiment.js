@@ -196,11 +196,11 @@ var computer_choice = {
       </thead>
       <tbody>
         <tr>
-          <td class="tg-pcvp"><span style="color:green;">You</span></td>
+          <td class="tg-pcvp"><span style="color:LightSeaGreen;">You</span></td>
           <td class="tg-pcvp">Counterpart</td>
         </tr>
         <tr>
-          <td class="tg-pcvp"><span style="color:green;">` + score_self + `</span><br></td>
+          <td class="tg-pcvp"><span style="color:LightSeaGreen;">` + score_self + `</span><br></td>
           <td class="tg-pcvp">` + score_other + `</td>
         </tr>
       </tbody>
@@ -293,7 +293,7 @@ var group_assignment = {
       There are 42 people in the <span style="color:blue;">${team}</span> group,
       and 41 people in the <span style="color:red;">${other_team}</span> group.
       <br><br>From this point on, you will be interacting with other real people.
-      Please be respectful and answer in a timely fashion.
+      Please be respectful and answer in a timely fashion. If you are idle for more than 1 minute you may be removed from the experiment without full compensation.
       <br><br>Press "c" to continue.</div>`
     );
   },
@@ -358,11 +358,10 @@ var instructions_all_block = {
   choies: ['c'],
   stimulus: `<div id="instructions">
   In the next portion of the experiment, you will be shown several images while interacting with other participants over the Internet, in real time.
-  <br>
   If you have trouble viewing an image, please zoom in or out using your browser (by pressing control/command plus or minus on your keyboard).
-  <br>
   You will <b>NOT</b> be able to return to instructions after continuing. Please read all instructions carefully.
   At any point, you may press "c" to continue, unless another action is required.
+  If you are idle for more than 1 minute you may be removed from the experiment without full compensation.
   <br>
   Press "c" to continue.
   </div>`,
@@ -420,9 +419,9 @@ var instruction_pd_block = {
       '<h1>Instructions</h1>' +
       '<div id="instructions">You will be playing with another participant ' +
       team_statement +
-      `who is connected to the game in another location.<br>
+      `who is connected to the game in another location. Please be mindful and respectful of their time.<br>
       The amount of points you earn will be determined by the decisions
-      that you make in combination with the decision of the other participant.<br>
+      that you make in combination with the decision of the other participant. At the end of the game, each point will be worth $x that you will receive after the experiment.<br>
       You will be playing a series of rounds.
       <br>
       Press "c" to continue.` +
@@ -441,7 +440,7 @@ var instruction_pd_block_payout = {
     (which will be available while playing):</div>` +
     payout_table +
     `<div id="instructions"><br>
-    Your actions and earnings are indicated in <span style="color:green;">green</span> text.
+    Your actions and earnings are indicated in <span style="color:LightSeaGreen;">green</span> text.
     For example, if you choose to cooperate and your counterpart chooses to cooperate, you both will be awarded 6 points.
     <br>If you choose to cooperate and your counterpart chooses to not cooperate, you will be awarded 0 points and your counterpart will be awarded 10 points.
     <br>
@@ -570,7 +569,7 @@ var color_selection = {
 var flavor_selection = {
   type: 'html-button-response',
   stimulus: '',
-  choices: ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'],
+  choices: ['Sweet', 'Salty', 'Sour', 'Spicy', 'Umami'],
   prompt: "<p>Out of the flavors listed, which do you prefer?</p>"
 };
 
@@ -583,7 +582,7 @@ var favorite_thing_prompt_ = {
     var responses = jsPsych.data.get().last(7).values() //[0].button_pressed;
     var fruit = ['Apples', 'Bananas', 'Strawberries', 'Grapes'][parseInt(responses[1].button_pressed)];
     var color = ['Blue', 'Green', 'Red', 'Yellow'][parseInt(responses[3].button_pressed)];
-    var flavor = ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'][parseInt(responses[5].button_pressed)];
+    var flavor = ['Sweet', 'Salty', 'Sour', 'Spicy', 'Umami'][parseInt(responses[5].button_pressed)];
     console.log(responses);
     var x = `<p>The bar plots below show what others in your group chose.
     Your choice is indicated in green.</p>
@@ -612,7 +611,7 @@ var favorite_thing_prompt = {
     var responses = jsPsych.data.get().last(7).values() //[0].button_pressed;
     var fruit = ['Apples', 'Bananas', 'Strawberries', 'Grapes'][parseInt(responses[1].button_pressed)];
     var color = ['Blue', 'Green', 'Red', 'Yellow'][parseInt(responses[3].button_pressed)];
-    var flavor = ['Sweet', 'Salty', 'Sour', 'Bitter', 'Umami'][parseInt(responses[5].button_pressed)];
+    var flavor = ['Sweet', 'Salty', 'Sour', 'Spicy', 'Umami'][parseInt(responses[5].button_pressed)];
     jsPsych.data.addProperties({ fruit: fruit, color: color, flavor: flavor });
     var x = `<p>You will be shown a series of bar plots of what things other participants in your group chose.
     Your choice is indicated by the green bar in the plot.</p>
@@ -666,7 +665,7 @@ var favorite_thing_prompt_flavor = {
 
 var favorite_thing_question = {
   type: 'survey-likert',
-  preamble: '<p>Would you agree that you have similar tastes to others in your group, based on their responses to the previous questions?</p>',
+  preamble: '<p>Based on the responses of others in your group to the previous questions, would you agree that you are similar to others in your group?</p>',
   questions: [
     {prompt: "", labels: ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"], required: true}
   ]
