@@ -113,6 +113,8 @@ Qualtrics.SurveyEngine.addOnload(function () {
           display_element: "jspsych-target",
           // add the desired on_finish to save data to qualtrics
           on_finish: function (data) {
+            var painter_pref = jsPsych.data.get().first(1).values()[0].group_assignment;
+            Qualtrics.SurveyEngine.setEmbeddedData( 'painter_pref', painter_pref );
             /* Change 5: Summarizing and save the results to Qualtrics */
             // summarize the results
             /*

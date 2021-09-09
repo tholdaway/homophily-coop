@@ -92,6 +92,8 @@ var user_choice = {
       stim +
       payout_table +
       '<p id="counterpart_prompt"></p>';
+
+      stim = stim + `<div><center>Round ${roundNum + 1}</center></div>`
     return stim;
   },
   choices: ["x", "y"],
@@ -109,9 +111,11 @@ var computer_choice = {
     var group_other = jsPsych.data.get().select("group_other").values[0];
     //var computerChoice = computerOptions[myFuncCalls]; // want to change this logic to be related to an array of roundnums to betray on
     if (jsPsych.timelineVariable("betray", true) === "t") {
-      computerChoice = [0,2,3,4,6,8,9].includes(roundNum) ? "y" : "x"; // in the betray condition, we betray on the 4th,7th,9th rounds? on wednesday we wear pink.
+      //computerChoice = [0,2,3,4,6,8,9].includes(roundNum) ? "y" : "x"; // in the betray condition, we betray on the 4th,7th,9th rounds? on wednesday we wear pink.
+      computerChoice = [1,3,4,5,7,9,10].includes(roundNum) ? "y" : "x"; // in the betray condition, we betray on the 4th,7th,9th rounds? on wednesday we wear pink.
     } else {
-      computerChoice = [2,6,8,9].includes(roundNum) ? "y" : "x"; // in the no betray condition, we betray on the 7th round? on wednesday we wear pink.
+      //computerChoice = [2,6,8,9].includes(roundNum) ? "y" : "x"; // in the no betray condition, we betray on the 7th round? on wednesday we wear pink.
+      computerChoice = [3,7,9,10].includes(roundNum) ? "y" : "x"; // in the no betray condition, we betray on the 7th round? on wednesday we wear pink.
     }
     //var userChoice = jsPsych.data.getLastTrialData().select("key_press")
     //  .values[0];
@@ -205,7 +209,8 @@ var computer_choice = {
         </tr>
       </tbody>
       </table>
-      `
+      ` +
+      `<div><center>Round ${roundNum}</center></div>`
     return stim;
   },
 };
@@ -512,12 +517,13 @@ var coop_comparison_block = {
       //stim = "Your counterpart chose to not cooperate more than 75% of all players."
       stim = `The red line shows how often your counterpart cooperated, relative to all other players. Your counterpart was less cooperative than the average player.<br><div class="imgContainer"><img src="` +
       plot_images[0] +
-      `" style="width:800px !important;height:800px !important;"></div>`
+      //`" style="width:1600px !important;height:800px !important;"></div>`
+      `" style="width:8in !important;height:4in !important;padding: 5px !important;"></div>`
     } else {
       //stim = "Your counterpart chose to cooperate more than 75% of all players."
       stim = `The red line shows how often your counterpart cooperated, relative to all other players. Your counterpart was more cooperative than the average player.<br><div class="imgContainer"><img src="` +
       plot_images[1] +
-      `" style="width:4in !important;height:4in !important;padding: 5px !important;"></div>`
+      `" style="width:8in !important;height:4in !important;padding: 5px !important;"></div>`
     }
     stim = "<div id='instructions'>In total your score was " +
       score_self +
