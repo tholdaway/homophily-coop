@@ -89,7 +89,8 @@ Qualtrics.SurveyEngine.addOnload(function () {
     function initExp() {
         var design_factors = [{other_group:"${e://Field/other_group}", betray:"${e://Field/betray}"}];
         var pd_with_variables_qt = {
-          timeline: [connecting_block, instruction_pd_block, instruction_pd_block_payout, run_chunk],
+          timeline: [instruction_pd_block_intro, instruction_pd_block_payout, practice_round_chunk, connecting_block, instructions_after_practice, run_chunk],
+          //timeline: [connecting_block, instruction_pd_block, instruction_pd_block_payout, run_chunk],
           //timeline: [trial],
           timeline_variables: design_factors,
           sample: {

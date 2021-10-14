@@ -470,7 +470,7 @@ var instruction_pd_block_intro = {
   stimulus: function () {
     return (
       `<h1>Instructions</h1>
-      <div id="instructions">You will be shortly be asked to play a game with another participant
+      <div id="instructions">You will shortly be asked to play a game with another participant
       who is connected to the game in another location. Please be mindful and respectful of their time.<br>
       The amount of points you earn will be determined by the decisions
       that you make in combination with the decision of the other participant.
