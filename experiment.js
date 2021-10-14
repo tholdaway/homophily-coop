@@ -37,6 +37,33 @@ var payout_table = `<br><br>
                     </tbody>
                     </table>
                     </div>`;
+
+function emph_cell_payout_table(i,j) {
+    var t = `<br><br>
+      <div>
+      <table class="tg">
+      <tbody>
+        <tr>
+          <td>(<span style="color:LightSeaGreen;">you</span>, counterpart)</td>
+          <td>Cooperate</td>
+          <td>Not cooperate</td>
+        </tr>
+        <tr>
+          <td><span style="color:LightSeaGreen;">Cooperate</span><br></td>
+          <td ${i === "c" & j === "c" ? 'style="background-color:yellow"' : ''}><span style="color:LightSeaGreen;">6</span>,6</td>
+          <td ${i === "c" & j === "nc" ? 'style="background-color:yellow"' : ''}><span style="color:LightSeaGreen;">0</span>,10</td>
+        </tr>
+        <tr>
+          <td><span style="color:LightSeaGreen;">Not cooperate</span></td>
+          <td ${i === "nc" & j === "c" ? 'style="background-color:yellow"' : ''}><span style="color:LightSeaGreen;">10</span>,0</td>
+          <td ${i === "nc" & j === "nc" ? 'style="background-color:yellow"' : ''}><span style="color:LightSeaGreen;">2</span>,2</td>
+        </tr>
+      </tbody>
+      </table>
+      </div>`;
+    return t;
+};
+
 //var computerOptions = ["x", "x", "y", "x", "x", "x", "x", "y", "x", "x", "x", "y", "x", "x", "x"];
 
 /*
@@ -101,7 +128,8 @@ var user_choice = {
 
 var computer_choice = {
   type: "html-keyboard-response",
-  trial_duration: 10000,
+  trial_duration: 20000,
+  choices: ["c"],
   stimulus: function () {
     // game logic implemented here
     roundNum++;
@@ -209,8 +237,9 @@ var computer_choice = {
         </tr>
       </tbody>
       </table>
-      ` +
-      `<div><center>Round ${roundNum}</center></div>`
+      ` + `<p>Press "c" to continue.</p>` +
+      `<div><center>Round ${roundNum}</center></div>`;
+
     return stim;
   },
 };
@@ -249,7 +278,7 @@ var images_zip = klees.map(function (k, i) {
 // will appear in the results
 var trial = {
   type: "html-keyboard-response",
-  prompt: "<p>Choose which painting (A or B) you prefer the most using the keyboard.</p>",
+  prompt: `<p>Choose which painting (A or B) you prefer the most using the "a" and "b" keys on your keyboard.</p>`,
   choices: ["a", "b"],
   minimum_valid_rt: 1000000,
   stimulus: function () {
@@ -360,9 +389,9 @@ var consent = {
 
 var instructions_all_block = {
   type: "html-keyboard-response",
-  choies: ['c'],
+  choices: ['c'],
   stimulus: `<div id="instructions">
-  In the next portion of the experiment, you will be shown several images while interacting with other participants over the Internet, in real time.
+  In this portion of the experiment, you will be shown several images while interacting with other participants over the Internet, in real time.
   If you have trouble viewing an image, please zoom in or out using your browser (by pressing control/command plus or minus on your keyboard).
   You will <b>NOT</b> be able to return to instructions after continuing. Please read all instructions carefully.
   At any point, you may press "c" to continue, unless another action is required.
@@ -375,12 +404,12 @@ var instructions_all_block = {
 var instruction_im_block = {
   type: "html-keyboard-response",
   stimulus: instructions_im,
-  choies: ['c']
+  choices: ['c']
 };
 
 var waiting_to_be_paired = {
   type: "html-keyboard-response",
-  choice: jsPsych.NO_KEYS,
+  choices: jsPsych.NO_KEYS,
   stimulus: `Please wait while you are paired with another participant.`,
   trial_duration: 17000
 };
@@ -422,11 +451,30 @@ var instruction_pd_block = {
     jsPsych.data.addProperties({ group_other: group_other });
     return (
       '<h1>Instructions</h1>' +
-      '<div id="instructions">You will be playing with another participant ' +
+      '<div id="instructions">You will be playing a game with another participant ' +
       team_statement +
       `who is connected to the game in another location. Please be mindful and respectful of their time.<br>
       The amount of points you earn will be determined by the decisions
       that you make in combination with the decision of the other participant. At the end of the game, each point will be worth $x that you will receive after the experiment.<br>
+      You will be playing a series of rounds.
+      <br>
+      Press "c" to continue.` +
+      "</div>"
+    );
+  },
+};
+
+var instruction_pd_block_intro = {
+  type: "html-keyboard-response",
+  choices: ["c"],
+  stimulus: function () {
+    return (
+      `<h1>Instructions</h1>
+      <div id="instructions">You will be shortly be asked to play a game with another participant
+      who is connected to the game in another location. Please be mindful and respectful of their time.<br>
+      The amount of points you earn will be determined by the decisions
+      that you make in combination with the decision of the other participant.
+      After the game, you will be awarded additional compensation according to your performance.<br>
       You will be playing a series of rounds.
       <br>
       Press "c" to continue.` +
@@ -449,24 +497,80 @@ var instruction_pd_block_payout = {
     For example, if you choose to cooperate and your counterpart chooses to cooperate, you both will be awarded 6 points.
     <br>If you choose to cooperate and your counterpart chooses to not cooperate, you will be awarded 0 points and your counterpart will be awarded 10 points.
     <br>
-    Press "c" to begin playing.</div>
+    Neither you, nor your counterpart will be able to see the other's decision until both players have made a choice.
+    <br>
+    Press "c" to continue.</div>
     `
     return stim
   }
-}
+};
+
+var instructions_after_practice = {
+  type: "html-keyboard-response",
+  choices: ["c"],
+  stimulus: function () {
+    var team = jsPsych.data.get().select("group_assignment").values[0];
+    var group_other;
+    var team_statement;
+    if (jsPsych.timelineVariable("other_group", true) === "ig") {
+      group_other = team;
+      team_statement =
+        'in the <span style="color:blue;">' +
+        group_other +
+        '</span> group (you are in the <span style="color:blue;">' +
+        team +
+        "</span> group) ";
+    } else if (jsPsych.timelineVariable("other_group", true) === "og") {
+      group_other = team === "Klee" ? "Kandinsky" : "Klee";
+      team_statement =
+        'in the <span style="color:red;">' +
+        group_other +
+        '</span> group (you are in the <span style="color:blue;">' +
+        team +
+        "</span> group) ";
+    } else {
+      // control group
+      group_other = "";
+      team_statement = "";
+    }
+    jsPsych.data.addProperties({
+      betray: jsPsych.timelineVariable("betray", true),
+    });
+    jsPsych.data.addProperties({
+      other_type: jsPsych.timelineVariable("other_group", true),
+    });
+    jsPsych.data.addProperties({ group_other: group_other });
+    return (
+      '<h1>Instructions</h1>' +
+      '<div id="instructions">Now that you understand the game, you will play with another participant ' +
+      team_statement +
+      `who is connected to the game in another location. Please be mindful and respectful of their time.<br>
+      The amount of points you earn will be determined by the decisions
+      that you make in combination with the decision of the other participant.
+      After the game, you will be awarded additional compensation according to your performance.<br>
+      You will be playing a series of rounds.
+      <br>
+      Press "c" to begin playing.` +
+      "</div>"
+    );
+  },
+  trial_duration: 30000,
+};
+
+
 function randomIntFromInterval(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
-}
+};
 
 
 function random_exponential(rate) {
         var u = Math.random();
         return -Math.log(1.0 - u) / rate;
-}
+};
 
 function randomIntFromIntervalExponentialish(min, max, rate) {
   return Math.min(min + random_exponential(rate), max)
-}
+};
 
 var waiting_for_other_choice_ = {
   type: "html-keyboard-response",
@@ -488,8 +592,6 @@ var waiting_for_other_choice = {
     // difference between response time of the previous frame and a random length of time between 20 and 35 seconds
     var rt = jsPsych.data.getLastTrialData().select("rt").values[0];
     var counterpart_time = jsPsych.data.getLastTrialData().select("counterpart_time").values[0];
-    console.log(counterpart_time);
-    console.log("blah")
     return Math.max(0,counterpart_time - rt)
     //return Math.max(0.5*1000, (randomIntFromInterval(1*1000,10*1000) - rt))
   },
@@ -539,21 +641,21 @@ var coop_comparison_block = {
 
 var fruit_prompt = {
   type: 'html-keyboard-response',
-  stimulus: '<p>On the next page, please indicate which fruit you enjoy the most of the listed options.</p>',
+  stimulus: `<p>On the next page, please indicate which fruit you enjoy the most of the listed options.</p><p>Press "c" to continue.</p>`,
   choices: ['c'],
   trial_duration: 10000
 }
 
 var color_prompt = {
   type: 'html-keyboard-response',
-  stimulus: '<p>On the next page, please indicate which color you prefer of the listed options.</p>',
+  stimulus: '<p>On the next page, please indicate which color you prefer of the listed options.</p><p>Press "c" to continue.</p>',
   choices: ['c'],
   trial_duration: 10000
 }
 
 var flavor_prompt = {
   type: 'html-keyboard-response',
-  stimulus: '<p>On the next page, please indicate which flavor you prefer of the listed options.</p>',
+  stimulus: '<p>On the next page, please indicate which flavor you prefer of the listed options.</p><p>Press "c" to continue.</p>',
   choices: ['c'],
   trial_duration: 10000
 }
@@ -589,7 +691,6 @@ var favorite_thing_prompt_ = {
     var fruit = ['Apples', 'Bananas', 'Strawberries', 'Grapes'][parseInt(responses[1].button_pressed)];
     var color = ['Blue', 'Green', 'Red', 'Yellow'][parseInt(responses[3].button_pressed)];
     var flavor = ['Sweet', 'Salty', 'Sour', 'Spicy', 'Umami'][parseInt(responses[5].button_pressed)];
-    console.log(responses);
     var x = `<p>The bar plots below show what others in your group chose.
     Your choice is indicated in green.</p>
     <div>
@@ -696,6 +797,103 @@ var connecting_block = {
 };
 
 
+var practice_choice1 = {
+  type: 'html-keyboard-response',
+  stimulus: function() {
+    var stim = `<div id="instructions">
+      Shortly, you will be paired randomly with another participant playing elsewhere.
+      First, imagine you are playing the game previously described with another participant.
+      <br>
+      Please choose whether to cooperate (press "x") or not cooperate (press "y") with your imaginary counterpart.
+      <br>
+      The table describing the number of points is shown below, for your convenience.
+      Please note that this imaginary round will not impact your score, and is just for you to familiarize yourself with the gameplay.
+    </div>
+    ` + payout_table;
+    return stim;
+  },
+  choices: ["x","y"],
+};
+
+var practice_choice2 = {
+  type: 'html-keyboard-response',
+  stimulus: function() {
+    var stim = `<div id="instructions">
+      Please imagine once more that you are playing the same game.
+      <br>
+      Please choose whether to cooperate (press "x") or not cooperate (press "y") with your imaginary counterpart.
+      <br>
+      The table describing the number of points is shown below, for your convenience.
+      Please note that this imaginary round will not impact your score, and is just for you to familiarize yourself with the gameplay.
+    </div>
+    ` + payout_table;
+    return stim;
+  },
+  choices: ["x","y"],
+};
+
+var practice_response1 = {
+  type: 'html-keyboard-response',
+  stimulus: function() {
+    var userChoice = jsPsych.data.getLastTrialData().select("key_press").values[0] === 88 ? "c" : "nc";
+    //console.log(jsPsych.data.getLastTrialData().select("key_press").values[0]);
+    //console.log(userChoice);
+    var stim = `<div id="instructions">
+      You chose to ${userChoice === "c" ? "cooperate" : "not cooperate"} with your imaginary counterpart.
+      Suppose that your counterpart chose to cooperate.
+      You would receive ${userChoice === "c" ? payout_coop_coop[0] : payout_coop_comp[1]} points,
+      and your counterpart would receive ${userChoice === "c" ? payout_coop_coop[1] : payout_coop_comp[0]} points,
+      as shown in the table below in the highlighted cell.
+    </div>
+    ` + emph_cell_payout_table(userChoice, "c") +
+    `<p>Press "c" to continue.</p>`;
+    return stim;
+  },
+  choices: ["c"],
+};
+
+
+var practice_response2 = {
+  type: 'html-keyboard-response',
+  stimulus: function() {
+    var userChoice = jsPsych.data.getLastTrialData().select("key_press").values[0] === 88 ? "c" : "nc";
+    //console.log(jsPsych.data.getLastTrialData().select("key_press").values[0]);
+    //console.log(userChoice);
+    var stim = `<div id="instructions">
+      You chose to ${userChoice === "c" ? "cooperate" : "not cooperate"} with your imaginary counterpart.
+      Suppose that your counterpart chose to not cooperate.
+      You would receive ${userChoice === "c" ? payout_coop_comp[0] : payout_comp_comp[0]} points,
+      and your counterpart would receive ${userChoice === "c" ? payout_coop_comp[1] : payout_comp_comp[0]} points,
+      as shown in the table below in the highlighted cell.
+    </div>
+    ` + emph_cell_payout_table(userChoice, "nc") +
+    `<p>Press "c" to continue.</p>`;
+    return stim;
+  },
+  choices: ["c"],
+};
+
+var practice_round_chunk = {
+  timeline: [practice_choice1, practice_response1, practice_choice2, practice_response2],
+};
+
+
+/*
+var practice_round_chunk = {
+  timeline: [user_choice, waiting_for_other_choice, computer_choice],
+  loop_function: function() {
+    if (roundNum >= 1) {
+      roundNum = 0;
+      score_self = 0;
+      score_other = 0;
+      return false;
+    } else {
+      return true;
+    }
+  },
+};
+*/
+
 var run_chunk = {
   timeline: [user_choice, waiting_for_other_choice, computer_choice],
   loop_function: function () {
@@ -713,6 +911,7 @@ var debrief_block = {
   stimulus: [debrief],
 };
 
+/*
 var trial = {
   type: "html-keyboard-response",
   stimulus: function () {
@@ -723,6 +922,7 @@ var trial = {
     return jsPsych.data.get().select("group_assignment").values[0];
   },
 };
+*/
 
 var design_factors = {
   other_group: ["c", "ig", "og"],
@@ -732,7 +932,7 @@ var design_factors = {
 var full_design = jsPsych.randomization.factorial(design_factors, 1);
 
 var pd_with_variables = {
-  timeline: [connecting_block, instruction_pd_block, instruction_pd_block_payout, run_chunk],
+  timeline: [instruction_pd_block_intro, instruction_pd_block_payout, practice_round_chunk, connecting_block, instructions_after_practice, run_chunk],
   //timeline: [trial],
   timeline_variables: full_design,
   sample: {
