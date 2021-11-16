@@ -357,9 +357,9 @@ var instructions_pd = [
   `<div class = "heading">Instructions</div>
   <div id="instructions">You will be playing with another participant who is connected to the game in another location.
   <br>
-  The amount of points you earn will be determined by the decision that you make in combination with the decision of the other participant.
+  The amount of points you earn will be determined by the decision that you make in combination with the decisions of the other participant.
   <br>
-  You will be playing a series of rounds.</div>` +
+  You will be playing a series of rounds against the same counterpart.</div>` +
   payout_table,
 ];
 
@@ -372,7 +372,7 @@ var waiting = [
 ];
 
 var waiting2 = [
-  '<div class="heading">Please wait while the other players make a decision...</div><div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>',
+  '<div class="heading">Please wait while the other players make their decisions...</div><div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>',
 ];
 
 var debrief = [
@@ -455,8 +455,8 @@ var instruction_pd_block = {
       team_statement +
       `who is connected to the game in another location. Please be mindful and respectful of their time.<br>
       The amount of points you earn will be determined by the decisions
-      that you make in combination with the decision of the other participant. At the end of the game, each point will be worth $x that you will receive after the experiment.<br>
-      You will be playing a series of rounds.
+      that you make in combination with the decisions of the other participant. At the end of the game, each point will be worth $x that you will receive after the experiment.<br>
+      You will be playing a series of rounds against the same counterpart.
       <br>
       Press "c" to continue.` +
       "</div>"
@@ -473,9 +473,9 @@ var instruction_pd_block_intro = {
       <div id="instructions">You will shortly be asked to play a game with another participant
       who is connected to the game in another location. Please be mindful and respectful of their time.<br>
       The amount of points you earn will be determined by the decisions
-      that you make in combination with the decision of the other participant.
+      that you make in combination with the decisions of the other participant.
       After the game, you will be awarded additional compensation according to your performance.<br>
-      You will be playing a series of rounds.
+      You will be playing a series of rounds against the same counterpart.
       <br>
       Press "c" to continue.` +
       "</div>"
@@ -495,7 +495,7 @@ var instruction_pd_block_payout = {
     `<div id="instructions"><br>
     Your actions and earnings are indicated in <span style="color:LightSeaGreen;">green</span> text.
     For example, if you choose to cooperate and your counterpart chooses to cooperate, you both will be awarded 6 points.
-    <br>If you choose to cooperate and your counterpart chooses to not cooperate, you will be awarded 0 points and your counterpart will be awarded 10 points.
+    If you choose to cooperate and your counterpart chooses to not cooperate, you will be awarded 0 points and your counterpart will be awarded 10 points.
     <br>
     Neither you, nor your counterpart will be able to see the other's decision until both players have made a choice.
     <br>
@@ -546,9 +546,9 @@ var instructions_after_practice = {
       team_statement +
       `who is connected to the game in another location. Please be mindful and respectful of their time.<br>
       The amount of points you earn will be determined by the decisions
-      that you make in combination with the decision of the other participant.
+      that you make in combination with the decisions of the other participant.
       After the game, you will be awarded additional compensation according to your performance.<br>
-      You will be playing a series of rounds.
+      You will be playing a series of rounds against the same counterpart.
       <br>
       Press "c" to begin playing.` +
       "</div>"
@@ -720,7 +720,7 @@ var favorite_thing_prompt = {
     var color = ['Blue', 'Green', 'Red', 'Yellow'][parseInt(responses[3].button_pressed)];
     var flavor = ['Sweet', 'Salty', 'Sour', 'Spicy', 'Umami'][parseInt(responses[5].button_pressed)];
     jsPsych.data.addProperties({ fruit: fruit, color: color, flavor: flavor });
-    var x = `<p>You will be shown a series of bar plots of what things other participants in your group chose.
+    var x = `<p>You will be shown a series of bar plots of the things other participants in your group chose.
     Your choice is indicated by the green bar in the plot.</p>
     <p>Press "c" to continue.</p>
     `;
