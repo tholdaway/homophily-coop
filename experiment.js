@@ -633,6 +633,7 @@ var coop_comparison_block = {
       score_other +
       ".<br>" + stim +
       '<p>Press "c" to continue.</p>' + "</div>";
+      jsPsych.data.addProperties({ score_self: score_self, score_other: score_other});
     return stim
   },
   choices: ['c'],
