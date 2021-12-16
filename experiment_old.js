@@ -88,7 +88,7 @@ var user_choice = {
   },
   stimulus: function () {
     var stim;
-    var head = `<header></header>`;
+    var head = "";
     var team = jsPsych.data.get().select("group_assignment").values[0];
     var group_other = jsPsych.data.get().select("group_other").values[0];
     if (jsPsych.timelineVariable("other_group", true) === "c") {
@@ -103,14 +103,19 @@ var user_choice = {
         ';">' +
         group_other +
         "</span> group.</div>";
-        head =
-          `<header>
-          <h1>Your team: <span style="color:blue;">${team}</span></h1>
-          <h1>Your counterpart's team: <span style=\"color:${color};">${group_other}</span>
-          </h1></header>`
+      head =
+        " Your counterpart's team: <span style=\"color:" +
+        color +
+        ';">' +
+        group_other +
+        "</span>";
     }
     stim =
+      '<header><h1>Your team: <span style="color:blue;">' +
+      team +
+      "</span></h1><h1>" +
       head +
+      "</h1></header>" +
       stim +
       payout_table +
       '<p id="counterpart_prompt"></p>';
@@ -197,22 +202,20 @@ var computer_choice = {
     var color =
       jsPsych.timelineVariable("other_group", true) === "ig" ? "blue" : "red";
 
-    /*var head =
+    var head =
       jsPsych.timelineVariable("other_group", true) === "c"
         ? ""
         : " Your counterpart's team: <span style=\"color:" +
           color +
           ';">' +
           group_other +
-          "</span>";*/
-    var head =
-      jsPsych.timelineVariable("other_group", true) === "c" ? `<header></header>` :
-      `<header>
-      <h1>Your team: <span style="color:blue;">${team}</span></h1>
-      <h1>Your counterpart's team: <span style=\"color:${color};">${group_other}</span>
-      </h1></header>`
+          "</span>";
     stim =
+      '<header><h1>Your team: <span style="color:blue;">' +
+      team +
+      "</span></h1><h1>" +
       head +
+      "</h1></header>" +
       stim;
     stim =
       stim +
@@ -467,7 +470,7 @@ var instruction_pd_block_intro = {
   stimulus: function () {
     return (
       `<h1>Instructions</h1>
-      <div id="instructions">You will shortly be asked to play a game with another participant from your team or the other team
+      <div id="instructions">You will shortly be asked to play a game with another participant
       who is connected to the game in another location. Please be mindful and respectful of their time.<br>
       The amount of points you earn will be determined by the decisions
       that you make in combination with the decisions of the other participant.
@@ -923,8 +926,7 @@ var trial = {
 */
 
 var design_factors = {
-  //other_group: ["c", "ig", "og"],
-  other_group: ["c", "c"],
+  other_group: ["c", "ig", "og"],
   betray: ["f", "t"],
 };
 
