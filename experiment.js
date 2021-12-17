@@ -544,7 +544,7 @@ var instructions_after_practice = {
       `who is connected to the game in another location. Please be mindful and respectful of their time.<br>
       The amount of points you earn will be determined by the decisions
       that you make in combination with the decisions of the other participant.
-      After the game, you will be awarded additional compensation according to your performance.<br>
+      After the game, <b>you will be awarded additional compensation according to your performance.</b><br>
       You will be playing a series of rounds against the same counterpart.
       <br>
       Press "c" to begin playing.` +
