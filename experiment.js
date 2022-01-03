@@ -784,7 +784,7 @@ var group_reinforcement_block_ = {
 var group_reinforcement_block = {
   timeline: [fruit_prompt, fruit_selection, color_prompt, color_selection,
     flavor_prompt, flavor_selection, waiting_for_other_choice_2,
-    favorite_thing_prompt, favorite_thing_prompt_fruit, favorite_thing_prompt_color, favorite_thing_prompt_flavor, favorite_thing_question]
+    favorite_thing_prompt, favorite_thing_prompt_fruit, favorite_thing_prompt_color, favorite_thing_prompt_flavor]
 };
 
 var connecting_block = {
