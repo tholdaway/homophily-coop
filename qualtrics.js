@@ -46,7 +46,8 @@ Qualtrics.SurveyEngine.addOnload(function () {
     console.log(sbj_id);
 
     var dropbox_access_token = "";
-    var task_name = "tiedecaycoop"
+    var dropbox_refresh_token = "";
+    var task_name = "tiedecaycoop";
     var save_filename = "/" + task_name + '_' + sbj_id;
 
     /* Change 5: Define save functions using Dropbox API */
@@ -55,8 +56,10 @@ Qualtrics.SurveyEngine.addOnload(function () {
         try {
             var dbx = new Dropbox.Dropbox({
                 fetch: fetch,
-                accessToken: dropbox_access_token
+                //accessToken: dropbox_access_token
+                refreshToken: dropbox_refresh_token
             });
+            //dbx.auth.setRefreshToken(dropbox_refresh_token);
             dbx.filesUpload({
                     path: save_filename + '.csv',
                     mode: 'overwrite',

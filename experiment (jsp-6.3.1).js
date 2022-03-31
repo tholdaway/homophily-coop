@@ -698,32 +698,6 @@ var born_before_1920_attention_check = {
 };
 
 
-var favorite_thing_prompt_ = {
-  type: "html-keyboard-response",
-  stimulus: function() {
-    //var current_node_id = jsPsych.currentTimelineNodeID();
-    //var data_from_current_node = jsPsych.data.getDataByTimelineNode(current_node_id);
-    var responses = jsPsych.data.get().last(7).values() //[0].button_pressed;
-    var fruit = ['Apples', 'Bananas', 'Strawberries', 'Grapes'][parseInt(responses[1].button_pressed)];
-    var color = ['Blue', 'Green', 'Red', 'Yellow'][parseInt(responses[3].button_pressed)];
-    var flavor = ['Sweet', 'Salty', 'Sour', 'Spicy', 'Umami'][parseInt(responses[5].button_pressed)];
-    var x = `<p>The bar plots below show what others in your group chose.
-    Your choice is indicated in green.</p>
-    <div>
-      <img src="https://tholdaway.github.io/homophily-coop/img/${fruit}.png"
-      style="width:2.5in !important; height:2.5in !important; padding:5px !important;">
-      <img src="https://tholdaway.github.io/homophily-coop/img/${color}.png"
-      style="width:2.5in !important; height:2.5in !important; padding:5px !important;">
-      <img src="https://tholdaway.github.io/homophily-coop/img/${flavor}.png"
-      style="width:2.5in !important; height:2.5in !important; padding:5px !important;">
-      <p>Press "c" to continue.</p>
-    </div>
-    `;
-    return x;
-  },
-  choices: ['c'], //jsPsych.NO_KEYS,
-};
-
 
 
 var favorite_thing_prompt = {
@@ -732,9 +706,9 @@ var favorite_thing_prompt = {
     //var current_node_id = jsPsych.currentTimelineNodeID();
     //var data_from_current_node = jsPsych.data.getDataByTimelineNode(current_node_id);
     var responses = jsPsych.data.get().last(7).values() //[0].button_pressed;
-    var fruit = ['Apples', 'Bananas', 'Strawberries', 'Grapes'][parseInt(responses[1].button_pressed)];
-    var color = ['Blue', 'Green', 'Red', 'Yellow'][parseInt(responses[3].button_pressed)];
-    var flavor = ['Sweet', 'Salty', 'Sour', 'Spicy', 'Umami'][parseInt(responses[5].button_pressed)];
+    var fruit = ['Apples', 'Bananas', 'Strawberries', 'Grapes'][parseInt(responses[1].response)];
+    var color = ['Blue', 'Green', 'Red', 'Yellow'][parseInt(responses[3].response)];
+    var flavor = ['Sweet', 'Salty', 'Sour', 'Spicy', 'Umami'][parseInt(responses[5].response)];
     jsPsych.data.addProperties({ fruit: fruit, color: color, flavor: flavor });
     var x = `<p>You will be shown a series of bar plots of the things other participants in your group chose.
     Your choice is indicated by the green bar in the plot.</p>
@@ -804,7 +778,7 @@ var attention_check_block = {
   on_timeline_finish: function() {
     var attn_check = jsPsych.data.getLastTrialData().select("response").values[0];
     console.log(attn_check);
-    jsPsych.data.addProperties({ attention_check_bb1920: attn_check });
+    jsPsych.data.addProperties({ attention_check_bb1920: attn_check.Q0 });
   }
 };
 
