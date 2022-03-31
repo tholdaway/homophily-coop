@@ -67,7 +67,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
             callback(aT);
          }};
 
-      var data = "grant_type=refresh_token&refresh_token=<token>";
+      var data = "grant_type=refresh_token&refresh_token=";
 
       xhr.send(data);
     }

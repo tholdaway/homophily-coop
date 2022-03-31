@@ -393,6 +393,8 @@ var instructions_all_block = {
   You will <b>NOT</b> be able to return to instructions after continuing. Please read all instructions carefully.
   At any point, you may press "c" to continue, unless another action is required.
   If you are idle for more than 1 minute you may be removed from the experiment without full compensation.
+  We trust that you will read questions and respond thoughtfully.
+  You may be asked questions during the study to make sure that other participants are reading questions carefully.
   <br>
   Press "c" to continue.
   </div>`,
