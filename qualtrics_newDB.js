@@ -46,7 +46,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
     console.log(sbj_id)
 
 	  var task_name = "tiedecaycoop2";
-    var save_filename = "/" + task_name + '_' + sbj_id;
+    var save_filename = "/4apr2022/" + task_name + '_' + sbj_id;
 
     /* Change 5: Define save functions using Dropbox API */
 
@@ -67,7 +67,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
             callback(aT);
          }};
 
-      var data = "grant_type=refresh_token&refresh_token=";
+      var data = "";
 
       xhr.send(data);
     }
@@ -125,7 +125,8 @@ Qualtrics.SurveyEngine.addOnload(function () {
         console.log("init")
         jsPsych.init({
           timeline: [
-			instructions_all_block,
+			      instructions_all_block1,
+            instructions_all_block2,
             instruction_im_block,
             trials_with_variables,
             group_assignment,

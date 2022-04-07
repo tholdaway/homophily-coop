@@ -400,6 +400,32 @@ var instructions_all_block = {
   </div>`,
 };
 
+var instructions_all_block1 = {
+  type: "html-keyboard-response",
+  choices: ['c'],
+  stimulus: `<div id="instructions">
+  In this portion of the experiment, you will be shown several images while interacting with other participants over the Internet, in real time.
+  If you have trouble viewing an image, please zoom in or out using your browser (by pressing control/command plus or minus on your keyboard).
+  You will NOT be able to return to previous instructions after continuing. Please read all instructions carefully.
+  At any point, you may press "c" to continue, unless another action is required.   <br>
+  Press "c" to continue.
+  </div>`,
+};
+
+var instructions_all_block2 = {
+  type: "html-keyboard-response",
+  choices: ['c'],
+  stimulus: `<div id="instructions">
+  During this study you will play games with other individuals located across the US.
+  If you are inactive for more than 1 minute you may be removed from the experiment without full compensation.
+  We trust that you will read questions and respond thoughtfully.
+  Some questions check that participants have read the prompts carefully. They are easy and straightforward.
+  While we are confident that you will pay close attention, others may not.
+  Participants that fail to answer these questions correctly will not receive full compensation. <br>
+  Press "c" to continue.
+  </div>`,
+};
+
 var instruction_im_block = {
   type: "html-keyboard-response",
   stimulus: instructions_im,
