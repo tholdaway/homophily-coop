@@ -142,11 +142,11 @@ var computer_choice = {
     }
     //var userChoice = jsPsych.data.getLastTrialData().select("key_press")
     //  .values[0];
-    var userChoice = jsPsych.data.getLastTimelineData().select("key_press").values[0];
+    var userChoice = jsPsych.data.getLastTimelineData().select("response").values[0];
     var stim;
     if (computerChoice === "x") {
       // cooperate
-      if (userChoice === 88) {
+      if (userChoice === "x") {
         // code for "x"
         // coop-coop
         stim =
@@ -157,7 +157,7 @@ var computer_choice = {
           " points.</div>";
         score_self += payout_coop_coop[0];
         score_other += payout_coop_coop[1];
-      } else {
+      } else if (userChoice === "y") {
         // coop-comp
 
         stim =
@@ -169,10 +169,12 @@ var computer_choice = {
         //stim = 'kp'+userChoice.values[0]
         score_self += payout_coop_comp[1];
         score_other += payout_coop_comp[0];
+      } else {
+        stim = `<div> ERROR </div>`
       }
     } else {
       // non-cooperate
-      if (userChoice === 88) {
+      if (userChoice === "x") {
         // comp-coop
         stim =
           '<div id="instructions">The other player chose to not cooperate. You chose to cooperate. You received ' +
@@ -182,7 +184,7 @@ var computer_choice = {
           " points.</div>";
         score_self += payout_coop_comp[0];
         score_other += payout_coop_comp[1];
-      } else {
+      } else if (userChoice === "y") {
         //comp-comp
         stim =
           '<div id="instructions">The other player chose to not cooperate. You chose to not cooperate. You received ' +
@@ -192,6 +194,8 @@ var computer_choice = {
           " points.</div>";
         score_self += payout_comp_comp[0];
         score_other += payout_comp_comp[1];
+      } else {
+        stim = `<div> ERROR </div>`
       }
     }
     var color =
@@ -303,12 +307,12 @@ var group_assignment = {
   stimulus: function () {
     // numeric key code for letter a: 65, b: 66
     var stims = jsPsych.data.getLastTimelineData().select("stimulus").values;
-    var kps = jsPsych.data.getLastTimelineData().select("key_press").values;
+    var kps = jsPsych.data.getLastTimelineData().select("response").values;
     //var count_of_a = jsPsych.data.getLastTimelineData().filter({key_press: 65}).count()
     // this logic needs to be more complicated if want to use randomized image order
     var klee_vote = stims.map(function (x, i) {
       var klee_first = x.indexOf("klee") < x.indexOf("kandinsky");
-      var press_a = kps[i] === 65;
+      var press_a = kps[i] === 'a';
       return (klee_first && press_a) || (!klee_first && !press_a);
     });
     var count_of_klee_votes = klee_vote.reduce(function (a, b) {
@@ -863,7 +867,7 @@ var practice_choice2 = {
 var practice_response1 = {
   type: 'html-keyboard-response',
   stimulus: function() {
-    var userChoice = jsPsych.data.getLastTrialData().select("key_press").values[0] === 88 ? "c" : "nc";
+    var userChoice = jsPsych.data.getLastTrialData().select("response").values[0] === "x" ? "c" : "nc";
     //console.log(jsPsych.data.getLastTrialData().select("key_press").values[0]);
     //console.log(userChoice);
     var stim = `<div id="instructions">
@@ -884,7 +888,7 @@ var practice_response1 = {
 var practice_response2 = {
   type: 'html-keyboard-response',
   stimulus: function() {
-    var userChoice = jsPsych.data.getLastTrialData().select("key_press").values[0] === 88 ? "c" : "nc";
+    var userChoice = jsPsych.data.getLastTrialData().select("response").values[0] === "x" ? "c" : "nc";
     //console.log(jsPsych.data.getLastTrialData().select("key_press").values[0]);
     //console.log(userChoice);
     var stim = `<div id="instructions">
