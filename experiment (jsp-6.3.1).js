@@ -716,7 +716,7 @@ var born_before_1920_attention_check = {
   type: 'survey-likert',
   questions: [
     {
-      prompt: "I was born before the year 1920. Your response to this question lets us know that you read the statement.",
+      prompt: "Please indicate how much you agree or disagree with the truth of the following statement: I was born before the year 1920.",
       labels: [
         "Strongly Disagree",
         "Disagree",
