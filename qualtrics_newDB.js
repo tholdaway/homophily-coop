@@ -140,6 +140,10 @@ Qualtrics.SurveyEngine.addOnload(function () {
 			      var painter_pref = jsPsych.data.get().first(1).values()[0].group_assignment;
             Qualtrics.SurveyEngine.setEmbeddedData( 'painter_pref', painter_pref );
 
+            var coop_hist = jsPsych.data.get().filter({phase: 'user_choice'}).select('response').toString();
+            console.log(coop_hist);
+            Qualtrics.SurveyEngine.setEmbeddedData('cooperation_history', coop_hist);
+
             var attention_check_bb1920 = jsPsych.data.get().first(1).values()[0].attention_check_bb1920;
             Qualtrics.SurveyEngine.setEmbeddedData( 'attention_check_bb1920', attention_check_bb1920 );
             /* Change 5: Summarizing and save the results to Qualtrics */

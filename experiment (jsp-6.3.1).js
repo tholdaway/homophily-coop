@@ -85,6 +85,7 @@ var user_choice = {
   },
   on_finish: function(data) {
     data.counterpart_time = jsPsych.data.get().select("counterpart_time_temp").values[0];
+    data.phase = 'user_choice';
   },
   stimulus: function () {
     var stim;
