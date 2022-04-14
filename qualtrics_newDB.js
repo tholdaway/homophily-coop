@@ -118,11 +118,11 @@ Qualtrics.SurveyEngine.addOnload(function () {
             size: 1,
           },
         };
-		console.log("${e://Field/other_group}");
+		/*console.log("${e://Field/other_group}");
         console.log("${e://Field/betray}");
 		console.log(full_design);
 		console.log(design_factors);
-        console.log("init")
+        console.log("init")*/
         jsPsych.init({
           timeline: [
 			      instructions_all_block1,
@@ -140,7 +140,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
 			      var painter_pref = jsPsych.data.get().first(1).values()[0].group_assignment;
             Qualtrics.SurveyEngine.setEmbeddedData( 'painter_pref', painter_pref );
 
-            var coop_hist = jsPsych.data.get().filter({phase: 'user_choice'}).select('response').toString();
+            var coop_hist = jsPsych.data.get().filter({phase: 'user_choice'}).select('response').values.toString();
             console.log(coop_hist);
             Qualtrics.SurveyEngine.setEmbeddedData('cooperation_history', coop_hist);
 
