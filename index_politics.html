@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Experiment</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <!--<script src="http://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>-->
+  <script src="scripts/jquery-1.11.1.js"></script>
+  <script src="scripts/jquery-ui.min.js"></script>
+  <script src="jspsych-6.3.1/jspsych.js"></script>
+  <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+  <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
+  <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+  <script src="jspsych-6.3.1/plugins/jspsych-survey-likert.js"></script>
+  <script src="jspsych-6.3.1/plugins/jspsych-survey-text.js"></script>
+  <script src="jspsych-6.3.1/plugins/jspsych-survey-multi-choice.js"></script>
+  <script src="jspsych-6.3.1/plugins/jspsych-survey-likert.js"></script>
+  <script src="experiment_politics.js"></script>
+  <link href="css/jspsych.css" type="text/css" rel="stylesheet">
+  </link>
+</head>
+<body>
+  <style>
+    html {
+      margin: 0;
+      height: 100%;
+      font-size: 30px;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: linear-gradient(rgba(45, 70, 120, 0.31), rgba(45, 70, 120, 1));
+      background-attachment: fixed;
+    }
+    #jspsych-target {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 75%;
+      min-height: 75%;
+      height: fit-content;
+      overflow: scroll;
+      padding: 50px;
+      background-color: white;
+    }
+    #instructions {
+      top: 0;
+      bottom: 0;
+      overflow: auto;
+    }
+    #jspsych-content {
+      font-size: 30px;
+    }
+    h1 {
+      text-align: center;
+    }
+    img {
+      object-fit: contain;
+      width: 400px;
+      height: 300px;
+      padding: 25px;
+    }
+
+    .image_things {
+      min-width: 600px
+      max-width: 100%;
+      padding: 0px;
+    }
+    .column {
+      float: left;
+      width: 33.33%;
+      padding: 5px;
+    }
+    .row::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+
+    div.imgContainer{
+      float:left;
+    }
+    table.center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .tg  {border-collapse:collapse;border-spacing:1;margin-left: auto;margin-right: auto}
+    /*.tg  {border:none;border-collapse:collapse;border-spacing:0;margin-left: auto;margin-right: auto}*/
+    .tg td{border-style:solid;border-width:1px;overflow:hidden;
+      padding:10px 5px;word-break:normal;}
+    .tg th{border-style:solid;border-width:1px;font-weight:normal;
+      overflow:hidden;padding:10px 5px;word-break:normal;}
+    .tg .tg-0lax{text-align:left;vertical-align:top}
+    .tg .tg-tf2e{text-align:left;vertical-align:top}
+
+    .tg .tg-baqh{text-align:center;vertical-align:bottom}
+    .tg .tg-pcvp{border-color:inherit;text-align:center;vertical-align:top}
+
+  </style>
+  <div id="jspsych-target">
+    <script>
+      var political_affiliation = "Left";
+      //Initiate Experiment
+      jsPsych.init({
+        timeline: [
+          instructions_all_block1,
+          instructions_all_block2,
+          group_assignment,
+          pd_with_variables,
+          coop_comparison_block
+        ],
+        display_element: "jspsych-target",
+        on_finish: function () {
+          jsPsych.data.displayData("csv");
+        }
+      });
+    </script>
+  </div>
+</body>
+</html>
