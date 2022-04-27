@@ -88,14 +88,14 @@ var user_choice = {
     stim =
       `<div id="instructions">Choose whether to cooperate (press "x")
       or not cooperate (press "y") with your counterpart in the <span style="color:
-      ${counterp_colors[0]}
+      ${jsPsych.timelineVariable("counterp_colors", true)[0]}
       ;">
-      ${counterp_team}
+      ${jsPsych.timelineVariable("counterp_team", true)}
       "</span> group.</div>`;
       head =
         `<header>
-        <h1>Your team: <span style="color:${own_colors[0]};">${own_team}</span></h1>
-        <h1>Your counterpart's team: <span style=\"color:${counterp_colors[0]};">${counterp_team}</span>
+        <h1>Your team: <span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};">${jsPsych.timelineVariable("own_team", true)}</span></h1>
+        <h1>Your counterpart's team: <span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};">${jsPsych.timelineVariable("counterp_team", true)}</span>
         </h1></header>`
     stim =
       head +
@@ -142,8 +142,8 @@ var computer_choice = {
 
     var head =
       `<header>
-      <h1>Your team: <span style="color:${own_colors[0]};">${own_team}</span></h1>
-      <h1>Your counterpart's team: <span style=\"color:${counterp_colors[0]};">${counterp_team}</span>
+      <h1>Your team: <span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};">${jsPsych.timelineVariable("own_team", true)}</span></h1>
+      <h1>Your counterpart's team: <span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};">${jsPsych.timelineVariable("counterp_team", true)}</span>
       </h1></header>`
     stim =
       head +
@@ -189,10 +189,10 @@ var group_assignment = {
     // numeric key code for letter a: 65, b: 66
     return (
       `<div id="instructions">Your group:
-      <span style="color:${own_colors[0]};">${own_team}</span>
+      <span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};">${jsPsych.timelineVariable("own_team", true)}</span>
       <br><br>
-      There are 42 people in the <span style="color:${own_colors[0]};">${own_team}</span> group,
-      and 41 people in the <span style="color:${counterp_colors[0]};">${counterp_team}</span> group.
+      There are 42 people in the <span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};">${jsPsych.timelineVariable("own_team", true)}</span> group,
+      and 41 people in the <span style="color:${jsPsych.timelineVariable("counterp_colors", true)[0]};">${jsPsych.timelineVariable("counterp_team", true)}</span> group.
       <br><br>From this point on, you will be interacting with other real people.
       Please be respectful and answer in a timely fashion. If you are idle for more than 1 minute you may be removed from the experiment without full compensation.
       <br><br>Press "c" to continue.</div>`
@@ -302,10 +302,10 @@ var instructions_after_practice = {
   choices: ["c"],
   stimulus: function () {
     var team_statement =
-        `in the <span style="color:${counterp_colors[0]};">
-        ${counterp_team}
-        </span> group (you are in the <span style="color:${own_colors[0]};">
-        ${own_team}</span> group)`;
+        `in the <span style="color:${jsPsych.timelineVariable("counterp_colors", true)[0]};">
+        ${jsPsych.timelineVariable("counterp_team", true)}
+        </span> group (you are in the <span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};">
+        ${jsPsych.timelineVariable("own_team", true)}</span> group)`;
     jsPsych.data.addProperties({
       betray: jsPsych.timelineVariable("betray", true),
     });

@@ -29,7 +29,7 @@ Qualtrics.SurveyEngine.addOnload(function () {
         jslib_url + "jspsych-6.3.1/plugins/jspsych-html-button-response.js",
         jslib_url + "jspsych-6.3.1/plugins/jspsych-survey-multi-choice.js",
 		jslib_url + "jspsych-6.3.1/plugins/jspsych-survey-likert.js",
-        jslib_url + "experiment_politics.js"
+        jslib_url + "experiment_nfl.js"
     ];
 
     function loadScript(idx) {
@@ -216,7 +216,9 @@ Qualtrics.SurveyEngine.addOnload(function () {
         var counterp_colors = exp_cond === "sg" ? own_colors : own_team_info[exp_cond].counterp_colors;
         var counterp_team = exp_cond === "sg" ? own_team : own_team_info[exp_cond].counterp;
 
-        var design_factors = [{other_group:"${e://Field/other_group}", betray:"${e://Field/betray}"}];
+        var design_factors = [{other_group:"${e://Field/other_group}", betray:"${e://Field/betray}",
+                                own_team:own_team, own_colors:own_colors,
+                                counterp_team:counterp_team, counterp_colors:counterp_colors}];
         var pd_with_variables_qt = {
           timeline: [instruction_pd_block_intro, instruction_pd_block_payout, practice_round_chunk, connecting_block, instructions_after_practice, run_chunk],
 		  //timeline: [connecting_block, instruction_pd_block, instruction_pd_block_payout, run_chunk],
