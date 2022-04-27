@@ -13,13 +13,6 @@ var roundNum = 0;
 var payout_dict = {c : {c : 6, nc : 0}, nc : {c : 10, nc : 2}};
 
 
-// for testing!!
-var own_team = "My Favorite Team";
-var exp_cond = "low";
-var own_colors = ['pink'];
-var counterp_colors = ['green'];
-var counterp_team = 'Bad Team';
-
 
 // payout table image
 var payout_table = `<br><br>
