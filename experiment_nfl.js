@@ -129,7 +129,7 @@ var computer_choice = {
     };
     var computerChoiceWord = computerChoice === "nc" ? "not cooperate" : "cooperate";
     var userChoice = jsPsych.data.getLastTimelineData().select("response").values[0] === "x" ? "c" : "nc";
-    var userChoiceWord = userChoice === "n" ? "not cooperate" : "cooperate";
+    var userChoiceWord = userChoice === "nc" ? "not cooperate" : "cooperate";
     var stim =
               `<div id="instructions">The other player chose to ${computerChoiceWord}.
               You chose to ${userChoiceWord}. You received
@@ -313,7 +313,7 @@ var instructions_after_practice = {
       `<h1>Instructions</h1>
       <div id="instructions">
       Now that you understand the game, you will play with another participant
-      {$team_statement} who is connected to the game in another location.
+      ${team_statement} who is connected to the game in another location.
       Please be mindful and respectful of their time.<br>
       The amount of points you earn will be determined by the decisions
       that you make in combination with the decisions of the other participant.
