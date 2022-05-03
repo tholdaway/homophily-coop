@@ -90,15 +90,18 @@ var user_choice = {
       or not cooperate (press "y") with your counterpart in the <span style="color:
       ${jsPsych.timelineVariable("counterp_colors", true)[0]};
       border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">
-      ${jsPsych.timelineVariable("counterp_team", true)}
-      "</span> group.</div>`;
+      ${jsPsych.timelineVariable("counterp_team", true)}</span> group.</div>`;
+
       head =
         `<header>
-        <h1>Your team: <span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
-        border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">${jsPsych.timelineVariable("own_team", true)}</span></h1>
-        <h1>Your counterpart's team: <span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
-        border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</span>
-        </h1></header>`
+        <table width="100%">
+          <tr>
+            <td align="center">Your favorite team:<br><span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
+                border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">${jsPsych.timelineVariable("own_team", true)}</span></td>
+            <td align="center">Counterpart's favorite team:<br><span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
+                border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</td>
+        </table>
+        </header>`;
     stim =
       head +
       stim +
@@ -140,15 +143,16 @@ var computer_choice = {
             score_self += payout_dict[userChoice][computerChoice];
             score_other += payout_dict[computerChoice][userChoice];
 
-
-
     var head =
-      `<header>
-      <h1>Your team: <span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
-      border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">${jsPsych.timelineVariable("own_team", true)}</span></h1>
-      <h1>Your counterpart's team: <span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
-      border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</span>
-      </h1></header>`
+        `<header>
+        <table width="100%">
+          <tr>
+            <td align="center">Your favorite team:<br><span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
+                border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">${jsPsych.timelineVariable("own_team", true)}</span></td>
+            <td align="center">Counterpart's favorite team:<br><span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
+                border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</td>
+        </table>
+        </header>`;
     stim =
       head +
       stim;
@@ -306,13 +310,17 @@ var instructions_after_practice = {
   type: "html-keyboard-response",
   choices: ["c"],
   stimulus: function () {
-    var team_statement =
+    /*var team_statement =
         `in the <span style="color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
         border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">
         ${jsPsych.timelineVariable("counterp_team", true)}
         </span> group (you are in the <span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
         border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">
-        ${jsPsych.timelineVariable("own_team", true)}</span> group)`;
+        ${jsPsych.timelineVariable("own_team", true)}</span> group)`;*/
+    var team_statement =
+        `whose favorite team is the <span style="color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
+        border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">
+        ${jsPsych.timelineVariable("counterp_team", true)}</span>`;
     jsPsych.data.addProperties({
       betray: jsPsych.timelineVariable("betray", true),
     });

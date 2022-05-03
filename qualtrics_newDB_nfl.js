@@ -254,6 +254,17 @@ Qualtrics.SurveyEngine.addOnload(function () {
 
             var attention_check_bb1920 = jsPsych.data.get().first(1).values()[0].attention_check_bb1920;
             Qualtrics.SurveyEngine.setEmbeddedData( 'attention_check_bb1920', attention_check_bb1920 );
+
+
+            var own_team_info = nfl_team_info(own_team);
+            var own_colors = own_team_info.colors;
+            var counterp_colors = exp_cond === "sg" ? own_colors : own_team_info[exp_cond].counterp_colors;
+            var counterp_team = exp_cond === "sg" ? own_team : own_team_info[exp_cond].counterp;
+            Qualtrics.SurveyEngine.setEmbeddedData( 'other_team_low', own_team_info['low'].counterp );
+            Qualtrics.SurveyEngine.setEmbeddedData( 'other_team_high', own_team_info['high'].counterp );
+            Qualtrics.SurveyEngine.setEmbeddedData( 'other_team_actual', counterp_team );
+            Qualtrics.SurveyEngine.setEmbeddedData( 'other_colors_actual0', counterp_colors[0] );
+            Qualtrics.SurveyEngine.setEmbeddedData( 'other_colors_actual1', counterp_colors[1] );
             /* Change 5: Summarizing and save the results to Qualtrics */
             // summarize the results
             /*
