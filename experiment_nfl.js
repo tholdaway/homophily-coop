@@ -117,6 +117,52 @@ function user_choice_fun(within = false) {
 };
 
 
+var user_choice = {
+  // logic and display for use choice slide, based on experimental condition
+  type: "html-keyboard-response",
+  on_load: function(data) {
+    function replaceContentsOfElement(){
+      document.getElementById("counterpart_prompt").innerHTML = "Your counterpart has made a choice."
+    };
+    var counterpart_time = Math.max(0.5*1000, (randomIntFromIntervalExponentialish(1,10, 0.3)*1000));
+    jsPsych.data.addProperties({counterpart_time_temp: counterpart_time})
+    setTimeout(replaceContentsOfElement, counterpart_time);
+    return;
+  },
+  on_finish: function(data) {
+    data.counterpart_time = jsPsych.data.get().select("counterpart_time_temp").values[0];
+    data.phase = 'user_choice';
+  },
+  stimulus: function () {
+    var stim;
+    var head = `<header></header>`;
+    stim =
+      `<div id="instructions">Choose whether to cooperate (press "x")
+      or not cooperate (press "y") with your counterpart.</div>`;
+
+      head =
+        `<header>
+        <table width="100%">
+          <tr>
+            <td align="center">Your favorite team:<br><span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
+                border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">${jsPsych.timelineVariable("own_team", true)}</span></td>
+            <td align="center">Counterpart's favorite team:<br><span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
+                border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</td>
+        </table>
+        </header>`;
+    stim =
+      head +
+      stim +
+      payout_table +
+      '<p id="counterpart_prompt"></p>';
+
+    stim = stim + `<div><center>Round ${roundNum + 1}</center></div>`
+    return stim;
+  },
+  choices: ["x", "y"],
+};
+
+
 function computer_choice_fun(within = false, betray_seq) {
   if ( !within ) {
     if (jsPsych.timelineVariable("betray", true) === "t") {
@@ -604,7 +650,7 @@ var practice_round_chunk = {
 
 var run_chunk = {
   // repeated PD game chunk
-  timeline: [user_choice_fun(false), waiting_for_other_choice, computer_choice_fun(false)],
+  timeline: [user_choice, waiting_for_other_choice, computer_choice],
   loop_function: function () {
     if (roundNum >= 10) {
       return false;
