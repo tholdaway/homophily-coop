@@ -604,7 +604,7 @@ var practice_round_chunk = {
 
 var run_chunk = {
   // repeated PD game chunk
-  timeline: [user_choice_fun(), waiting_for_other_choice, computer_choice_fun()],
+  timeline: [user_choice_fun(false), waiting_for_other_choice, computer_choice_fun(false)],
   loop_function: function () {
     if (roundNum >= 10) {
       return false;
