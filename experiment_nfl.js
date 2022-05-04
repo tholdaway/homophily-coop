@@ -163,9 +163,9 @@ var user_choice = {
 };
 
 
-function computer_choice_fun(within = false, betray_seq) {
+function computer_choice_fun(within = false, betray, betray_seq) {
   if ( !within ) {
-    if (jsPsych.timelineVariable("betray", true) === "t") {
+    if (betray) {
       var betray_seq = [2,3,5,6,7,9,10]
     } else {
       var betray_seq = [3,7,9,10]
