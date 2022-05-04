@@ -1,5 +1,5 @@
-
 Qualtrics.SurveyEngine.addOnload(function () {
+    var within_trial_num = 0; // which within-subject trial are we on?
 
     /*Place your JavaScript here to run when the page loads*/
 
@@ -41,13 +41,13 @@ Qualtrics.SurveyEngine.addOnload(function () {
                 initExp();
             }
         });
-    }
+    };
 
     var sbj_id = "${e://Field/ResponseID}";
-    console.log(sbj_id)
+    console.log(sbj_id);
 
-	  var task_name = "tiedecaycoop2";
-    var save_filename = "/25apr2022/" + task_name + '_' + sbj_id;
+	  var task_name = `tiedecaycoop2_trial${within_trial_num}`;
+    var save_filename = "/4may2022/" + task_name + '_' + sbj_id;
 
     /* Change 5: Define save functions using Dropbox API */
 
@@ -196,6 +196,13 @@ Qualtrics.SurveyEngine.addOnload(function () {
       return dict[fav_team]
     };
 
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        [array[i], array[j]] = [array[j], array[i]];
+        const j = Math.floor(Math.random() * (i + 1));
+      }
+    };
+
     if (window.Qualtrics && (!window.frameElement || window.frameElement.id !== "mobile-preview-view")) {
         loadScript(0);
     };
@@ -210,77 +217,94 @@ Qualtrics.SurveyEngine.addOnload(function () {
     /* Change 5: Wrapping jsPsych.init() in a function */
     function initExp() {
         var own_team = "${e://Field/fav_team}";
-        var exp_cond = "${e://Field/other_group}";
+        var exp_cond = "${e://Field/other_group_seq}".split('')[within_trial_num];
+        exp_cond = exp_cond === 's' ? 'sg' : exp_cond === 'l' ? 'low' : 'high';
         var own_team_info = nfl_team_info(own_team);
         var own_colors = own_team_info.colors;
         var counterp_colors = exp_cond === "sg" ? own_colors : own_team_info[exp_cond].counterp_colors;
         var counterp_team = exp_cond === "sg" ? own_team : own_team_info[exp_cond].counterp;
-
-        var design_factors = [{other_group:"${e://Field/other_group}", betray:"${e://Field/betray}",
+        var betray = "${e://Field/betray}";
+        var design_factors = [{other_group:exp_cond, betray:betray,
                                 own_team:own_team, own_colors:own_colors,
                                 counterp_team:counterp_team, counterp_colors:counterp_colors}];
+        var betray_seq = Array.from({length:9}, (v,k)=>k+2); // array from 2 to 10
+        shuffleArray(betray_seq); // shuffle it randomly
+        // take the first 7 (low coop) or 4 (high coop) elements for the counterpart to non-coop on
+        if (betray === 't') {
+          betray_seq = betray_seq.slice(0,7);
+        } else if (betray === 'f') {
+          betray_seq = betray_seq.slice(0,4);
+        } else {
+          betray_seq = null;
+        };
+
+        var run_chunk_qt = {
+          // repeated PD game chunk
+          timeline: [user_choice_fun(true), waiting_for_other_choice, computer_choice_fun(true, betray_seq)],
+          loop_function: function () {
+            if (roundNum >= 10) {
+              return false;
+            } else {
+              return true;
+            }
+          },
+        };
         var pd_with_variables_qt = {
-          timeline: [instruction_pd_block_intro, instruction_pd_block_payout, practice_round_chunk, connecting_block, instructions_after_practice, run_chunk],
+          timeline: [instruction_pd_block_intro, instruction_pd_block_payout, practice_round_chunk, connecting_block, instructions_after_practice, run_chunk_qt],
 		  //timeline: [connecting_block, instruction_pd_block, instruction_pd_block_payout, run_chunk],
           //timeline: [trial],
           timeline_variables: design_factors,
           sample: {
             type: "with-replacement",
             size: 1
-          },
+          }
         };
-		/*console.log("${e://Field/other_group}");
-        console.log("${e://Field/betray}");
-		console.log(full_design);
-		console.log(design_factors);
-        console.log("init")*/
-        jsPsych.init({
-          timeline: [
-			      instructions_all_block1,
+
+        if (within_trial_num === 1) {
+          // only have the attention check in the 2nd block
+          var tl = [
+            instructions_all_block1,
             instructions_all_block2,
             attention_check_block,
             pd_with_variables_qt,
             coop_comparison_block
-          ],
+          ]
+        } else {
+          var tl = [
+			      instructions_all_block1,
+            instructions_all_block2,
+            pd_with_variables_qt,
+            coop_comparison_block
+          ]
+        };
+        jsPsych.init({
+          timeline: tl,
           display_element: "jspsych-target",
           // add the desired on_finish to save data to qualtrics
           on_finish: function (data) {
-			      var painter_pref = jsPsych.data.get().first(1).values()[0].group_assignment;
-            Qualtrics.SurveyEngine.setEmbeddedData( 'painter_pref', painter_pref );
 
             var coop_hist = jsPsych.data.get().filter({phase: 'user_choice'}).select('response').values.toString();
-            console.log(coop_hist);
-            Qualtrics.SurveyEngine.setEmbeddedData('cooperation_history', coop_hist);
+            // console.log(coop_hist);
+            Qualtrics.SurveyEngine.setEmbeddedData(`cooperation_history${within_trial_num}`, coop_hist);
+            Qualtrics.SurveyEngine.setEmbeddedData(`betray_seq${within_trial_num}`, betray_seq.toString());
+            Qualtrics.SurveyEngine.setEmbeddedData( `other_team_actual${within_trial_num}`, counterp_team );
 
-            var attention_check_bb1920 = jsPsych.data.get().first(1).values()[0].attention_check_bb1920;
-            Qualtrics.SurveyEngine.setEmbeddedData( 'attention_check_bb1920', attention_check_bb1920 );
+            if ( within_trial_num === 1 ) {
+              var attention_check_bb1920 = jsPsych.data.get().first(1).values()[0].attention_check_bb1920;
+              Qualtrics.SurveyEngine.setEmbeddedData( 'attention_check_bb1920', attention_check_bb1920 );
+            }
 
+            if ( within_trial_num === 0 ) {
+              var own_team_info = nfl_team_info(own_team);
+              var own_colors = own_team_info.colors;
+              var counterp_colors = exp_cond === "sg" ? own_colors : own_team_info[exp_cond].counterp_colors;
+              var counterp_team = exp_cond === "sg" ? own_team : own_team_info[exp_cond].counterp;
+              Qualtrics.SurveyEngine.setEmbeddedData( 'other_team_low', own_team_info['low'].counterp );
+              Qualtrics.SurveyEngine.setEmbeddedData( 'other_team_high', own_team_info['high'].counterp );
+              /*Qualtrics.SurveyEngine.setEmbeddedData( 'other_colors_actual0', counterp_colors[0] );
+              Qualtrics.SurveyEngine.setEmbeddedData( 'other_colors_actual1', counterp_colors[1] );*/
+            }
 
-            var own_team_info = nfl_team_info(own_team);
-            var own_colors = own_team_info.colors;
-            var counterp_colors = exp_cond === "sg" ? own_colors : own_team_info[exp_cond].counterp_colors;
-            var counterp_team = exp_cond === "sg" ? own_team : own_team_info[exp_cond].counterp;
-            Qualtrics.SurveyEngine.setEmbeddedData( 'other_team_low', own_team_info['low'].counterp );
-            Qualtrics.SurveyEngine.setEmbeddedData( 'other_team_high', own_team_info['high'].counterp );
-            Qualtrics.SurveyEngine.setEmbeddedData( 'other_team_actual', counterp_team );
-            Qualtrics.SurveyEngine.setEmbeddedData( 'other_colors_actual0', counterp_colors[0] );
-            Qualtrics.SurveyEngine.setEmbeddedData( 'other_colors_actual1', counterp_colors[1] );
-            /* Change 5: Summarizing and save the results to Qualtrics */
-            // summarize the results
-            /*
-            var trials = jsPsych.data.get().filter({
-                test_part: 'test'
-            });
-            var correct_trials = trials.filter({
-                correct: true
-            });
-            var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
-            var rt = Math.round(correct_trials.select('rt').mean());
-
-            // save to qualtrics embedded data
-            Qualtrics.SurveyEngine.setEmbeddedData("accuracy", accuracy);
-            Qualtrics.SurveyEngine.setEmbeddedData("rt", rt);
-            */
             /* Change 6: Adding the clean up and continue functions.*/
             // clear the stage
             //jQuery('#display_stage').remove();

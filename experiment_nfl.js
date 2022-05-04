@@ -66,54 +66,129 @@ function emph_cell_payout_table(i,j) {
 };
 
 
-var user_choice = {
-  // logic and display for use choice slide, based on experimental condition
-  type: "html-keyboard-response",
-  on_load: function(data) {
-    function replaceContentsOfElement(){
-      document.getElementById("counterpart_prompt").innerHTML = "Your counterpart has made a choice."
-    };
-    var counterpart_time = Math.max(0.5*1000, (randomIntFromIntervalExponentialish(1,10, 0.3)*1000));
-    jsPsych.data.addProperties({counterpart_time_temp: counterpart_time})
-    setTimeout(replaceContentsOfElement, counterpart_time);
-    return;
-  },
-  on_finish: function(data) {
-    data.counterpart_time = jsPsych.data.get().select("counterpart_time_temp").values[0];
-    data.phase = 'user_choice';
-  },
-  stimulus: function () {
-    var stim;
-    var head = `<header></header>`;
-    stim =
-      `<div id="instructions">Choose whether to cooperate (press "x")
-      or not cooperate (press "y") with your counterpart in the <span style="color:
-      ${jsPsych.timelineVariable("counterp_colors", true)[0]};
-      border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">
-      ${jsPsych.timelineVariable("counterp_team", true)}</span> group.</div>`;
+function user_choice_fun(within = false) {
+  var user_choice = {
+    // logic and display for use choice slide, based on experimental condition
+    type: "html-keyboard-response",
+    on_load: function(data) {
+      function replaceContentsOfElement(){
+        document.getElementById("counterpart_prompt").innerHTML = "Your counterpart has made a choice."
+      };
+      var counterpart_time = Math.max(0.5*1000, (randomIntFromIntervalExponentialish(1,10, 0.3)*1000));
+      jsPsych.data.addProperties({counterpart_time_temp: counterpart_time})
+      setTimeout(replaceContentsOfElement, counterpart_time);
+      return;
+    },
+    on_finish: function(data) {
+      data.counterpart_time = jsPsych.data.get().select("counterpart_time_temp").values[0];
+      data.phase = 'user_choice';
+    },
+    stimulus: function () {
+      var stim;
+      var head = `<header></header>`;
+      stim =
+        `<div id="instructions">Choose whether to cooperate (press "x")
+        or not cooperate (press "y") with your counterpart.</div>`;
 
-      head =
-        `<header>
-        <table width="100%">
-          <tr>
-            <td align="center">Your favorite team:<br><span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
-                border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">${jsPsych.timelineVariable("own_team", true)}</span></td>
-            <td align="center">Counterpart's favorite team:<br><span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
-                border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</td>
-        </table>
-        </header>`;
-    stim =
-      head +
-      stim +
-      payout_table +
-      '<p id="counterpart_prompt"></p>';
+        head =
+          `<header>
+          <table width="100%">
+            <tr>
+              <td align="center">Your favorite team:<br><span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
+                  border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">${jsPsych.timelineVariable("own_team", true)}</span></td>
+              <td align="center">Counterpart's favorite team:<br><span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
+                  border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</td>
+          </table>
+          </header>`;
+      stim =
+        head +
+        stim +
+        payout_table +
+        '<p id="counterpart_prompt"></p>';
 
-      stim = stim + `<div><center>Round ${roundNum + 1}</center></div>`
-    return stim;
-  },
-  choices: ["x", "y"],
+      if (!within) {
+        stim = stim + `<div><center>Round ${roundNum + 1}</center></div>`
+      }
+      return stim;
+    },
+    choices: ["x", "y"],
+  };
+  return user_choice
 };
 
+
+function computer_choice_fun(within = false, betray_seq) {
+  if ( !within ) {
+    if (jsPsych.timelineVariable("betray", true) === "t") {
+      var betray_seq = [2,3,5,6,7,9,10]
+    } else {
+      var betray_seq = [3,7,9,10]
+    }
+  };
+  var computer_choice = {
+    // logic and display for counterpart choice slide, based on experimental
+    // condition and use choice
+    type: "html-keyboard-response",
+    trial_duration: 20000,
+    choices: ["c"],
+    stimulus: function () {
+      // game logic implemented here
+      roundNum++;
+      var computerChoice;
+      computerChoice = betray_seq.includes(roundNum) ? "nc" : "c"; // in the betray condition, we betray on the 4th,7th,9th rounds? on wednesday we wear pink.
+
+      var computerChoiceWord = computerChoice === "nc" ? "not cooperate" : "cooperate";
+      var userChoice = jsPsych.data.getLastTimelineData().select("response").values[0] === "x" ? "c" : "nc";
+      var userChoiceWord = userChoice === "nc" ? "not cooperate" : "cooperate";
+      var stim =
+                `<div id="instructions">The other player chose to ${computerChoiceWord}.
+                You chose to ${userChoiceWord}. You received
+                ${payout_dict[userChoice][computerChoice]} points. They received
+                ${payout_dict[computerChoice][userChoice]} points.</div>`;
+              score_self += payout_dict[userChoice][computerChoice];
+              score_other += payout_dict[computerChoice][userChoice];
+
+      var head =
+          `<header>
+          <table width="100%">
+            <tr>
+              <td align="center">Your favorite team:<br><span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
+                  border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">${jsPsych.timelineVariable("own_team", true)}</span></td>
+              <td align="center">Counterpart's favorite team:<br><span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
+                  border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</td>
+          </table>
+          </header>`;
+      stim =
+        head +
+        stim;
+      stim =
+        stim +
+        `
+        <table class="tg">
+        <thead>
+          <tr>
+            <th class="tg-baqh" colspan="2">Total Score<br></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tg-pcvp"><span style="color:LightSeaGreen;">You</span></td>
+            <td class="tg-pcvp">Counterpart</td>
+          </tr>
+          <tr>
+            <td class="tg-pcvp"><span style="color:LightSeaGreen;">` + score_self + `</span><br></td>
+            <td class="tg-pcvp">` + score_other + `</td>
+          </tr>
+        </tbody>
+        </table>
+        ` + `<p>Press "c" to continue.</p>` +
+        `<div><center>Round ${roundNum}</center></div>`;
+
+      return stim;
+    },
+  };
+  return computer_choice
+};
 
 var computer_choice = {
   // logic and display for counterpart choice slide, based on experimental
@@ -529,7 +604,7 @@ var practice_round_chunk = {
 
 var run_chunk = {
   // repeated PD game chunk
-  timeline: [user_choice, waiting_for_other_choice, computer_choice],
+  timeline: [user_choice_fun(), waiting_for_other_choice, computer_choice_fun()],
   loop_function: function () {
     if (roundNum >= 10) {
       return false;
