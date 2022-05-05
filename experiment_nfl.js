@@ -1,4 +1,3 @@
-// INCOMPLETE
 // needs jspsych 6.3.1
 var repo = "https://tholdaway.github.io/homophily-coop/"
 var userChoice;
