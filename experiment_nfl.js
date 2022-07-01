@@ -12,7 +12,16 @@ var roundNum = 0;
 // payout of focal actor, action of focal actor is first index, other action is second index
 var payout_dict = {c : {c : 6, nc : 0}, nc : {c : 10, nc : 2}};
 
-
+function color_triangle(a,b,size,float) {
+  t =
+    `<div style="float:${float};
+    width:0;
+    height:0;
+    border-left:${size}px solid ${a};
+    border-bottom:${size}px solid ${b};
+    clear:both"></div>`;
+  return t;
+}
 
 // payout table image
 var payout_table = `<br><br>
@@ -90,16 +99,29 @@ function user_choice_fun(within = false) {
         `<div id="instructions">Choose whether to cooperate (press "x")
         or not cooperate (press "y") with your counterpart.</div>`;
 
-        head =
-          `<header>
-          <table width="100%">
-            <tr>
-              <td align="center">Your favorite team:<br><span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
-                  border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">${jsPsych.timelineVariable("own_team", true)}</span></td>
-              <td align="center">Counterpart's favorite team:<br><span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
-                  border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</td>
-          </table>
-          </header>`;
+      head =
+        `<header>
+        <table width="100%">
+          <tr>
+            <td align="center">Your favorite team:<br><span>
+            ${color_triangle(jsPsych.timelineVariable("own_colors", true)[0], jsPsych.timelineVariable("own_colors", true)[1], 20, "left")}
+            ${jsPsych.timelineVariable("own_team", true)}</span></td>
+            <td align="center">Counterpart's favorite team:<br><span>
+                ${color_triangle(jsPsych.timelineVariable("counterp_colors", true)[0], jsPsych.timelineVariable("counterp_colors", true)[1], 20, "right")}
+                ${jsPsych.timelineVariable("counterp_team", true)}</td>
+        </table>
+        </header>`;
+      /*
+      head =
+        `<header>
+        <table width="100%">
+          <tr>
+            <td align="center">Your favorite team:<br><span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
+                border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">${jsPsych.timelineVariable("own_team", true)}</span></td>
+            <td align="center">Counterpart's favorite team:<br><span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
+                border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</td>
+        </table>
+        </header>`;*/
       stim =
         head +
         stim +
@@ -140,6 +162,19 @@ var user_choice = {
       `<div id="instructions">Choose whether to cooperate (press "x")
       or not cooperate (press "y") with your counterpart.</div>`;
 
+    head =
+      `<header>
+      <table width="100%">
+        <tr>
+          <td align="center">Your favorite team:<br><span>
+          ${color_triangle(jsPsych.timelineVariable("own_colors", true)[0], jsPsych.timelineVariable("own_colors", true)[1], 20, "left")}
+          ${jsPsych.timelineVariable("own_team", true)}</span></td>
+          <td align="center">Counterpart's favorite team:<br><span>
+              ${color_triangle(jsPsych.timelineVariable("counterp_colors", true)[0], jsPsych.timelineVariable("counterp_colors", true)[1], 20, "right")}
+              ${jsPsych.timelineVariable("counterp_team", true)}</td>
+      </table>
+      </header>`;
+      /*
       head =
         `<header>
         <table width="100%">
@@ -149,7 +184,7 @@ var user_choice = {
             <td align="center">Counterpart's favorite team:<br><span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
                 border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</td>
         </table>
-        </header>`;
+        </header>`;*/
     stim =
       head +
       stim +
@@ -194,7 +229,19 @@ function computer_choice_fun(within = false, betray_seq) {
               score_self += payout_dict[userChoice][computerChoice];
               score_other += payout_dict[computerChoice][userChoice];
 
-      var head =
+        var head =
+          `<header>
+          <table width="100%">
+            <tr>
+              <td align="center">Your favorite team:<br><span>
+              ${color_triangle(jsPsych.timelineVariable("own_colors", true)[0], jsPsych.timelineVariable("own_colors", true)[1], 20, "left")}
+              ${jsPsych.timelineVariable("own_team", true)}</span></td>
+              <td align="center">Counterpart's favorite team:<br><span>
+                  ${color_triangle(jsPsych.timelineVariable("counterp_colors", true)[0], jsPsych.timelineVariable("counterp_colors", true)[1], 20, "right")}
+                  ${jsPsych.timelineVariable("counterp_team", true)}</td>
+          </table>
+          </header>`;
+      /*var head =
           `<header>
           <table width="100%">
             <tr>
@@ -203,7 +250,7 @@ function computer_choice_fun(within = false, betray_seq) {
               <td align="center">Counterpart's favorite team:<br><span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
                   border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</td>
           </table>
-          </header>`;
+          </header>`;*/
       stim =
         head +
         stim;
@@ -263,8 +310,20 @@ var computer_choice = {
               ${payout_dict[computerChoice][userChoice]} points.</div>`;
             score_self += payout_dict[userChoice][computerChoice];
             score_other += payout_dict[computerChoice][userChoice];
-
     var head =
+      `<header>
+      <table width="100%">
+        <tr>
+          <td align="center">Your favorite team:<br><span>
+          ${color_triangle(jsPsych.timelineVariable("own_colors", true)[0], jsPsych.timelineVariable("own_colors", true)[1], 20, "left")}
+          ${jsPsych.timelineVariable("own_team", true)}</span></td>
+          <td align="center">Counterpart's favorite team:<br><span>
+              ${jsPsych.timelineVariable("counterp_team", true)}
+              ${color_triangle(jsPsych.timelineVariable("counterp_colors", true)[0], jsPsych.timelineVariable("counterp_colors", true)[1], 20, "right")}
+              </td>
+      </table>
+      </header>`;
+    /*var head =
         `<header>
         <table width="100%">
           <tr>
@@ -273,7 +332,7 @@ var computer_choice = {
             <td align="center">Counterpart's favorite team:<br><span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
                 border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</td>
         </table>
-        </header>`;
+        </header>`;*/
     stim =
       head +
       stim;
