@@ -220,7 +220,7 @@ function computer_choice_fun(within = false, betray_seq) {
     // condition and use choice
     type: "html-keyboard-response",
     trial_duration: 20000,
-    choices: ["c"],
+    choices: ["n"],
     stimulus: function () {
       // game logic implemented here
       roundNum++;
@@ -283,7 +283,7 @@ function computer_choice_fun(within = false, betray_seq) {
           </tr>
         </tbody>
         </table>
-        ` + `<p><b>Press "c" to continue.</b></p>` +
+        ` + `<p><b>Press "n" to continue.</b></p>` +
         `<div><center>Round ${roundNum}</center></div>`;
 
       return stim;
@@ -297,7 +297,7 @@ var computer_choice = {
   // condition and use choice
   type: "html-keyboard-response",
   trial_duration: 20000,
-  choices: ["c"],
+  choices: ["n"],
   stimulus: function () {
     // game logic implemented here
     roundNum++;
@@ -365,7 +365,7 @@ var computer_choice = {
         </tr>
       </tbody>
       </table>
-      ` + `<p><b>Press "c" to continue.</b></p>` +
+      ` + `<p><b>Press "n" to continue.</b></p>` +
       `<div><center>Round ${roundNum}</center></div>`;
 
     return stim;
@@ -378,31 +378,6 @@ var plot_images = [
 ].map(x => "https://tholdaway.github.io/homophily-coop/" + x);
 
 
-var group_assignment = {
-  // group details
-  // need to modify this for political affil/leaning
-  type: "html-keyboard-response",
-  stimulus: function () {
-    // numeric key code for letter a: 65, b: 66
-    return (
-      `<div id="instructions">Your group:
-      <span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
-      border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">${jsPsych.timelineVariable("own_team", true)}</span>
-      <br><br>
-      There are 42 people in the <span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};">${jsPsych.timelineVariable("own_team", true)}</span> group,
-      and 41 people in the <span style="color:${jsPsych.timelineVariable("counterp_colors", true)[0]};">${jsPsych.timelineVariable("counterp_team", true)}</span> group.
-      <br><br>From this point on, you will be interacting with other real people.
-      Please be respectful and answer in a timely fashion. If you are idle for more than 1 minute you may be removed from the experiment without full compensation.
-      <br><br><b>Press "c" to continue.</b></div>`
-      /*`
-      <div id="instructions">
-      You will now play a series of games with other participants in different locations.
-      </div>
-      `*/
-    );
-  },
-  choices: ['c']
-};
 
 
 
@@ -425,26 +400,25 @@ var waiting = [
 
 var instructions_all_block1 = {
   type: "html-keyboard-response",
-  choices: ['c'],
+  choices: ["n"],
   stimulus: `<div id="instructions">
-  In this portion of the experiment, you will be shown several images while interacting with other participants over the Internet, in real time.
   If you have trouble viewing an image, please zoom in or out using your browser (by pressing control/command plus or minus on your keyboard).
   You will NOT be able to return to previous instructions after continuing. Please read all instructions carefully.
-  At any point, you may press "c" to continue, unless another action is required.   <br>
-  <b>Press "c" to continue.</b>
+  At any point, you may press "n" to continue, unless another action is required.<br>
+  <b>Press "n" to continue.</b>
   </div>`,
 };
 
 var instructions_all_block2 = {
   type: "html-keyboard-response",
-  choices: ['c'],
+  choices: ["n"],
   stimulus: `<div id="instructions">
   During this study you will play games with other individuals located across the US.
   We trust that you will read questions and respond thoughtfully.
   Some questions check that participants have read the prompts carefully. They are easy and straightforward.
   While we are confident that you will pay close attention, others may not.
   Participants that fail to answer these questions correctly may not receive full compensation. <br>
-  <b>Press "c" to continue.</b>
+  <b>Press "n" to continue.</b>
   </div>`,
 };
 
@@ -452,19 +426,19 @@ var instructions_all_block2 = {
 var instruction_pd_block_intro = {
   // introduces PD game
   type: "html-keyboard-response",
-  choices: ["c"],
+  choices: ["n"],
   stimulus: function () {
     return (
       //`<h1>Instructions</h1>
       `<div id="instructions">You will shortly be asked to play a game
-      with another participant from your team or the other team
-      who is connected to the game in another location. Please be mindful and respectful of their time.<br>
+      with another participant who also likes watching football
+      and is connected to the game in another location. Please be mindful and respectful of their time.<br>
       The amount of points you earn will be determined by the decisions
       that you make in combination with the decisions of the other participant.
       After the game, you will be awarded additional compensation according to your performance.<br>
       You will be playing a series of rounds against the same counterpart.
       <br>
-      <b>Press "c" to continue.</b>` +
+      <b>Press "n" to continue.</b>` +
       "</div>"
     );
   },
@@ -473,7 +447,7 @@ var instruction_pd_block_intro = {
 var instruction_pd_block_payout = {
   // describes payout of PD game
   type: "html-keyboard-response",
-  choices: ["c"],
+  choices: ["n"],
   stimulus: function() {
     stim =
     `<div id="instructions">
@@ -487,7 +461,7 @@ var instruction_pd_block_payout = {
     <br>
     Neither you, nor your counterpart will be able to see the other's decision until both players have made a choice.
     <br>
-    <b>Press "c" to continue.</b></div>
+    <b>Press "n" to continue.</b></div>
     `
     return stim
   }
@@ -496,7 +470,7 @@ var instruction_pd_block_payout = {
 var instructions_after_practice = {
   // final instructions for PD game prior to actually playing. happens after the practice rounds
   type: "html-keyboard-response",
-  choices: ["c"],
+  choices: ["n"],
   stimulus: function () {
     /*var team_statement =
         `in the <span style="color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
@@ -506,9 +480,9 @@ var instructions_after_practice = {
         border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">
         ${jsPsych.timelineVariable("own_team", true)}</span> group)`;*/
     var team_statement =
-        `whose favorite team is the <span>
-        ${jsPsych.timelineVariable("counterp_team", true)}
+        `<span>
         ${color_triangle_nofloat(jsPsych.timelineVariable("counterp_colors", true)[0], jsPsych.timelineVariable("counterp_colors", true)[1], 20, "right")}
+        ${jsPsych.timelineVariable("counterp_team", true)}'s
         </span>`;
     jsPsych.data.addProperties({
       betray: jsPsych.timelineVariable("betray", true),
@@ -516,15 +490,48 @@ var instructions_after_practice = {
     return (
       //`<h1>Instructions</h1>
       `<div id="instructions">
-      Now that you understand the game, you will play with another participant
-      ${team_statement} who is connected to the game in another location.
+      Now that you understand the game, you will play with another participant.<br>
+      You have been paired with a
+      ${team_statement} fan who is connected to the game in another location.
       Please be mindful and respectful of their time.<br>
       The amount of points you earn will be determined by the decisions
       that you make in combination with the decisions of the other participant.
       After the game, <b>you will be awarded additional compensation according to your performance.</b><br>
       You will be playing a series of rounds against the same counterpart.
       <br>
-      Press "c" to begin playing.
+      Press "n" to begin playing.
+      </div>`
+    );
+  }
+};
+
+
+var plot_images = [
+  "img/participation_plot_low.png",
+  "img/participation_plot_high.png"
+].map(x => "https://tholdaway.github.io/homophily-coop/" + x);
+
+var paired_with = {  // "paired with" message with counterpart team information
+  type: "html-keyboard-response",
+  choices: ["n"],
+  stimulus: function () {
+    /*var team_statement =
+        `in the <span style="color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
+        border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">
+        ${jsPsych.timelineVariable("counterp_team", true)}
+        </span> group (you are in the <span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
+        border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">
+        ${jsPsych.timelineVariable("own_team", true)}</span> group)`;*/
+    var other_image = `https://tholdaway.github.io/homophily-coop/img/NFL_TEAMS/${jsPsych.timelineVariable("counterp_team", true)}.png`;
+    return (
+      //`<h1>Instructions</h1>
+      `<div id="instructions">
+      You have been randomly paired with a ${jsPsych.timelineVariable("counterp_team", true)} fan!
+      <div class="imgContainer"><img src="
+      ${other_image}"
+      style="width:1in !important;height:1in !important;padding: 5px !important;"></div>
+      <br>
+      Press "n" to begin playing.
       </div>`
     );
   }
@@ -580,11 +587,11 @@ var coop_comparison_block = {
     stim = `<div id='instructions'>In total your score was
       ${score_self}.<br>Your counterpart's score was
       ${score_other}.<br> ${stim}
-      <p><b>Press "c" to continue.</b></p></div>`;
+      <p><b>Press "n" to continue.</b></p></div>`;
       jsPsych.data.addProperties({ score_self: score_self, score_other: score_other});
     return stim
   },
-  choices: ['c'],
+  choices: ["n"],
 };
 
 
@@ -681,10 +688,10 @@ var practice_response1 = {
       as shown in the table below in the highlighted cell.
     </div>
     ` + emph_cell_payout_table(userChoice, "c") +
-    `<p><b>Press "c" to continue.</b></p>`;
+    `<p><b>Press "n" to continue.</b></p>`;
     return stim;
   },
-  choices: ["c"],
+  choices: ["n"],
 };
 
 
@@ -703,10 +710,10 @@ var practice_response2 = {
       as shown in the table below in the highlighted cell.
     </div>
     ` + emph_cell_payout_table(userChoice, "nc") +
-    `<p><b>Press "c" to continue.</b></p>`;
+    `<p><b>Press "n" to continue.</b></p>`;
     return stim;
   },
-  choices: ["c"],
+  choices: ["n"],
 };
 
 var practice_round_chunk = {
