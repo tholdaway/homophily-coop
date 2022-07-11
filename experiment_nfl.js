@@ -487,7 +487,7 @@ var instructions_after_practice = {
     var team_statement =
         `<span>
         ${color_triangle_nofloat(jsPsych.timelineVariable("counterp_colors", true)[0], jsPsych.timelineVariable("counterp_colors", true)[1], 20, "right")}
-        ${jsPsych.timelineVariable("counterp_team", true)}'s
+        ${jsPsych.timelineVariable("counterp_team", true)}
         </span>`;
     jsPsych.data.addProperties({
       betray: jsPsych.timelineVariable("betray", true),
