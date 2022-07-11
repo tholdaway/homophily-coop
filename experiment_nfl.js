@@ -171,16 +171,24 @@ var user_choice = {
       `<div id="instructions">Choose whether to cooperate (press "x")
       or not cooperate (press "y") with your counterpart.</div>`;
 
+    var self_image = `https://tholdaway.github.io/homophily-coop/img/NFL_TEAMS/${jsPsych.timelineVariable("own_team", true)}.png`;
+    var other_image = `https://tholdaway.github.io/homophily-coop/img/NFL_TEAMS/${jsPsych.timelineVariable("counterp_team", true)}.png`;
     head =
       `<header>
       <table width="100%">
         <tr>
           <td align="center">Your favorite team:<br><span>
-          ${color_triangle(jsPsych.timelineVariable("own_colors", true)[0], jsPsych.timelineVariable("own_colors", true)[1], 20, "left")}
-          ${jsPsych.timelineVariable("own_team", true)}</span></td>
+            ${jsPsych.timelineVariable("own_team", true)}
+            <img src="
+            ${self_image}"
+            style="width:50px !important;height:50px !important;padding: 5px !important;" class="center">
+          </span></td>
           <td align="center">Counterpart's favorite team:<br><span>
-              ${color_triangle(jsPsych.timelineVariable("counterp_colors", true)[0], jsPsych.timelineVariable("counterp_colors", true)[1], 20, "right")}
-              ${jsPsych.timelineVariable("counterp_team", true)}</td>
+            ${jsPsych.timelineVariable("counterp_team", true)}
+            <img src="
+            ${other_image}"
+            style="width:50px !important;height:50px !important;padding: 5px !important;" class="center">
+          </td>
       </table>
       </header>`;
       /*
@@ -319,29 +327,26 @@ var computer_choice = {
               ${payout_dict[computerChoice][userChoice]} points.</div>`;
             score_self += payout_dict[userChoice][computerChoice];
             score_other += payout_dict[computerChoice][userChoice];
-    var head =
+    var self_image = `https://tholdaway.github.io/homophily-coop/img/NFL_TEAMS/${jsPsych.timelineVariable("own_team", true)}.png`;
+    var other_image = `https://tholdaway.github.io/homophily-coop/img/NFL_TEAMS/${jsPsych.timelineVariable("counterp_team", true)}.png`;
+    head =
       `<header>
       <table width="100%">
         <tr>
           <td align="center">Your favorite team:<br><span>
-          ${color_triangle(jsPsych.timelineVariable("own_colors", true)[0], jsPsych.timelineVariable("own_colors", true)[1], 20, "left")}
-          ${jsPsych.timelineVariable("own_team", true)}</span></td>
+            ${jsPsych.timelineVariable("own_team", true)}
+            <img src="
+            ${self_image}"
+            style="width:50px !important;height:50px !important;padding: 5px !important;" class="center">
+          </span></td>
           <td align="center">Counterpart's favorite team:<br><span>
-              ${jsPsych.timelineVariable("counterp_team", true)}
-              ${color_triangle(jsPsych.timelineVariable("counterp_colors", true)[0], jsPsych.timelineVariable("counterp_colors", true)[1], 20, "right")}
-              </td>
+            ${jsPsych.timelineVariable("counterp_team", true)}
+            <img src="
+            ${other_image}"
+            style="width:50px !important;height:50px !important;padding: 5px !important;" class="center">
+          </td>
       </table>
       </header>`;
-    /*var head =
-        `<header>
-        <table width="100%">
-          <tr>
-            <td align="center">Your favorite team:<br><span style="color:${jsPsych.timelineVariable("own_colors", true)[0]};
-                border-radius:20px; background-color:${jsPsych.timelineVariable("own_colors", true)[1]};">${jsPsych.timelineVariable("own_team", true)}</span></td>
-            <td align="center">Counterpart's favorite team:<br><span style=\"color:${jsPsych.timelineVariable("counterp_colors", true)[0]};
-                border-radius:20px; background-color:${jsPsych.timelineVariable("counterp_colors", true)[1]};">${jsPsych.timelineVariable("counterp_team", true)}</td>
-        </table>
-        </header>`;*/
     stim =
       head +
       stim;
@@ -506,11 +511,6 @@ var instructions_after_practice = {
 };
 
 
-var plot_images = [
-  "img/participation_plot_low.png",
-  "img/participation_plot_high.png"
-].map(x => "https://tholdaway.github.io/homophily-coop/" + x);
-
 var paired_with = {  // "paired with" message with counterpart team information
   type: "html-keyboard-response",
   choices: ["n"],
@@ -527,9 +527,10 @@ var paired_with = {  // "paired with" message with counterpart team information
       //`<h1>Instructions</h1>
       `<div id="instructions">
       You have been randomly paired with a ${jsPsych.timelineVariable("counterp_team", true)} fan!
-      <div class="imgContainer"><img src="
+      <br>
+      <img src="
       ${other_image}"
-      style="width:1in !important;height:1in !important;padding: 5px !important;"></div>
+      style="width:1in !important;height:1in !important;padding: 5px !important;" class="center">
       <br>
       Press "n" to begin playing.
       </div>`
@@ -747,7 +748,7 @@ var full_design = jsPsych.randomization.factorial(design_factors, 1);
 
 var pd_with_variables = {
   // run PD game and instructions/practice (not used in Qualtrics)
-  timeline: [instruction_pd_block_intro, instruction_pd_block_payout, practice_round_chunk, connecting_block, instructions_after_practice, run_chunk],
+  timeline: [instruction_pd_block_intro, instruction_pd_block_payout, practice_round_chunk, connecting_block, paired_with, instructions_after_practice, run_chunk],
   //timeline: [trial],
   timeline_variables: full_design,
   sample: {
