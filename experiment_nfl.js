@@ -181,13 +181,13 @@ var user_choice = {
             ${jsPsych.timelineVariable("own_team", true)}
             <img src="
             ${self_image}"
-            style="width:50px !important;height:50px !important;padding: 5px !important;" class="center">
+            style="width:100px !important;height:100px !important;padding: 5px !important;" class="center">
           </span></td>
           <td align="center">Counterpart's favorite team:<br><span>
             ${jsPsych.timelineVariable("counterp_team", true)}
             <img src="
             ${other_image}"
-            style="width:50px !important;height:50px !important;padding: 5px !important;" class="center">
+            style="width:100px !important;height:100px !important;padding: 5px !important;" class="center">
           </td>
       </table>
       </header>`;
@@ -337,13 +337,13 @@ var computer_choice = {
             ${jsPsych.timelineVariable("own_team", true)}
             <img src="
             ${self_image}"
-            style="width:50px !important;height:50px !important;padding: 5px !important;" class="center">
+            style="width:100px !important;height:100px !important;padding: 5px !important;" class="center">
           </span></td>
           <td align="center">Counterpart's favorite team:<br><span>
             ${jsPsych.timelineVariable("counterp_team", true)}
             <img src="
             ${other_image}"
-            style="width:50px !important;height:50px !important;padding: 5px !important;" class="center">
+            style="width:100px !important;height:100px !important;padding: 5px !important;" class="center">
           </td>
       </table>
       </header>`;
@@ -574,16 +574,15 @@ var coop_comparison_block = {
     // characterize cooperativeness of counterpart based on experimental condition
     if (jsPsych.data.get().select("betray").values[0] === "t") {
       //stim = "Your counterpart chose to not cooperate more than 75% of all players."
-      stim = `The red line shows how often your counterpart cooperated, relative to all other players. Your counterpart was <b>less cooperative</b> than the average player.<br><div class="imgContainer"><img src="` +
-      plot_images[0] +
-      //`" style="width:1600px !important;height:800px !important;"></div>`
-      `" style="width:8in !important;height:4in !important;padding: 5px !important;"></div>`
+      stim = `The red line shows how often your counterpart cooperated, relative to all other players.
+      Your counterpart was <b>less cooperative</b> than 75% of all players.<br><div class="imgContainer">
+      <img src="${plot_images[0]}" style="width:8in !important;height:4in !important;padding: 5px !important;">
+      </div>`
     } else {
       //stim = "Your counterpart chose to cooperate more than 75% of all players."
       stim = `The red line shows how often your counterpart cooperated, relative to all other players.
-      Your counterpart was <b>more cooperative</b> than the average player.<br><div class="imgContainer"><img src="
-      ${plot_images[1]}"
-      style="width:8in !important;height:4in !important;padding: 5px !important;"></div>`
+      Your counterpart was <b>more cooperative</b> than 75% of all players.<br><div class="imgContainer">
+      <img src="${plot_images[1]}" style="width:8in !important;height:4in !important;padding: 5px !important;"></div>`
     }
     stim = `<div id='instructions'>In total your score was
       ${score_self}.<br>Your counterpart's score was
