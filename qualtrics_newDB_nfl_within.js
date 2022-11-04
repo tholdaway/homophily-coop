@@ -68,7 +68,6 @@ Qualtrics.SurveyEngine.addOnload(function () {
             callback(aT);
          }};
 
-      var data = "";
 
       xhr.send(data);
     };

@@ -100,13 +100,31 @@
   <div id="jspsych-target">
     <script>
       var political_affiliation = "Left";
+
+      var own_team = "Left";
+      var exp_cond = "low";
+      var own_colors = ['blue'];
+      var counterp_colors = ['red'];
+      var counterp_team = 'Right';
+      // var counterp_team = 'Moderate';
+      var design_factors = [{other_group:'sg', betray:"t",
+                              own_team:own_team, own_colors:own_colors,
+                              counterp_team:counterp_team, counterp_colors:counterp_colors}];
+
+      var pd_with_variables_qt = {
+        timeline: [instruction_pd_block_intro, instruction_pd_block_payout, practice_round_chunk, connecting_block, paired_with, instructions_after_practice, run_chunk],
+        timeline_variables: design_factors,
+        sample: {
+          type: "with-replacement",
+          size: 1
+        },
+      };
       //Initiate Experiment
       jsPsych.init({
         timeline: [
           instructions_all_block1,
           instructions_all_block2,
-          group_assignment,
-          pd_with_variables,
+          pd_with_variables_qt,
           coop_comparison_block
         ],
         display_element: "jspsych-target",
