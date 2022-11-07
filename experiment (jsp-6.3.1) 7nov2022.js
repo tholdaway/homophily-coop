@@ -675,7 +675,7 @@ var coop_comparison_block_placeholder = {
   stimulus: function() {
     var stim;
     // characterize cooperativeness of counterpart based on experimental condition
-    stim = `Thank you. Please press "n" to continue to the next portion of the experiment.`
+    stim = `<p>Thank you. Please press "n" to continue to the next portion of the experiment.</p>`
     return stim
   },
   choices: ["n"],
