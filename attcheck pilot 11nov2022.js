@@ -33,7 +33,6 @@ var fruit_prompt = {
    of the listed options, but the fruit whose name is also a color.
    </p><p><b>Press "n" to continue.</b></p>`,
   choices: ["n"],
-  trial_duration: 10000
 };
 
 var fruit_selection = {
