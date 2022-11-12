@@ -56,7 +56,7 @@ var negativechoice = {
   type: 'survey-likert',
   questions: [
     {
-      prompt: `Please choose the fruit from the list below (if there are no fruits on the list, skip to the next page by pressing "n").`,
+      prompt: `Please choose the fruit from the list below (if there are no fruits on the list, skip to the next page by clicking continue).`,
       labels: [
         "Hotdog",
         "Hamburger",
